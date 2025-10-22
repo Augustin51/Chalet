@@ -2,7 +2,7 @@ import Link from "next/link";
 import { ArrowRight, ChevronDown } from "lucide-react";
 import Image from "next/image";
 
-export default function Hero() {
+export default function HomeHero() {
   return (
     <section className="relative h-[85vh] sm:h-[90vh] w-full flex items-center justify-center text-white overflow-hidden">
       <Image
