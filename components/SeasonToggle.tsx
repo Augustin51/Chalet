@@ -4,8 +4,8 @@ import React from "react";
 import { Snowflake, Sun } from "lucide-react";
 
 interface SeasonToggleProps {
-  season: "hiver" | "ete";
-  onChange: (season: "hiver" | "ete") => void;
+  season: "winter" | "summer";
+  onChange: (season: "winter" | "summer") => void;
 }
 
 export default function SeasonToggle({ season, onChange }: SeasonToggleProps) {
@@ -13,9 +13,9 @@ export default function SeasonToggle({ season, onChange }: SeasonToggleProps) {
     <div className="flex justify-center my-8 mb-8">
       <div className="bg-emerald-50 border border-emerald-100 rounded-full flex p-1">
         <button
-          onClick={() => onChange("hiver")}
+          onClick={() => onChange("winter")}
           className={`flex items-center gap-2 px-4 py-2 rounded-full transition ${
-            season === "hiver"
+            season === "winter"
               ? "bg-emerald-700 text-white"
               : "text-emerald-800 hover:bg-emerald-100"
           }`}
@@ -23,9 +23,9 @@ export default function SeasonToggle({ season, onChange }: SeasonToggleProps) {
           <Snowflake size={18} /> Hiver
         </button>
         <button
-          onClick={() => onChange("ete")}
+          onClick={() => onChange("summer")}
           className={`flex items-center gap-2 px-4 py-2 rounded-full transition ${
-            season === "ete"
+            season === "summer"
               ? "bg-emerald-700 text-white"
               : "text-emerald-800 hover:bg-emerald-100"
           }`}
