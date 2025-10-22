@@ -2,6 +2,7 @@ import ChaletIntro from "@/components/ChaletIntro";
 import Equipment from "@/components/Equipment";
 import Gallery from "@/components/Gallery";
 import PageHero from "@/components/PageHero";
+import PracticalInformation from "@/components/PracticalInformation";
 
 export default function ChaletPage() {
   return (
@@ -15,6 +16,7 @@ export default function ChaletPage() {
       <Gallery 
         description="Découvrez l'intérieur et l'extérieur du chalet"
       />
+      <PracticalInformation />
     </>
   );
 }
