@@ -7,7 +7,10 @@ export default function Home() {
     <>
     <HomeHero />
     <Features />
-    <Gallery />
+    <Gallery 
+      description="Un aperçu de votre futur séjour"
+      nbPhotoLimit={6}
+    />
     </>
   );
 }
