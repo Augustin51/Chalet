@@ -1,11 +1,11 @@
 import Features from "@/components/Features";
 import Gallery from "@/components/Gallery";
-import Hero from "@/components/Hero";
+import HomeHero from "@/components/HomeHero";
 
 export default function Home() {
   return (
     <>
-    <Hero />
+    <HomeHero />
     <Features />
     <Gallery />
     </>
