@@ -1,5 +1,14 @@
+import ContactForm from "@/components/ContactForm";
+import PageHero from "@/components/PageHero";
+
 export default function About() { 
   return (
-    <h1>contact</h1>
+    <>
+    <PageHero
+      title="Contactez-nous"
+      description="Une question ? Un projet de séjour ? Parlons-en !"
+    />
+    <ContactForm />
+    </>
   )
 }
