@@ -1,4 +1,5 @@
 import Availability from "@/components/Availability";
+import ImportantInfo from "@/components/ImportantInfo";
 import Price from "@/components/Price";
 
 export default function About() {
@@ -6,6 +7,7 @@ export default function About() {
     <>
     <Availability />
     <Price />
+    <ImportantInfo />
     </>
   )
 }
