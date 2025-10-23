@@ -1,5 +1,6 @@
 import PageHero from "@/components/PageHero";
 import Stats from "@/components/Stats";
+import Testimonials from "@/components/Testimonials";
 
 export default function About() {
   return (
@@ -9,6 +10,7 @@ export default function About() {
       description="Découvrez les témoignages de nos visiteurs"
     />
     <Stats />
+    <Testimonials />
     </>
   )
 }
