@@ -7,6 +7,6 @@ export default defineConfig({
   },
   engine: "classic",
   datasource: {
-    url: env("POSTGRES_PRISMA_URL"),
+    url: env("POSTGRES_URL_NON_POOLING"),
   },
 });

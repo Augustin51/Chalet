@@ -6,11 +6,112 @@
 
 generator client {
   provider = "prisma-client"
-  output   = "../lib/generated/prisma"
+  output   = "../lib/generated/prisma" // J'ai gardé votre chemin de sortie personnalisé
 }
 
 datasource db {
   provider = "postgresql"
-  url      = env("POSTGRES_PRISMA_URL")
+  url      = env("POSTGRES_URL_NON_POOLING") // J'ai gardé votre variable d'URL
 }
 
+// ------------------------------------------
+// --- Modèles de base de données ---
+// ------------------------------------------
+
+// 1. Modèle principal pour les contenus textuels uniques
+model Content {
+  id        Int    @id @default(autoincrement())
+  page      String
+  component String
+  key       String
+  value     String
+}
+
+// 2. Pour "Features" (Page Home)
+model Feature {
+  id          Int    @id @default(autoincrement())
+  title       String
+  description String
+  iconName    String
+}
+
+// 3. Pour "Gallery" (Toutes les pages)
+model GalleryImage {
+  id  Int    @id @default(autoincrement())
+  src String
+  alt String
+}
+
+// 4. Pour "Equipment" (Page Chalet)
+model Equipment {
+  id       Int    @id @default(autoincrement())
+  label    String
+  iconName String
+}
+
+// 5. Pour "ActivitiesSection" (Page Autour)
+model Activity {
+  id          Int    @id @default(autoincrement())
+  title       String
+  description String
+  season      String // "winter" ou "summer"
+}
+
+// 6. Pour "Nearby" (Page Autour)
+model Nearby {
+  id     Int    @id @default(autoincrement())
+  time   String
+  label  String
+  color  String
+  season String // "winter" ou "summer"
+}
+
+// 7. Pour "LocalFavorites" (Page Autour)
+model Favorite {
+  id       Int    @id @default(autoincrement())
+  title    String
+  details  String
+  iconName String
+}
+
+// 8. Pour "Price" (Page Calendrier)
+model PriceTier {
+  id          Int    @id @default(autoincrement())
+  title       String
+  period      String
+  price       String
+  description String
+}
+
+// 9. Pour "ImportantInfo" (Page Calendrier)
+model InfoItem {
+  id   Int    @id @default(autoincrement())
+  text String
+}
+
+// 10. Pour "Stats" (Page Avis)
+model Stat {
+  id        Int     @id @default(autoincrement())
+  main      String
+  sub       String
+  showStars Boolean
+}
+
+// 11. Pour "Testimonials" (Page Avis)
+model Testimonial {
+  id        Int    @id @default(autoincrement())
+  name      String
+  avatarUrl String
+  date      String
+  stars     Int
+  source    String
+  review    String
+}
+
+// 12. Pour "ContactForm" (Page Contact)
+model ContactInfo {
+  id       Int    @id @default(autoincrement())
+  title    String
+  content  String
+  iconName String
+}
