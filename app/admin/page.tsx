@@ -1,16 +1,8 @@
-import { createSupabaseServerClient } from "@/lib/supabase/server";
+'use client'
+import { useAdmin } from "@/components/AdminProvider";
 
 export default async function AdminPage() {
-  const supabase = createSupabaseServerClient();
-  const { data: { session } } = await supabase.auth.getSession();
+  const isAdmin = useAdmin();
+  return <div>{isAdmin ? "Admin" : "Not admin"}</div>
 
-  if (!session) {
-    redirect("/connexion");
-  }
-
-  return (
-    <div>
-      <h1>Bienvenue admin</h1>
-    </div>
-  );
 }
