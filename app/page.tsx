@@ -4,8 +4,6 @@ import HomeHero from "@/components/HomeHero";
 import { createServerSupabase } from "@/lib/supabase/server";
 import { cache } from 'react';
 
-const supabase = createServerSupabase();
-
 function formatContent(contentList: any[]) {
   return contentList.reduce((acc, item) => {
     if (!acc[item.component]) {
@@ -17,6 +15,8 @@ function formatContent(contentList: any[]) {
 }
 
 const getHomePageData = cache(async () => {
+  const supabase = createServerSupabase(); 
+  
   const { data: contentData, error: contentError } = await supabase
     .from('Content')
     .select('*')
@@ -43,7 +43,6 @@ const getHomePageData = cache(async () => {
     gallery: galleryData || []
   };
 });
-
 
 export default async function Home() {
   const { content, features, gallery } = await getHomePageData();

@@ -3,8 +3,6 @@ import PageHero from "@/components/PageHero";
 import { createServerSupabase } from "@/lib/supabase/server";
 import { cache } from 'react';
 
-const supabase = createServerSupabase();
-
 function formatContent(contentList: any[]) {
   return contentList.reduce((acc, item) => {
     if (!acc[item.component]) {
@@ -16,6 +14,8 @@ function formatContent(contentList: any[]) {
 }
 
 const getContactPageData = cache(async () => {
+  const supabase = createServerSupabase();
+  
   const { data: contentData, error: contentError } = await supabase
     .from('Content')
     .select('*')
