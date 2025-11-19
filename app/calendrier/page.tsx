@@ -1,10 +1,8 @@
 import Availability from "@/components/Availability";
 import ImportantInfo from "@/components/ImportantInfo";
 import Price from "@/components/Price";
-import { createSupabaseServerClient } from "@/lib/supabase/server";
+import { createServerSupabase } from "@/lib/supabase/server";
 import { cache } from 'react';
-
-const supabase = createSupabaseServerClient();
 
 function formatContent(contentList: any[]) {
   return contentList.reduce((acc, item) => {
@@ -17,6 +15,8 @@ function formatContent(contentList: any[]) {
 }
 
 const getCalendrierPageData = cache(async () => {
+  const supabase = createServerSupabase(); 
+  
   const { data: contentData, error: contentError } = await supabase
     .from('Content')
     .select('*')
@@ -43,8 +43,7 @@ const getCalendrierPageData = cache(async () => {
   };
 });
 
-
-export default async function CalendrierPage() {   
+export default async function CalendrierPage() {
   const { content, priceTiers, infoItems } = await getCalendrierPageData();
   return (
     <>

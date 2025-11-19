@@ -1,9 +1,7 @@
 import ContactForm from "@/components/ContactForm";
 import PageHero from "@/components/PageHero";
-import { createSupabaseServerClient } from "@/lib/supabase/server";
+import { createServerSupabase } from "@/lib/supabase/server";
 import { cache } from 'react';
-
-const supabase = createSupabaseServerClient();
 
 function formatContent(contentList: any[]) {
   return contentList.reduce((acc, item) => {
@@ -16,6 +14,8 @@ function formatContent(contentList: any[]) {
 }
 
 const getContactPageData = cache(async () => {
+  const supabase = createServerSupabase();
+  
   const { data: contentData, error: contentError } = await supabase
     .from('Content')
     .select('*')

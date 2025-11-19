@@ -1,18 +1,34 @@
-import { createServerClient } from '@supabase/ssr' 
-import { cookies } from 'next/headers'
+import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
+import { createServerClient } from "@supabase/ssr";
+import { cookies } from "next/headers";
 
-export const createSupabaseServerClient = () => {
-  const cookieStore = cookies() 
-  
-  if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
-    throw new Error("Missing Supabase environment variables (URL or ANON_KEY)");
-  }
+export function createServerSupabase() {
+  const cookieStore = cookies();
 
   return createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
     {
-      cookies: cookieStore 
+      cookies: {
+        async get(name: string) {
+          return (await cookieStore).get(name)?.value;
+        },
+        async set(name: string, value: string, options: any) {
+          (await cookieStore).set({
+            name,
+            value,
+            ...options,
+          });
+        },
+        async remove(name: string, options: any) {
+          (await cookieStore).set({
+            name,
+            value: "",
+            ...options,
+            maxAge: 0,
+          });
+        },
+      },
     }
-  )
+  );
 }

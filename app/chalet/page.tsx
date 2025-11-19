@@ -3,10 +3,8 @@ import Equipment from "@/components/Equipment";
 import Gallery from "@/components/Gallery";
 import PageHero from "@/components/PageHero";
 import PracticalInformation from "@/components/PracticalInformation";
-import { createSupabaseServerClient } from "@/lib/supabase/server";
+import { createServerSupabase } from "@/lib/supabase/server";
 import { cache } from 'react';
-
-const supabase = createSupabaseServerClient();
 
 function formatContent(contentList: any[]) {
   return contentList.reduce((acc, item) => {
@@ -19,6 +17,8 @@ function formatContent(contentList: any[]) {
 }
 
 const getChaletPageData = cache(async () => {
+  const supabase = createServerSupabase(); 
+  
   const { data: chaletContentData, error: contentError } = await supabase
     .from('Content')
     .select('*')

@@ -1,10 +1,8 @@
 import PageHero from "@/components/PageHero";
 import Stats from "@/components/Stats";
 import Testimonials from "@/components/Testimonials";
-import { createSupabaseServerClient } from "@/lib/supabase/server";
+import { createServerSupabase } from "@/lib/supabase/server";
 import { cache } from 'react';
-
-const supabase = createSupabaseServerClient();
 
 function formatContent(contentList: any[]) {
   return contentList.reduce((acc, item) => {
@@ -17,6 +15,8 @@ function formatContent(contentList: any[]) {
 }
 
 const getAvisPageData = cache(async () => {
+  const supabase = createServerSupabase(); 
+  
   const { data: contentData, error: contentError } = await supabase
     .from('Content')
     .select('*')
