@@ -28,9 +28,9 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
     {
       cookies: {
-        get: (name) => cookies().get(name)?.value ?? null,
-        set: (name, value, options) => cookies().set({ name, value, ...options }),
-        remove: (name) => cookies().delete(name),
+        get: async (name) => (await cookies()).get(name)?.value ?? null,
+        set: async (name, value, options) => (await cookies()).set({ name, value, ...options }),
+        remove: async (name) => (await cookies()).delete(name),
       },
     }
   );

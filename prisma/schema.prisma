@@ -25,6 +25,8 @@ model Content {
   component String
   key       String
   value     String
+
+  @@unique([page, component, key])
 }
 
 // 2. Pour "Features" (Page Home)
