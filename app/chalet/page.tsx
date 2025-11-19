@@ -3,10 +3,10 @@ import Equipment from "@/components/Equipment";
 import Gallery from "@/components/Gallery";
 import PageHero from "@/components/PageHero";
 import PracticalInformation from "@/components/PracticalInformation";
-import { createSupabaseServerClient } from "@/lib/supabase/server";
+import { createServerSupabase } from "@/lib/supabase/server";
 import { cache } from 'react';
 
-const supabase = createSupabaseServerClient();
+const supabase = createServerSupabase();
 
 function formatContent(contentList: any[]) {
   return contentList.reduce((acc, item) => {

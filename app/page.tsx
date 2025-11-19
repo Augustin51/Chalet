@@ -1,10 +1,10 @@
 import Features from "@/components/Features";
 import Gallery from "@/components/Gallery";
 import HomeHero from "@/components/HomeHero";
-import { createSupabaseServerClient } from "@/lib/supabase/server";
+import { createServerSupabase } from "@/lib/supabase/server";
 import { cache } from 'react';
 
-const supabase = createSupabaseServerClient();
+const supabase = createServerSupabase();
 
 function formatContent(contentList: any[]) {
   return contentList.reduce((acc, item) => {

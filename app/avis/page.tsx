@@ -1,10 +1,10 @@
 import PageHero from "@/components/PageHero";
 import Stats from "@/components/Stats";
 import Testimonials from "@/components/Testimonials";
-import { createSupabaseServerClient } from "@/lib/supabase/server";
+import { createServerSupabase } from "@/lib/supabase/server";
 import { cache } from 'react';
 
-const supabase = createSupabaseServerClient();
+const supabase = createServerSupabase();
 
 function formatContent(contentList: any[]) {
   return contentList.reduce((acc, item) => {

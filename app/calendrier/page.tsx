@@ -1,10 +1,10 @@
 import Availability from "@/components/Availability";
 import ImportantInfo from "@/components/ImportantInfo";
 import Price from "@/components/Price";
-import { createSupabaseServerClient } from "@/lib/supabase/server";
+import { createServerSupabase } from "@/lib/supabase/server";
 import { cache } from 'react';
 
-const supabase = createSupabaseServerClient();
+const supabase = createServerSupabase();
 
 function formatContent(contentList: any[]) {
   return contentList.reduce((acc, item) => {
