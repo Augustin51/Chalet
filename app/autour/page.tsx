@@ -6,32 +6,6 @@ import { cache } from "react";
 
 const supabase = createServerSupabase();
 
-interface ContentItem {
-  component: string;
-  key: string;
-  value: any;
-}
-
-interface Activity {
-  id: number;
-  name: string;
-  season: "winter" | "summer";
-  [key: string]: any;
-}
-
-interface Nearby {
-  id: number;
-  name: string;
-  season: "winter" | "summer";
-  [key: string]: any;
-}
-
-interface Favorite {
-  id: number;
-  name: string;
-  [key: string]: any;
-}
-
 function formatContent(contentList: any[]) {
   return contentList.reduce((acc, item) => {
     if (!acc[item.component]) {
