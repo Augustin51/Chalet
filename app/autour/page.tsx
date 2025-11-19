@@ -6,14 +6,40 @@ import { cache } from 'react';
 
 const supabase = createServerSupabase();
 
-function formatContent(contentList: any[]) {
+interface ContentItem {
+  component: string;
+  key: string;
+  value: any;
+}
+
+interface Activity {
+  id: number;
+  name: string;
+  season: 'winter' | 'summer';
+  [key: string]: any;
+}
+
+interface Nearby {
+  id: number;
+  name: string;
+  season: 'winter' | 'summer';
+  [key: string]: any;
+}
+
+interface Favorite {
+  id: number;
+  name: string;
+  [key: string]: any;
+}
+
+function formatContent(contentList: ContentItem[]) {
   return contentList.reduce((acc, item) => {
     if (!acc[item.component]) {
       acc[item.component] = {};
     }
     acc[item.component][item.key] = item.value;
     return acc;
-  }, {});
+  }, {} as Record<string, Record<string, any>>);
 }
 
 const getAutourPageData = cache(async () => {
@@ -23,15 +49,15 @@ const getAutourPageData = cache(async () => {
     .eq('page', 'autour');
 
   const { data: activitiesData, error: activitiesError } = await supabase
-    .from('Activity')
+    .from<Activity>('Activity')
     .select('*');
 
   const { data: nearbyData, error: nearbyError } = await supabase
-    .from('Nearby')
+    .from<Nearby>('Nearby')
     .select('*');
 
   const { data: favoritesData, error: favoritesError } = await supabase
-    .from('Favorite')
+    .from<Favorite>('Favorite')
     .select('*');
 
   if (contentError || activitiesError || nearbyError || favoritesError) {
@@ -48,12 +74,12 @@ const getAutourPageData = cache(async () => {
       summer_alt: content.ActivitiesSection?.summer_image_alt || '',
     },
     activities: {
-      winter: activitiesData?.filter(a => a.season === 'winter') || [],
-      summer: activitiesData?.filter(a => a.season === 'summer') || [],
+      winter: activitiesData?.filter((a: Activity) => a.season === 'winter') || [],
+      summer: activitiesData?.filter((a: Activity) => a.season === 'summer') || [],
     },
     nearby: {
-      winter: nearbyData?.filter(n => n.season === 'winter') || [],
-      summer: nearbyData?.filter(n => n.season === 'summer') || [],
+      winter: nearbyData?.filter((n: Nearby) => n.season === 'winter') || [],
+      summer: nearbyData?.filter((n: Nearby) => n.season === 'summer') || [],
     }
   };
 
