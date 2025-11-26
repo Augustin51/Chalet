@@ -36,6 +36,8 @@ export default function SeasonalWrapper({ data }: { data: SeasonalData }) {
         imageAlt={currentData.imageAlt}
         activitiesList={currentData.activitiesList}
         nearbyList={currentData.nearbyList}
+        season={season}
+        page="autour"
       />
     </>
   );

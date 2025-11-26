@@ -1,4 +1,8 @@
+"use client";
+
 import Image from "next/image";
+import { useAdmin } from "@/components/AdminProvider";
+import { useContentEditor } from "@/utils/useContentEditor";
 
 interface Activity {
   id: number;
@@ -17,13 +21,70 @@ interface ActivitiesSectionProps {
   imageAlt: string;
   activitiesList: Activity[];
   nearbyList: Nearby[];
+  season: "winter" | "summer";
+  page?: string;
 }
 
-export default function ActivitiesSection({ imageSrc, imageAlt, activitiesList, nearbyList }: ActivitiesSectionProps) {
+export default function ActivitiesSection({ imageSrc, imageAlt, activitiesList, nearbyList, season, page = "autour" }: ActivitiesSectionProps) {
+  const isAdmin = useAdmin();
+  const { handleUpdate } = useContentEditor(page, "ActivitiesSection");
+
+  async function updateActivity(id: number, field: string, value: string) {
+    try {
+      await fetch('/api/activity/update', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id, field, value }),
+      });
+    } catch (err) {
+      console.error('Failed to update activity', err);
+    }
+  }
+
+  async function updateNearby(id: number, field: string, value: string) {
+    try {
+      await fetch('/api/nearby/update', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id, field, value }),
+      });
+    } catch (err) {
+      console.error('Failed to update nearby', err);
+    }
+  }
+
+  function handleInlineKey(e: React.KeyboardEvent<HTMLInputElement | HTMLTextAreaElement>, saveFn: () => void) {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      saveFn();
+      (e.target as HTMLElement).blur();
+    }
+  }
+
   return (
     <section className="bg-[#fdfaf5] py-12 px-6 rounded-xl">
       <div className="max-w-6xl mx-auto">
         <div className="relative w-full h-72 md:h-96 mb-8 overflow-hidden rounded-2xl shadow-sm">
+          {isAdmin && (
+            <div className="mb-3 flex flex-col md:flex-row gap-2">
+              <input
+                type="text"
+                defaultValue={imageSrc}
+                onBlur={(e: any) => handleUpdate(e, `${season}_image_src`)}
+                onKeyDown={(e: any) => handleUpdate(e, `${season}_image_src`)}
+                className="w-full md:w-2/3 p-2 rounded bg-white/20"
+                placeholder="Image URL"
+              />
+              <input
+                type="text"
+                defaultValue={imageAlt}
+                onBlur={(e: any) => handleUpdate(e, `${season}_image_alt`)}
+                onKeyDown={(e: any) => handleUpdate(e, `${season}_image_alt`)}
+                className="w-full md:w-1/3 p-2 rounded bg-white/20"
+                placeholder="Alt text"
+              />
+            </div>
+          )}
           <Image src={imageSrc} alt={imageAlt} fill className="object-cover" />
         </div>
 
@@ -33,12 +94,33 @@ export default function ActivitiesSection({ imageSrc, imageAlt, activitiesList, 
               key={activity.id}
               className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm text-left"
             >
-              <h3 className="text-xl font-semibold text-emerald-900 mb-2">
-                {activity.title}
-              </h3>
-              <p className="text-emerald-700/80 text-sm">
-                {activity.description}
-              </p>
+              {isAdmin ? (
+                <>
+                  <input
+                    type="text"
+                    defaultValue={activity.title}
+                    onBlur={(e: React.FocusEvent<HTMLInputElement>) => updateActivity(activity.id, 'title', e.target.value)}
+                    onKeyDown={(e) => handleInlineKey(e, () => updateActivity(activity.id, 'title', (e.target as HTMLInputElement).value))}
+                    className="text-xl font-semibold text-emerald-900 mb-2 w-full p-1 rounded bg-white/20"
+                  />
+                  <textarea
+                    defaultValue={activity.description}
+                    onBlur={(e: React.FocusEvent<HTMLTextAreaElement>) => updateActivity(activity.id, 'description', e.target.value)}
+                    onKeyDown={(e) => handleInlineKey(e, () => updateActivity(activity.id, 'description', (e.target as HTMLTextAreaElement).value))}
+                    className="text-emerald-700/80 text-sm w-full p-1 rounded bg-white/20"
+                    rows={3}
+                  />
+                </>
+              ) : (
+                <>
+                  <h3 className="text-xl font-semibold text-emerald-900 mb-2">
+                    {activity.title}
+                  </h3>
+                  <p className="text-emerald-700/80 text-sm">
+                    {activity.description}
+                  </p>
+                </>
+              )}
             </div>
           ))}
         </div>
@@ -46,8 +128,29 @@ export default function ActivitiesSection({ imageSrc, imageAlt, activitiesList, 
         <div className="bg-white border border-gray-200 rounded-xl p-6 flex justify-around text-center shadow-sm">
           {nearbyList.map((item) => (
             <div key={item.id}>
-              <p className={`text-2xl font-bold ${item.color} mb-1`}>{item.time}</p>
-              <p className="text-sm text-gray-600">{item.label}</p>
+              {isAdmin ? (
+                <>
+                  <input
+                    type="text"
+                    defaultValue={item.time}
+                    onBlur={(e: React.FocusEvent<HTMLInputElement>) => updateNearby(item.id, 'time', e.target.value)}
+                    onKeyDown={(e) => handleInlineKey(e, () => updateNearby(item.id, 'time', (e.target as HTMLInputElement).value))}
+                    className={`text-2xl font-bold ${item.color} mb-1 w-full p-1 rounded bg-white/20`}
+                  />
+                  <input
+                    type="text"
+                    defaultValue={item.label}
+                    onBlur={(e: React.FocusEvent<HTMLInputElement>) => updateNearby(item.id, 'label', e.target.value)}
+                    onKeyDown={(e) => handleInlineKey(e, () => updateNearby(item.id, 'label', (e.target as HTMLInputElement).value))}
+                    className="text-sm text-gray-600 w-full p-1 rounded bg-white/20"
+                  />
+                </>
+              ) : (
+                <>
+                  <p className={`text-2xl font-bold ${item.color} mb-1`}>{item.time}</p>
+                  <p className="text-sm text-gray-600">{item.label}</p>
+                </>
+              )}
             </div>
           ))}
         </div>

@@ -68,6 +68,7 @@ export default async function AutourPage() {
       <LocalFavorites
         dataContent={content?.LocalFavorites}
         dataFavorites={favorites}
+        page="autour"
       />
     </>
   );
