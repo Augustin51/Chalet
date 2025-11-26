@@ -59,7 +59,8 @@ export default async function AutourPage() {
   return (
     <>
       <PageHero 
-        dataContent={content?.PageHero} 
+        dataContent={content?.PageHero}
+        page="autour"
       />
       <SeasonalWrapper 
         data={seasonalData}

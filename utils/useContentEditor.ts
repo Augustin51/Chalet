@@ -16,7 +16,8 @@ export function useContentEditor(page: string, component: string) {
 
     if (isKeyboard) {
       const ke = e as React.KeyboardEvent<HTMLInputElement | HTMLTextAreaElement>;
-      if (ke.key !== "Enter") return;
+      // Ne sauvegarder que sur Enter SANS Shift (Shift+Enter doit insérer un saut de ligne)
+      if (ke.key !== "Enter" || ke.shiftKey) return;
       ke.preventDefault();
     }
 

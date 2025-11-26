@@ -65,7 +65,8 @@ export default async function ChaletPage() {
   return (
     <>
       <PageHero 
-        dataContent={chaletContent?.PageHero} 
+        dataContent={chaletContent?.PageHero}
+        page="chalet"
       />
       <ChaletIntro 
         dataContent={chaletContent?.ChaletIntro} 

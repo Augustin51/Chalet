@@ -31,6 +31,7 @@ export default async function ContactPage() {
     <>
       <PageHero
         dataContent={content?.PageHero}
+        page="contact"
       />
       <ContactForm
         dataContent={content?.ContactForm}

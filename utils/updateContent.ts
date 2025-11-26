@@ -6,7 +6,10 @@ export async function updateContent(page: string, component: string, key: string
     const response = await fetch("/api/content/update", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ page, component, key, value }),
+      // Normaliser les séquences littérales "\\n" (backslash + n)
+      // pour éviter d'enregistrer la chaîne "\\n" dans la DB lorsque
+      // l'utilisateur colle du texte qui échappe les sauts de ligne.
+      body: JSON.stringify({ page, component, key, value: (value || "").replace(/\\n/g, "\n") }),
     });
 
     // --- MODIFICATION DE DEBUG ---

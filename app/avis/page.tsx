@@ -40,6 +40,7 @@ export default async function AvisPage() {
     <>
       <PageHero 
         dataContent={content?.PageHero}
+        page="avis"
       />
       <Stats 
         dataStats={stats}
