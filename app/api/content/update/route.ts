@@ -1,50 +1,28 @@
 import { NextResponse } from "next/server";
-import { PrismaClient } from "@prisma/client";
+import { prisma } from "@/lib/prisma"; // 👈 C'est ça le secret
 
-// Idéalement, importez votre instance prisma singleton existante depuis @/lib/prisma
-// Si vous n'en avez pas, ceci fonctionne pour le test :
-const prisma = new PrismaClient();
-
-export async function POST(request: Request) {
+export async function POST(req: Request) {
   try {
-    const body = await request.json();
+    const body = await req.json();
     const { page, component, key, value } = body;
 
-    // Vérification basique
-    if (!page || !component || !key) {
-      return NextResponse.json(
-        { success: false, error: "Missing fields" },
-        { status: 400 }
-      );
-    }
-
-    // UTILISATION DE PRISMA UPSERT
-    const updatedContent = await prisma.content.upsert({
+    // Mise à jour via Prisma (Upsert = Update ou Insert)
+    const updated = await prisma.content.upsert({
       where: {
-        // Grâce au @@unique ajouté dans le schema, on peut cibler ainsi :
+        // C'est ici que la contrainte @@unique([page, component, key]) est utile
         page_component_key: {
           page,
           component,
           key,
         },
       },
-      update: {
-        value: value, // Si trouvé, on met à jour la valeur
-      },
-      create: {
-        page,
-        component,
-        key,
-        value: value || "", // Si pas trouvé, on crée la ligne
-      },
+      update: { value },
+      create: { page, component, key, value },
     });
 
-    return NextResponse.json({ success: true, data: updatedContent });
-  } catch (err) {
-    console.error("Erreur API Update:", err);
-    return NextResponse.json(
-      { success: false, error: "Internal Server Error" },
-      { status: 500 }
-    );
+    return NextResponse.json({ success: true, data: updated });
+  } catch (error) {
+    console.error("Erreur API:", error);
+    return NextResponse.json({ success: false, error: "Erreur serveur" }, { status: 500 });
   }
 }
