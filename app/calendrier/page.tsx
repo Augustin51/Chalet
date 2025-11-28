@@ -1,3 +1,4 @@
+import PageHero from "@/components/PageHero";
 import Availability from "@/components/Availability";
 import ImportantInfo from "@/components/ImportantInfo";
 import Price from "@/components/Price";
@@ -40,14 +41,17 @@ export default async function CalendrierPage() {
     <>
       <Availability 
         dataContent={content?.Availability}
+        page="calendrier"
       />
       <Price 
         dataContent={content?.Price}
         dataPriceTiers={priceTiers} 
+        page="calendrier"
       />
       <ImportantInfo
         dataContent={content?.ImportantInfo}
         dataInfoItems={infoItems}
+        page="calendrier"
       />
     </>
   );

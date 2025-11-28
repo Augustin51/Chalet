@@ -1,5 +1,9 @@
+"use client";
+
 import React from 'react';
 import { Calendar } from 'lucide-react';
+import { useAdmin } from '@/components/AdminProvider';
+import { useContentEditor } from '@/utils/useContentEditor';
 
 interface AvailabilityData {
   title: string;
@@ -7,7 +11,10 @@ interface AvailabilityData {
   placeholder_text: string;
 }
 
-export default function Availability({ dataContent }: { dataContent: AvailabilityData }) {
+export default function Availability({ dataContent, page = 'calendrier' }: { dataContent: AvailabilityData; page?: string }) {
+  const isAdmin = useAdmin();
+  const { handleUpdate } = useContentEditor(page, 'Availability');
+
   if (!dataContent) {
     return <section className="bg-[#fcfaf7] py-16">Chargement...</section>;
   }
@@ -17,10 +24,30 @@ export default function Availability({ dataContent }: { dataContent: Availabilit
         
         <div className="text-center mb-12 sm:mb-16">
           <h2 className="text-4xl sm:text-5xl font-serif font-bold text-[#2c4b3a] mb-2">
-            {dataContent.title}
+            {isAdmin ? (
+              <input
+                type="text"
+                defaultValue={dataContent.title}
+                onBlur={(e) => handleUpdate(e, 'title')}
+                onKeyDown={(e) => handleUpdate(e, 'title')}
+                className="w-full text-4xl sm:text-5xl font-serif font-bold bg-white/20 p-2 rounded"
+              />
+            ) : (
+              dataContent.title
+            )}
           </h2>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            {dataContent.subtitle}
+            {isAdmin ? (
+              <input
+                type="text"
+                defaultValue={dataContent.subtitle}
+                onBlur={(e) => handleUpdate(e, 'subtitle')}
+                onKeyDown={(e) => handleUpdate(e, 'subtitle')}
+                className="w-full p-2 rounded bg-white/20"
+              />
+            ) : (
+              dataContent.subtitle
+            )}
           </p>
         </div>
 
@@ -29,9 +56,17 @@ export default function Availability({ dataContent }: { dataContent: Availabilit
           <div className="text-center space-y-4">
             <Calendar className="h-10 w-10 mx-auto text-[#467A5E]" strokeWidth={1.5} />
 
-            <p className="text-lg font-medium text-gray-700">
-              {dataContent.placeholder_text}
-            </p>
+            {isAdmin ? (
+              <input
+                type="text"
+                defaultValue={dataContent.placeholder_text}
+                onBlur={(e) => handleUpdate(e, 'placeholder_text')}
+                onKeyDown={(e) => handleUpdate(e, 'placeholder_text')}
+                className="text-lg font-medium text-gray-700 w-full p-2 rounded bg-white/20"
+              />
+            ) : (
+              <p className="text-lg font-medium text-gray-700">{dataContent.placeholder_text}</p>
+            )}
 
             <div className="flex justify-center space-x-6 pt-2">
               <div className="flex items-center space-x-1.5">
