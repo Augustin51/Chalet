@@ -29,7 +29,7 @@ export default async function ChaletPage() {
 
   // Transformation pour le contenu partagé de la galerie
   const sharedGalleryContentTemp = sharedGalleryContentData?.reduce(
-    (acc, item) => {
+    (acc: any, item: any) => {
       if (!acc[item.component]) acc[item.component] = {};
       acc[item.component][item.key] = item.value;
       return acc;
