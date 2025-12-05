@@ -18,10 +18,10 @@ export default async function ContactPage() {
   }, {} as any);
 
   const contactInfoItems = infoData || [];
-  const formFields = formFieldsData?.reduce((acc, field) => {
+  const formFields = formFieldsData?.reduce((acc: Record<string, any>, field: { fieldName: string; label: string; placeholder: string; id: number }) => {
     acc[field.fieldName] = { label: field.label, placeholder: field.placeholder, id: field.id };
     return acc;
-  }, {} as any) || {};
+  }, {} as Record<string, any>) || {};
 
   return (
     <>
@@ -32,7 +32,7 @@ export default async function ContactPage() {
       <ContactForm
         dataContent={content?.ContactForm}
         dataInfo={contactInfoItems}
-        formFields={formFields}
+        formFields={formFields as any}
       />
     </>
   );
