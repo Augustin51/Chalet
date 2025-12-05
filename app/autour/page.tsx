@@ -1,34 +1,16 @@
 import PageHero from "@/components/PageHero";
 import LocalFavorites from "@/components/LocalFavorites";
 import SeasonalWrapper from "@/components/SeasonalWrapper";
-import { createSupabaseServerClient } from "@/lib/supabase/server";
+import { prisma } from "@/lib/prisma";
 
 export default async function AutourPage() {
-  const supabase = createSupabaseServerClient();
+  const contentData = await prisma.content.findMany({
+    where: { page: "autour" }
+  });
 
-  const { data: contentData, error: contentError } = await supabase
-    .from("Content")
-    .select("*")
-    .eq("page", "autour");
-
-  const { data: activitiesData, error: activitiesError } = await supabase
-    .from("Activity")
-    .select("*");
-
-  const { data: nearbyData, error: nearbyError } = await supabase
-    .from("Nearby")
-    .select("*");
-
-  const { data: favoritesData, error: favoritesError } = await supabase
-    .from("Favorite")
-    .select("*");
-
-  if (contentError || activitiesError || nearbyError || favoritesError) {
-    console.error(
-      "Error DB (Autour):",
-      contentError || activitiesError || nearbyError || favoritesError
-    );
-  }
+  const activitiesData = await prisma.activity.findMany();
+  const nearbyData = await prisma.nearby.findMany();
+  const favoritesData = await prisma.favorite.findMany();
 
   // Transformation des données
   const content = contentData?.reduce((acc, item) => {

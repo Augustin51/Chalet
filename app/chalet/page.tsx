@@ -3,37 +3,22 @@ import Equipment from "@/components/Equipment";
 import Gallery from "@/components/Gallery";
 import PageHero from "@/components/PageHero";
 import PracticalInformation from "@/components/PracticalInformation";
-import { createSupabaseServerClient } from "@/lib/supabase/server";
+import { prisma } from "@/lib/prisma";
 
 export default async function ChaletPage() {
-  const supabase = createSupabaseServerClient();
+  const chaletContentData = await prisma.content.findMany({
+    where: { page: "chalet" }
+  });
 
-  const { data: chaletContentData, error: contentError } = await supabase
-    .from("Content")
-    .select("*")
-    .eq("page", "chalet");
+  const sharedGalleryContentData = await prisma.content.findMany({
+    where: {
+      page: "home",
+      component: "Gallery"
+    }
+  });
 
-  const { data: sharedGalleryContentData, error: galleryContentError } =
-    await supabase
-      .from("Content")
-      .select("*")
-      .eq("page", "home")
-      .eq("component", "Gallery");
-
-  const { data: equipmentData, error: equipmentError } = await supabase
-    .from("Equipment")
-    .select("*");
-
-  const { data: galleryData, error: galleryError } = await supabase
-    .from("GalleryImage")
-    .select("*");
-
-  if (contentError || equipmentError || galleryError || galleryContentError) {
-    console.error(
-      "Erreur BDD (Chalet):",
-      contentError || equipmentError || galleryError || galleryContentError
-    );
-  }
+  const equipmentData = await prisma.equipment.findMany();
+  const galleryData = await prisma.galleryImage.findMany();
 
   // Transformation des données
   const chaletContent = chaletContentData?.reduce((acc, item) => {

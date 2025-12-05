@@ -8,9 +8,19 @@ export function useContentEditor(page: string, component: string) {
   const handleUpdate = async (
     e:
       | React.KeyboardEvent<HTMLInputElement | HTMLTextAreaElement>
-      | React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>,
+      | React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>
+      | React.ChangeEvent<HTMLSelectElement>,
     key: string
   ) => {
+    // Si c'est un ChangeEvent (select), on sauvegarde immédiatement
+    const isSelect = (e.target as HTMLElement).tagName === "SELECT";
+    
+    if (isSelect) {
+      const newValue = (e.target as HTMLSelectElement).value;
+      await updateContent(page, component, key, newValue);
+      return;
+    }
+    
     // Si c'est un KeyboardEvent, on ne sauvegarde que sur Enter
     const isKeyboard = (e as React.KeyboardEvent).key !== undefined;
 

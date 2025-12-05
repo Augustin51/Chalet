@@ -1,30 +1,15 @@
 import PageHero from "@/components/PageHero";
 import Stats from "@/components/Stats";
 import Testimonials from "@/components/Testimonials";
-import { createSupabaseServerClient } from "@/lib/supabase/server";
+import { prisma } from "@/lib/prisma";
 
 export default async function AvisPage() {
-  const supabase = createSupabaseServerClient();
+  const contentData = await prisma.content.findMany({
+    where: { page: "avis" }
+  });
 
-  const { data: contentData, error: contentError } = await supabase
-    .from("Content")
-    .select("*")
-    .eq("page", "avis");
-
-  const { data: statData, error: statError } = await supabase
-    .from("Stat")
-    .select("*");
-
-  const { data: testimonialData, error: testimonialError } = await supabase
-    .from("Testimonial")
-    .select("*");
-
-  if (contentError || statError || testimonialError) {
-    console.error(
-      "Error DB (Avis):",
-      contentError || statError || testimonialError
-    );
-  }
+  const statData = await prisma.stat.findMany();
+  const testimonialData = await prisma.testimonial.findMany();
 
   // Transformation des données
   const content = contentData?.reduce((acc, item) => {
@@ -35,6 +20,9 @@ export default async function AvisPage() {
 
   const stats = statData || [];
   const testimonials = testimonialData || [];
+  
+  // Récupérer toutes les sources uniques
+  const uniqueSources = [...new Set(testimonials.map(t => t.source).filter(Boolean))];
 
   return (
     <>
@@ -48,6 +36,7 @@ export default async function AvisPage() {
       <Testimonials
         dataContent={content?.Testimonials}
         dataTestimonials={testimonials}
+        availableSources={uniqueSources}
       />
     </>
   );

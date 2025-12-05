@@ -1,22 +1,13 @@
 import ContactForm from "@/components/ContactForm";
 import PageHero from "@/components/PageHero";
-import { createSupabaseServerClient } from "@/lib/supabase/server";
+import { prisma } from "@/lib/prisma";
 
 export default async function ContactPage() {
-  const supabase = createSupabaseServerClient();
+  const contentData = await prisma.content.findMany({
+    where: { page: "contact" }
+  });
 
-  const { data: contentData, error: contentError } = await supabase
-    .from("Content")
-    .select("*")
-    .eq("page", "contact");
-
-  const { data: infoData, error: infoError } = await supabase
-    .from("ContactInfo")
-    .select("*");
-
-  if (contentError || infoError) {
-    console.error("Error DB (Contact):", contentError || infoError);
-  }
+  const infoData = await prisma.contactInfo.findMany();
 
   // Transformation des données 
   const content = contentData?.reduce((acc, item) => {

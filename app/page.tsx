@@ -1,18 +1,15 @@
 import Features from "@/components/Features";
 import Gallery from "@/components/Gallery";
 import HomeHero from "@/components/HomeHero";
-import { createSupabaseServerClient } from "@/lib/supabase/server";
+import { prisma } from "@/lib/prisma";
 
 export default async function Home() {
-  const supabase = createSupabaseServerClient(); // ✅ ok
+  const contentData = await prisma.content.findMany({
+    where: { page: "home" }
+  });
 
-  const { data: contentData } = await supabase
-    .from("Content")
-    .select("*")
-    .eq("page", "home");
-
-  const { data: featuresData } = await supabase.from("Feature").select("*");
-  const { data: galleryData } = await supabase.from("GalleryImage").select("*").limit(6);
+  const featuresData = await prisma.feature.findMany();
+  const galleryData = await prisma.galleryImage.findMany({ take: 6 });
 
   const content = contentData?.reduce((acc, item) => {
     if (!acc[item.component]) acc[item.component] = {};

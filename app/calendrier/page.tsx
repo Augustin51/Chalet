@@ -2,30 +2,15 @@ import PageHero from "@/components/PageHero";
 import Availability from "@/components/Availability";
 import ImportantInfo from "@/components/ImportantInfo";
 import Price from "@/components/Price";
-import { createSupabaseServerClient } from "@/lib/supabase/server";
+import { prisma } from "@/lib/prisma";
 
 export default async function CalendrierPage() {
-  const supabase = createSupabaseServerClient();
+  const contentData = await prisma.content.findMany({
+    where: { page: "calendrier" }
+  });
 
-  const { data: contentData, error: contentError } = await supabase
-    .from("Content")
-    .select("*")
-    .eq("page", "calendrier");
-
-  const { data: priceData, error: priceError } = await supabase
-    .from("PriceTier")
-    .select("*");
-
-  const { data: infoData, error: infoError } = await supabase
-    .from("InfoItem")
-    .select("*");
-
-  if (contentError || priceError || infoError) {
-    console.error(
-      "Erreur BDD (Calendrier):",
-      contentError || priceError || infoError
-    );
-  }
+  const priceData = await prisma.priceTier.findMany();
+  const infoData = await prisma.infoItem.findMany();
 
   // Transformation des données 
   const content = contentData?.reduce((acc, item) => {

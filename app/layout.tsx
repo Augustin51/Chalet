@@ -23,14 +23,16 @@ export const metadata: Metadata = {
 };
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
+  const cookieStore = await cookies();
+  
   const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
     {
       cookies: {
-        get: async (name) => (await cookies()).get(name)?.value ?? null,
-        set: async (name, value, options) => (await cookies()).set({ name, value, ...options }),
-        remove: async (name) => (await cookies()).delete(name),
+        get(name: string) {
+          return cookieStore.get(name)?.value
+        },
       },
     }
   );
