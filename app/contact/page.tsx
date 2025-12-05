@@ -1,52 +1,38 @@
 import ContactForm from "@/components/ContactForm";
 import PageHero from "@/components/PageHero";
-import { createServerSupabase } from "@/lib/supabase/server";
-import { cache } from 'react';
+import { prisma } from "@/lib/prisma";
 
-function formatContent(contentList: any[]) {
-  return contentList.reduce((acc, item) => {
-    if (!acc[item.component]) {
-      acc[item.component] = {};
-    }
+export default async function ContactPage() {
+  const contentData = await prisma.content.findMany({
+    where: { page: "contact" }
+  });
+
+  const infoData = await prisma.contactInfo.findMany();
+  const formFieldsData = await prisma.formField.findMany();
+
+  // Transformation des données 
+  const content = contentData?.reduce((acc: any, item: any) => {
+    if (!acc[item.component]) acc[item.component] = {};
     acc[item.component][item.key] = item.value;
     return acc;
-  }, {});
-}
+  }, {} as any);
 
-const getContactPageData = cache(async () => {
-  const supabase = createServerSupabase();
-  
-  const { data: contentData, error: contentError } = await supabase
-    .from('Content')
-    .select('*')
-    .eq('page', 'contact');
+  const contactInfoItems = infoData || [];
+  const formFields = formFieldsData?.reduce((acc: Record<string, any>, field: { fieldName: string; label: string; placeholder: string; id: number }) => {
+    acc[field.fieldName] = { label: field.label, placeholder: field.placeholder, id: field.id };
+    return acc;
+  }, {} as Record<string, any>) || {};
 
-  const { data: infoData, error: infoError } = await supabase
-    .from('ContactInfo')
-    .select('*');
-
-  if (contentError || infoError) {
-    console.error("Error DB (Contact):", contentError || infoError);
-  }
-  
-  const content = formatContent(contentData || []);
-
-  return { 
-    content,
-    contactInfoItems: infoData || []
-  };
-});
-
-export default async function ContactPage() { 
-  const { content, contactInfoItems } = await getContactPageData();
   return (
     <>
       <PageHero
-        dataContent={content.PageHero}
+        dataContent={content?.PageHero}
+        page="contact"
       />
-      <ContactForm 
-        dataContent={content.ContactForm}
+      <ContactForm
+        dataContent={content?.ContactForm}
         dataInfo={contactInfoItems}
+        formFields={formFields as any}
       />
     </>
   );

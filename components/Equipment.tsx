@@ -1,5 +1,9 @@
+"use client";
+
 import React from "react";
 import { iconMap, DefaultIcon } from "@/lib/iconMap";
+import { useAdmin } from "@/components/AdminProvider";
+import { useContentEditor } from "@/utils/useContentEditor";
 
 interface EquipmentData {
   title: string;
@@ -14,9 +18,13 @@ interface EquipmentItem {
 interface EquipmentProps {
   dataContent: EquipmentData;
   dataEquipment: EquipmentItem[];
+  page?: string;
 }
 
-export default function Equipment({ dataContent, dataEquipment }: EquipmentProps) {
+export default function Equipment({ dataContent, dataEquipment, page = "chalet" }: EquipmentProps) {
+  const isAdmin = useAdmin();
+  const { handleUpdate } = useContentEditor(page, "Equipment");
+
   if (!dataContent || !dataEquipment) {
     return <section className="bg-white py-16">Chargement...</section>;
   }
@@ -25,7 +33,17 @@ export default function Equipment({ dataContent, dataEquipment }: EquipmentProps
       <div className="container mx-auto max-w-6xl">
         
         <h3 className="text-3xl sm:text-4xl font-serif font-bold text-[#2c4b3a] mb-8">
-          {dataContent.title}
+          {isAdmin ? (
+            <input
+              type="text"
+              defaultValue={dataContent.title}
+              onBlur={(e) => handleUpdate(e, "title")}
+              onKeyDown={(e) => handleUpdate(e, "title")}
+              className="w-full text-3xl sm:text-4xl font-serif font-bold bg-white/20 p-2 rounded"
+            />
+          ) : (
+            dataContent.title
+          )}
         </h3>
         
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">

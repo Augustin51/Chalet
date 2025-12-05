@@ -24,7 +24,7 @@ export default function ConnexionPage() {
     if (error) {
       setError("Incorrect email or password.");
     } else {
-      router.push('/admin'); 
+      router.push('/'); 
       router.refresh();
     }
   };

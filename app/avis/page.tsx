@@ -1,61 +1,42 @@
 import PageHero from "@/components/PageHero";
 import Stats from "@/components/Stats";
 import Testimonials from "@/components/Testimonials";
-import { createServerSupabase } from "@/lib/supabase/server";
-import { cache } from 'react';
+import { prisma } from "@/lib/prisma";
 
-function formatContent(contentList: any[]) {
-  return contentList.reduce((acc, item) => {
-    if (!acc[item.component]) {
-      acc[item.component] = {};
-    }
+export default async function AvisPage() {
+  const contentData = await prisma.content.findMany({
+    where: { page: "avis" }
+  });
+
+  const statData = await prisma.stat.findMany();
+  const testimonialData = await prisma.testimonial.findMany();
+
+  // Transformation des données
+  const content = contentData?.reduce((acc: any, item: any) => {
+    if (!acc[item.component]) acc[item.component] = {};
     acc[item.component][item.key] = item.value;
     return acc;
-  }, {});
-}
+  }, {} as any);
 
-const getAvisPageData = cache(async () => {
-  const supabase = createServerSupabase(); 
+  const stats = statData || [];
+  const testimonials = testimonialData || [];
   
-  const { data: contentData, error: contentError } = await supabase
-    .from('Content')
-    .select('*')
-    .eq('page', 'avis');
+  // Récupérer toutes les sources uniques
+  const uniqueSources = [...new Set(testimonials.map((t: any) => t.source).filter(Boolean))] as string[];
 
-  const { data: statData, error: statError } = await supabase
-    .from('Stat')
-    .select('*');
-
-  const { data: testimonialData, error: testimonialError } = await supabase
-    .from('Testimonial')
-    .select('*');
-
-  if (contentError || statError || testimonialError) {
-    console.error("Error DB (Avis):", contentError || statError || testimonialError);
-  }
-  
-  const content = formatContent(contentData || []);
-
-  return { 
-    content,
-    stats: statData || [],
-    testimonials: testimonialData || []
-  };
-});
-
-export default async function AvisPage() { 
-  const { content, stats, testimonials } = await getAvisPageData();
   return (
     <>
-      <PageHero
-        dataContent={content.PageHero}
+      <PageHero 
+        dataContent={content?.PageHero}
+        page="avis"
       />
       <Stats 
         dataStats={stats}
       />
-      <Testimonials 
-        dataContent={content.Testimonials}
+      <Testimonials
+        dataContent={content?.Testimonials}
         dataTestimonials={testimonials}
+        availableSources={uniqueSources}
       />
     </>
   );

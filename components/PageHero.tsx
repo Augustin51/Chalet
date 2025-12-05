@@ -1,5 +1,9 @@
+"use client";
+
 import Image from "next/image";
 import React from "react";
+import { useAdmin } from "@/components/AdminProvider";
+import { useContentEditor } from "@/utils/useContentEditor";
 
 interface PageHeroData {
   title: string;
@@ -8,7 +12,10 @@ interface PageHeroData {
   image_alt: string;
 }
 
-export default function PageHero({ dataContent }: { dataContent: PageHeroData }) {
+export default function PageHero({ dataContent, page = "chalet" }: { dataContent: PageHeroData; page?: string }) {
+  const isAdmin = useAdmin();
+  const { handleUpdate } = useContentEditor(page, "PageHero");
+
   if (!dataContent) {
     return (
       <section className="relative h-[40vh] sm:h-[50vh] w-full flex items-center justify-center">
@@ -33,11 +40,31 @@ export default function PageHero({ dataContent }: { dataContent: PageHeroData })
       
       <div className="relative z-20 text-center px-4 max-w-4xl">
         <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-serif font-bold tracking-tight mb-4 leading-snug">
-          {dataContent.title}
+          {isAdmin ? (
+            <input
+              type="text"
+              defaultValue={dataContent.title}
+              onBlur={(e) => handleUpdate(e, "title")}
+              onKeyDown={(e) => handleUpdate(e, "title")}
+              className="w-full text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-serif font-bold text-white bg-transparent border-transparent focus:border-white/30 focus:bg-white/5 p-2 rounded text-center transition-colors"
+            />
+          ) : (
+            dataContent.title
+          )}
         </h2>
 
         <p className="text-base sm:text-lg md:text-xl font-light mx-auto max-w-xl">
-          {dataContent.description}
+          {isAdmin ? (
+            <input
+              type="text"
+              defaultValue={dataContent.description}
+              onBlur={(e) => handleUpdate(e, "description")}
+              onKeyDown={(e) => handleUpdate(e, "description")}
+              className="w-full max-w-xl mx-auto text-base sm:text-lg md:text-xl font-light text-white bg-transparent border-transparent focus:border-white/30 focus:bg-white/5 p-2 rounded text-center transition-colors"
+            />
+          ) : (
+            dataContent.description
+          )}
         </p>
       </div>
     </section>
