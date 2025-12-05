@@ -13,7 +13,7 @@ export default async function AutourPage() {
   const favoritesData = await prisma.favorite.findMany();
 
   // Transformation des données
-  const content = contentData?.reduce((acc, item) => {
+  const content = contentData?.reduce((acc: any, item) => {
     if (!acc[item.component]) acc[item.component] = {};
     acc[item.component][item.key] = item.value;
     return acc;

@@ -12,14 +12,12 @@ export default async function CalendrierPage() {
   const priceData = await prisma.priceTier.findMany();
   const infoData = await prisma.infoItem.findMany();
 
-  // Transformation des données 
-  const content = contentData?.reduce((acc, item) => {
+  // Transformation des données
+  const content = contentData?.reduce((acc: any, item) => {
     if (!acc[item.component]) acc[item.component] = {};
     acc[item.component][item.key] = item.value;
     return acc;
-  }, {} as any);
-
-  const priceTiers = priceData || [];
+  }, {} as any);  const priceTiers = priceData || [];
   const infoItems = infoData || [];
 
   return (

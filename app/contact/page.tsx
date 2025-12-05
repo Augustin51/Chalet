@@ -11,7 +11,7 @@ export default async function ContactPage() {
   const formFieldsData = await prisma.formField.findMany();
 
   // Transformation des données 
-  const content = contentData?.reduce((acc, item) => {
+  const content = contentData?.reduce((acc: any, item) => {
     if (!acc[item.component]) acc[item.component] = {};
     acc[item.component][item.key] = item.value;
     return acc;
