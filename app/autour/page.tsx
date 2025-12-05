@@ -27,12 +27,12 @@ export default async function AutourPage() {
       summer_alt: content?.ActivitiesSection?.summer_image_alt || "",
     },
     activities: {
-      winter: activitiesData?.filter((a) => a.season === "winter") || [],
-      summer: activitiesData?.filter((a) => a.season === "summer") || [],
+      winter: activitiesData?.filter((a: any) => a.season === "winter") || [],
+      summer: activitiesData?.filter((a: any) => a.season === "summer") || [],
     },
     nearby: {
-      winter: nearbyData?.filter((n) => n.season === "winter") || [],
-      summer: nearbyData?.filter((n) => n.season === "summer") || [],
+      winter: nearbyData?.filter((n: any) => n.season === "winter") || [],
+      summer: nearbyData?.filter((n: any) => n.season === "summer") || [],
     },
   };
 
