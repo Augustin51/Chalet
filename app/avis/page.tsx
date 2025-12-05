@@ -22,7 +22,7 @@ export default async function AvisPage() {
   const testimonials = testimonialData || [];
   
   // Récupérer toutes les sources uniques
-  const uniqueSources = [...new Set(testimonials.map((t: any) => t.source).filter(Boolean))];
+  const uniqueSources = [...new Set(testimonials.map((t: any) => t.source).filter(Boolean))] as string[];
 
   return (
     <>
