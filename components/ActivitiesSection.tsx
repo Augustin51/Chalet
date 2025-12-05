@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect } from "react";
 import Image from "next/image";
 import { useAdmin } from "@/components/AdminProvider";
 import { useContentEditor } from "@/utils/useContentEditor";
@@ -28,6 +29,21 @@ interface ActivitiesSectionProps {
 export default function ActivitiesSection({ imageSrc, imageAlt, activitiesList, nearbyList, season, page = "autour" }: ActivitiesSectionProps) {
   const isAdmin = useAdmin();
   const { handleUpdate } = useContentEditor(page, "ActivitiesSection");
+
+  const autoResize = (e: React.FormEvent<HTMLTextAreaElement>) => {
+    e.currentTarget.style.height = 'auto';
+    e.currentTarget.style.height = e.currentTarget.scrollHeight + 'px';
+  };
+
+  useEffect(() => {
+    if (isAdmin) {
+      const textareas = document.querySelectorAll('textarea');
+      textareas.forEach((textarea) => {
+        textarea.style.height = 'auto';
+        textarea.style.height = textarea.scrollHeight + 'px';
+      });
+    }
+  }, [isAdmin, activitiesList]);
 
   async function updateActivity(id: number, field: string, value: string) {
     try {
@@ -107,8 +123,8 @@ export default function ActivitiesSection({ imageSrc, imageAlt, activitiesList, 
                     defaultValue={activity.description}
                     onBlur={(e: React.FocusEvent<HTMLTextAreaElement>) => updateActivity(activity.id, 'description', e.target.value)}
                     onKeyDown={(e) => handleInlineKey(e, () => updateActivity(activity.id, 'description', (e.target as HTMLTextAreaElement).value))}
-                    className="text-emerald-700/80 text-sm w-full p-1 rounded bg-white/20"
-                    rows={3}
+                    onInput={autoResize}
+                    className="text-emerald-700/80 text-sm w-full p-1 rounded bg-transparent border-transparent focus:border-emerald-700/30 focus:bg-white/5 transition-colors resize-none overflow-hidden min-h-[3rem]"
                   />
                 </>
               ) : (
@@ -135,14 +151,14 @@ export default function ActivitiesSection({ imageSrc, imageAlt, activitiesList, 
                     defaultValue={item.time}
                     onBlur={(e: React.FocusEvent<HTMLInputElement>) => updateNearby(item.id, 'time', e.target.value)}
                     onKeyDown={(e) => handleInlineKey(e, () => updateNearby(item.id, 'time', (e.target as HTMLInputElement).value))}
-                    className={`text-2xl font-bold ${item.color} mb-1 w-full p-1 rounded bg-white/20`}
+                    className={`text-2xl font-bold ${item.color} mb-1 w-full p-1 rounded bg-white/20 text-center`}
                   />
                   <input
                     type="text"
                     defaultValue={item.label}
                     onBlur={(e: React.FocusEvent<HTMLInputElement>) => updateNearby(item.id, 'label', e.target.value)}
                     onKeyDown={(e) => handleInlineKey(e, () => updateNearby(item.id, 'label', (e.target as HTMLInputElement).value))}
-                    className="text-sm text-gray-600 w-full p-1 rounded bg-white/20"
+                    className="text-sm text-gray-600 w-full p-1 rounded bg-white/20 text-center"
                   />
                 </>
               ) : (

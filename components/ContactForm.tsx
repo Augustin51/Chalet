@@ -102,24 +102,42 @@ export default function ContactForm({ dataContent, dataInfo, formFields }: Conta
   return (
     <section className="bg-white py-16 sm:py-20 md:py-24 px-4 sm:px-6 lg:px-8">
       <div className="container mx-auto max-w-6xl">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16">
-          <div className="space-y-8">
-            
-            <h2 className="text-4xl sm:text-5xl font-serif font-bold text-[#2c4b3a]">
-              {isAdmin ? (
-                <input
-                  type="text"
-                  defaultValue={dataContent.title_left}
-                  onBlur={(e) => handleUpdate(e, "title_left")}
-                  onKeyDown={(e) => handleUpdate(e, "title_left")}
-                  className="w-full text-4xl sm:text-5xl font-serif font-bold text-[#2c4b3a] bg-transparent border border-transparent px-2 py-1 focus:outline-none focus:border-[#2c4b3a]/30 focus:bg-gray-50 rounded transition-colors"
-                />
-              ) : (
-                dataContent.title_left
-              )}
-            </h2>
+        
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 mb-8 lg:mb-12">
+          <h2 className="text-4xl sm:text-5xl font-serif font-bold text-[#2c4b3a]">
+            {isAdmin ? (
+              <input
+                type="text"
+                defaultValue={dataContent.title_left}
+                onBlur={(e) => handleUpdate(e, "title_left")}
+                onKeyDown={(e) => handleUpdate(e, "title_left")}
+                className="w-full text-4xl sm:text-5xl font-serif font-bold text-[#2c4b3a] bg-transparent border border-transparent px-2 py-1 focus:outline-none focus:border-[#2c4b3a]/30 focus:bg-gray-50 rounded transition-colors"
+              />
+            ) : (
+              dataContent.title_left
+            )}
+          </h2>
+          
+          <h2 className="text-4xl sm:text-5xl font-serif font-bold text-[#2c4b3a] lg:pl-10">
+            {isAdmin ? (
+              <textarea
+                defaultValue={dataContent.title_right}
+                onBlur={(e) => handleUpdate(e, "title_right")}
+                onKeyDown={(e) => handleUpdate(e, "title_right")}
+                onInput={(e: any) => {
+                  e.target.style.height = 'auto';
+                  e.target.style.height = e.target.scrollHeight + 'px';
+                }}
+                className="w-full text-4xl sm:text-5xl font-serif font-bold text-[#2c4b3a] bg-transparent border border-transparent px-2 py-1 focus:outline-none focus:border-[#2c4b3a]/30 focus:bg-gray-50 rounded transition-colors pl-0 resize-none overflow-hidden min-h-[3rem]"
+              />
+            ) : (
+              dataContent.title_right
+            )}
+          </h2>
+        </div>
 
-            <div className="space-y-4">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16">
+          <div className="space-y-4">
               {dataInfo.map((item) => {
                 const Icon = iconMap[item.iconName] || DefaultIcon;
                 return (
@@ -165,23 +183,9 @@ export default function ContactForm({ dataContent, dataInfo, formFields }: Conta
                   </div>
                 );
               })}
-            </div>
           </div>
 
           <div className="bg-white p-6 sm:p-8 rounded-lg">
-            <h2 className="text-4xl sm:text-5xl font-serif font-bold text-[#2c4b3a] mb-6">
-              {isAdmin ? (
-                <input
-                  type="text"
-                  defaultValue={dataContent.title_right}
-                  onBlur={(e) => handleUpdate(e, "title_right")}
-                  onKeyDown={(e) => handleUpdate(e, "title_right")}
-                  className="w-full text-4xl sm:text-5xl font-serif font-bold text-[#2c4b3a] bg-transparent border border-transparent px-2 py-1 mb-6 focus:outline-none focus:border-[#2c4b3a]/30 focus:bg-gray-50 rounded transition-colors"
-                />
-              ) : (
-                dataContent.title_right
-              )}
-            </h2>
             <form className="space-y-4">
               <div>
                 <label htmlFor="name" className="text-sm font-medium text-gray-700 block mb-1">

@@ -30,7 +30,7 @@ export default function Availability({ dataContent, page = 'calendrier' }: { dat
                 defaultValue={dataContent.title}
                 onBlur={(e) => handleUpdate(e, 'title')}
                 onKeyDown={(e) => handleUpdate(e, 'title')}
-                className="w-full text-4xl sm:text-5xl font-serif font-bold bg-white/20 p-2 rounded"
+                className="w-full text-4xl sm:text-5xl font-serif font-bold text-[#2c4b3a] bg-transparent border-transparent focus:border-[#2c4b3a]/30 focus:bg-white/5 p-2 rounded text-center transition-colors"
               />
             ) : (
               dataContent.title
@@ -43,7 +43,7 @@ export default function Availability({ dataContent, page = 'calendrier' }: { dat
                 defaultValue={dataContent.subtitle}
                 onBlur={(e) => handleUpdate(e, 'subtitle')}
                 onKeyDown={(e) => handleUpdate(e, 'subtitle')}
-                className="w-full p-2 rounded bg-white/20"
+                className="w-full max-w-2xl mx-auto text-lg text-gray-600 bg-transparent border-transparent focus:border-gray-600/30 focus:bg-white/5 p-2 rounded text-center transition-colors"
               />
             ) : (
               dataContent.subtitle
@@ -56,17 +56,7 @@ export default function Availability({ dataContent, page = 'calendrier' }: { dat
           <div className="text-center space-y-4">
             <Calendar className="h-10 w-10 mx-auto text-[#467A5E]" strokeWidth={1.5} />
 
-            {isAdmin ? (
-              <input
-                type="text"
-                defaultValue={dataContent.placeholder_text}
-                onBlur={(e) => handleUpdate(e, 'placeholder_text')}
-                onKeyDown={(e) => handleUpdate(e, 'placeholder_text')}
-                className="text-lg font-medium text-gray-700 w-full p-2 rounded bg-white/20"
-              />
-            ) : (
-              <p className="text-lg font-medium text-gray-700">{dataContent.placeholder_text}</p>
-            )}
+            <p className="text-lg font-medium text-gray-700">{dataContent.placeholder_text}</p>
 
             <div className="flex justify-center space-x-6 pt-2">
               <div className="flex items-center space-x-1.5">

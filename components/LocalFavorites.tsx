@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useRef } from "react";
 import { LucideIcon } from "lucide-react";
 import { iconMap, DefaultIcon } from "@/lib/iconMap";
 import { useAdmin } from "@/components/AdminProvider";
@@ -29,6 +30,23 @@ export default function LocalFavorites({ dataContent, dataFavorites, page = "aut
 
   const isAdmin = useAdmin();
   const { handleUpdate } = useContentEditor(page, "LocalFavorites");
+  const subtitleRef = useRef<HTMLTextAreaElement>(null);
+
+  const autoResize = (e: React.FormEvent<HTMLTextAreaElement>) => {
+    e.currentTarget.style.height = 'auto';
+    e.currentTarget.style.height = e.currentTarget.scrollHeight + 'px';
+  };
+
+  useEffect(() => {
+    if (isAdmin) {
+      // Ajuster la hauteur de tous les textareas au chargement
+      const textareas = document.querySelectorAll('textarea');
+      textareas.forEach((textarea) => {
+        textarea.style.height = 'auto';
+        textarea.style.height = textarea.scrollHeight + 'px';
+      });
+    }
+  }, [isAdmin, dataContent, dataFavorites]);
 
   return (
     <section className="bg-[#f5f3ef] py-16 sm:py-20 md:py-24 px-4 sm:px-6 lg:px-8">
@@ -42,7 +60,7 @@ export default function LocalFavorites({ dataContent, dataFavorites, page = "aut
                 defaultValue={dataContent.title}
                 onBlur={(e) => handleUpdate(e, "title")}
                 onKeyDown={(e) => handleUpdate(e, "title")}
-                className="w-full text-4xl sm:text-5xl font-serif font-bold bg-white/20 p-2 rounded"
+                className="w-full text-4xl sm:text-5xl font-serif font-bold text-[#2c4b3a] bg-transparent border-transparent focus:border-[#2c4b3a]/30 focus:bg-white/5 p-2 rounded text-center transition-colors"
               />
             ) : (
               dataContent.title
@@ -54,8 +72,8 @@ export default function LocalFavorites({ dataContent, dataFavorites, page = "aut
                 defaultValue={dataContent.subtitle}
                 onBlur={(e) => handleUpdate(e, "subtitle")}
                 onKeyDown={(e) => handleUpdate(e, "subtitle")}
-                className="w-full p-2 rounded bg-white/20"
-                rows={2}
+                onInput={autoResize}
+                className="w-full max-w-2xl mx-auto text-lg text-gray-600 bg-transparent border-transparent focus:border-gray-600/30 focus:bg-white/5 p-2 rounded text-center transition-colors resize-none overflow-hidden min-h-[3rem]"
               />
             ) : (
               dataContent.subtitle
@@ -81,14 +99,14 @@ export default function LocalFavorites({ dataContent, dataFavorites, page = "aut
                       defaultValue={favorite.title}
                       onBlur={(e) => handleUpdate(e, `favorite_${favorite.id}_title`)}
                       onKeyDown={(e) => handleUpdate(e, `favorite_${favorite.id}_title`)}
-                      className="text-xl font-semibold text-[#2c4b3a] mb-2 bg-white/20 p-1 rounded w-full"
+                      className="text-xl font-semibold text-[#2c4b3a] mb-2 bg-transparent border-transparent focus:border-[#2c4b3a]/30 focus:bg-white/5 p-1 rounded w-full transition-colors"
                     />
                     <textarea
                       defaultValue={favorite.details}
                       onBlur={(e) => handleUpdate(e, `favorite_${favorite.id}_details`)}
                       onKeyDown={(e) => handleUpdate(e, `favorite_${favorite.id}_details`)}
-                      className="text-base text-[#467A5E] w-full p-1 rounded bg-white/20"
-                      rows={3}
+                      onInput={autoResize}
+                      className="text-base text-[#467A5E] w-full p-1 rounded bg-transparent border-transparent focus:border-[#467A5E]/30 focus:bg-white/5 transition-colors resize-none overflow-hidden min-h-[4rem]"
                     />
                   </>
                 ) : (

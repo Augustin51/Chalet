@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect } from "react";
 import { Euro } from "lucide-react";
 import { useAdmin } from "@/components/AdminProvider";
 import { useContentEditor } from "@/utils/useContentEditor";
@@ -25,6 +26,21 @@ interface PriceProps {
 export default function Price({ dataContent, dataPriceTiers, page = 'calendrier' }: PriceProps) {
   const isAdmin = useAdmin();
   const { handleUpdate } = useContentEditor(page, 'Price');
+
+  const autoResize = (e: React.FormEvent<HTMLTextAreaElement>) => {
+    e.currentTarget.style.height = 'auto';
+    e.currentTarget.style.height = e.currentTarget.scrollHeight + 'px';
+  };
+
+  useEffect(() => {
+    if (isAdmin) {
+      const textareas = document.querySelectorAll('textarea');
+      textareas.forEach((textarea) => {
+        textarea.style.height = 'auto';
+        textarea.style.height = textarea.scrollHeight + 'px';
+      });
+    }
+  }, [isAdmin, dataPriceTiers]);
 
   async function updateTier(id: number, field: string, value: string) {
     try {
@@ -52,7 +68,7 @@ export default function Price({ dataContent, dataPriceTiers, page = 'calendrier'
                 defaultValue={dataContent.title}
                 onBlur={(e) => handleUpdate(e, 'title')}
                 onKeyDown={(e) => handleUpdate(e, 'title')}
-                className="w-full text-4xl sm:text-5xl font-serif font-bold bg-white/20 p-2 rounded"
+                className="w-full text-4xl sm:text-5xl font-serif font-bold text-[#2c4b3a] bg-transparent border-transparent focus:border-[#2c4b3a]/30 focus:bg-white/5 p-2 rounded text-center transition-colors"
               />
             ) : (
               dataContent.title
@@ -65,7 +81,7 @@ export default function Price({ dataContent, dataPriceTiers, page = 'calendrier'
                 defaultValue={dataContent.subtitle}
                 onBlur={(e) => handleUpdate(e, 'subtitle')}
                 onKeyDown={(e) => handleUpdate(e, 'subtitle')}
-                className="w-full p-2 rounded bg-white/20"
+                className="w-full max-w-2xl mx-auto text-lg text-gray-600 bg-transparent border-transparent focus:border-gray-600/30 focus:bg-white/5 p-2 rounded text-center transition-colors"
               />
             ) : (
               dataContent.subtitle
@@ -97,7 +113,7 @@ export default function Price({ dataContent, dataPriceTiers, page = 'calendrier'
                           (e.target as HTMLInputElement).blur();
                         }
                       }}
-                      className="text-xl font-semibold text-[#2c4b3a] mb-1 w-full p-1 rounded bg-white/20"
+                      className="text-xl font-semibold text-[#2c4b3a] mb-1 w-full p-1 rounded bg-transparent border-transparent focus:border-[#2c4b3a]/30 focus:bg-white/5 text-center transition-colors"
                     />
                     <input
                       type="text"
@@ -110,7 +126,7 @@ export default function Price({ dataContent, dataPriceTiers, page = 'calendrier'
                           (e.target as HTMLInputElement).blur();
                         }
                       }}
-                      className="text-sm text-gray-500 mb-4 w-full p-1 rounded bg-white/20"
+                      className="text-sm text-gray-500 mb-4 w-full p-1 rounded bg-transparent border-transparent focus:border-gray-500/30 focus:bg-white/5 text-center transition-colors"
                     />
 
                     <input
@@ -124,7 +140,7 @@ export default function Price({ dataContent, dataPriceTiers, page = 'calendrier'
                           (e.target as HTMLInputElement).blur();
                         }
                       }}
-                      className="text-4xl font-bold text-[#467A5E] mb-4 w-full p-1 rounded bg-white/20"
+                      className="text-4xl font-bold text-[#467A5E] mb-4 w-full p-1 rounded bg-transparent border-transparent focus:border-[#467A5E]/30 focus:bg-white/5 text-center transition-colors"
                     />
 
                     <textarea
@@ -137,8 +153,8 @@ export default function Price({ dataContent, dataPriceTiers, page = 'calendrier'
                           (e.target as HTMLTextAreaElement).blur();
                         }
                       }}
-                      className="text-sm text-gray-600 w-full p-1 rounded bg-white/20"
-                      rows={3}
+                      onInput={autoResize}
+                      className="text-sm text-gray-600 w-full p-1 rounded bg-transparent border-transparent focus:border-gray-600/30 focus:bg-white/5 text-center transition-colors resize-none overflow-hidden min-h-[3rem]"
                     />
                   </>
                 ) : (

@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect } from "react";
 import { useAdmin } from "@/components/AdminProvider";
 import { useContentEditor } from "@/utils/useContentEditor";
 import { Star } from "lucide-react";
@@ -29,6 +30,16 @@ interface TestimonialsProps {
 export default function Testimonials({ dataContent, dataTestimonials, availableSources }: TestimonialsProps) {
   const isAdmin = useAdmin();
   const { handleUpdate } = useContentEditor("avis", "Testimonials");
+
+  useEffect(() => {
+    if (isAdmin) {
+      const textareas = document.querySelectorAll('textarea');
+      textareas.forEach((textarea) => {
+        textarea.style.height = 'auto';
+        textarea.style.height = textarea.scrollHeight + 'px';
+      });
+    }
+  }, [isAdmin, dataTestimonials]);
 
   const handleTestimonialUpdate = async (
     e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement> | React.KeyboardEvent<HTMLInputElement | HTMLTextAreaElement> | React.ChangeEvent<HTMLSelectElement>,
@@ -170,12 +181,15 @@ export default function Testimonials({ dataContent, dataTestimonials, availableS
                 </div>
                 <p className="text-gray-700 leading-relaxed italic">
                   {isAdmin ? (
-                    <input
-                      type="text"
+                    <textarea
                       defaultValue={testimonial.review}
                       onBlur={(e) => handleTestimonialUpdate(e, testimonial.id, "review")}
                       onKeyDown={(e) => handleTestimonialUpdate(e, testimonial.id, "review")}
-                      className="w-full text-gray-700 leading-relaxed italic bg-transparent border border-transparent px-2 py-1 focus:outline-none focus:border-gray-700/30 focus:bg-white/10 rounded transition-colors"
+                      onInput={(e: any) => {
+                        e.target.style.height = 'auto';
+                        e.target.style.height = e.target.scrollHeight + 'px';
+                      }}
+                      className="w-full text-gray-700 leading-relaxed italic bg-transparent border border-transparent px-2 py-1 focus:outline-none focus:border-gray-700/30 focus:bg-white/10 rounded transition-colors resize-none overflow-hidden min-h-[3rem]"
                     />
                   ) : (
                     testimonial.review

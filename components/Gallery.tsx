@@ -61,7 +61,7 @@ export default function Gallery({ dataContent, dataImage }: GalleryProps) {
               onBlur={(e) => handleUpdate(e, "description")}
               onKeyDown={(e) => handleUpdate(e, "description")}
               rows={2}
-              className="w-full max-w-3xl mx-auto p-2 rounded bg-white/20"
+              className="w-full max-w-3xl mx-auto p-2 rounded bg-white/20 text-center"
             />
           ) : (
             dataContent.description

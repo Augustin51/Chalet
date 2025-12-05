@@ -56,7 +56,9 @@ export default function ImportantInfo({ dataContent, dataInfoItems, page = 'cale
               defaultValue={dataContent.title}
               onBlur={(e) => handleUpdate(e, 'title')}
               onKeyDown={(e) => handleUpdate(e, 'title')}
-              className="text-2xl font-semibold text-[#2c4b3a] bg-white/20 p-2 rounded w-full"
+              onInput={(e: any) => e.target.size = e.target.value.length + 1}
+              className="text-2xl font-semibold text-[#2c4b3a] bg-transparent border-transparent focus:border-[#2c4b3a]/30 focus:bg-white/5 p-2 rounded transition-colors"
+              size={dataContent.title.length + 1}
             />
           ) : (
             <h3 className="text-2xl font-semibold text-[#2c4b3a]">{dataContent.title}</h3>
@@ -78,7 +80,9 @@ export default function ImportantInfo({ dataContent, dataInfoItems, page = 'cale
                       (e.target as HTMLInputElement).blur();
                     }
                   }}
-                  className="p-1 rounded bg-white/20 w-full"
+                  onInput={(e: any) => e.target.size = e.target.value.length + 1}
+                  className="text-gray-700 text-base bg-transparent border-transparent focus:border-[#467A5E]/30 focus:bg-white/5 p-1 rounded transition-colors"
+                  size={item.text.length + 1}
                 />
               ) : (
                 item.text
@@ -96,7 +100,9 @@ export default function ImportantInfo({ dataContent, dataInfoItems, page = 'cale
                 defaultValue={dataContent.platform_text}
                 onBlur={(e) => handleUpdate(e, 'platform_text')}
                 onKeyDown={(e) => handleUpdate(e, 'platform_text')}
-                className="p-1 rounded bg-white/20 w-full"
+                onInput={(e: any) => e.target.size = e.target.value.length + 1}
+                className="text-sm text-gray-500 text-center bg-transparent border-transparent focus:border-gray-500/30 focus:bg-white/5 p-1 rounded transition-colors"
+                size={dataContent.platform_text.length + 1}
               />
             ) : (
               dataContent.platform_text
@@ -111,7 +117,7 @@ export default function ImportantInfo({ dataContent, dataInfoItems, page = 'cale
                   defaultValue={dataContent.cta_contact_text}
                   onBlur={(e) => handleUpdate(e, 'cta_contact_text')}
                   onKeyDown={(e) => handleUpdate(e, 'cta_contact_text')}
-                  className="px-6 py-2 border border-[#467A5E] bg-[#467A5E] text-white rounded-full text-sm font-medium text-center flex-1"
+                  className="px-6 py-2 border border-[#467A5E] bg-[#467A5E] text-white rounded-full text-sm font-medium text-center flex-1 focus:border-white/50 focus:bg-[#346048] transition-colors"
                   placeholder="Contact link"
                 />
                 <input
@@ -119,7 +125,7 @@ export default function ImportantInfo({ dataContent, dataInfoItems, page = 'cale
                   defaultValue={dataContent.cta_platform_text}
                   onBlur={(e) => handleUpdate(e, 'cta_platform_text')}
                   onKeyDown={(e) => handleUpdate(e, 'cta_platform_text')}
-                  className="px-6 py-2 border border-gray-300 text-gray-700 bg-white rounded-full text-sm font-medium text-center flex-1"
+                  className="px-6 py-2 border border-gray-300 text-gray-700 bg-white rounded-full text-sm font-medium text-center flex-1 focus:border-gray-500/50 focus:bg-gray-50 transition-colors"
                   placeholder="Platform link"
                 />
               </div>
@@ -129,7 +135,7 @@ export default function ImportantInfo({ dataContent, dataInfoItems, page = 'cale
                   defaultValue={dataContent.cta_contact_link}
                   onBlur={(e) => handleUpdate(e, 'cta_contact_link')}
                   onKeyDown={(e) => handleUpdate(e, 'cta_contact_link')}
-                  className="text-xs text-black bg-white/80 p-1 rounded text-center flex-1"
+                  className="text-xs text-gray-600 bg-transparent border-transparent focus:border-gray-600/30 focus:bg-white/5 p-1 rounded text-center flex-1 transition-colors"
                   placeholder="Contact CTA text"
                 />
                 <input
@@ -137,7 +143,7 @@ export default function ImportantInfo({ dataContent, dataInfoItems, page = 'cale
                   defaultValue={dataContent.cta_platform_link}
                   onBlur={(e) => handleUpdate(e, 'cta_platform_link')}
                   onKeyDown={(e) => handleUpdate(e, 'cta_platform_link')}
-                  className="text-xs text-black bg-white/80 p-1 rounded text-center flex-1"
+                  className="text-xs text-gray-600 bg-transparent border-transparent focus:border-gray-600/30 focus:bg-white/5 p-1 rounded text-center flex-1 transition-colors"
                   placeholder="Platform CTA text"
                 />
               </div>              

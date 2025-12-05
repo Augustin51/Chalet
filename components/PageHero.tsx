@@ -46,7 +46,7 @@ export default function PageHero({ dataContent, page = "chalet" }: { dataContent
               defaultValue={dataContent.title}
               onBlur={(e) => handleUpdate(e, "title")}
               onKeyDown={(e) => handleUpdate(e, "title")}
-              className="w-full text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-serif font-bold text-white bg-white/20 p-2 rounded text-center"
+              className="w-full text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-serif font-bold text-white bg-transparent border-transparent focus:border-white/30 focus:bg-white/5 p-2 rounded text-center transition-colors"
             />
           ) : (
             dataContent.title
@@ -55,12 +55,12 @@ export default function PageHero({ dataContent, page = "chalet" }: { dataContent
 
         <p className="text-base sm:text-lg md:text-xl font-light mx-auto max-w-xl">
           {isAdmin ? (
-            <textarea
+            <input
+              type="text"
               defaultValue={dataContent.description}
               onBlur={(e) => handleUpdate(e, "description")}
               onKeyDown={(e) => handleUpdate(e, "description")}
-              rows={2}
-              className="w-full max-w-xl mx-auto p-2 rounded bg-white/20 text-white"
+              className="w-full max-w-xl mx-auto text-base sm:text-lg md:text-xl font-light text-white bg-transparent border-transparent focus:border-white/30 focus:bg-white/5 p-2 rounded text-center transition-colors"
             />
           ) : (
             dataContent.description
