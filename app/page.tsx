@@ -11,7 +11,7 @@ export default async function Home() {
   const featuresData = await prisma.feature.findMany();
   const galleryData = await prisma.galleryImage.findMany({ take: 6 });
 
-  const content = contentData?.reduce((acc: any, item) => {
+  const content = contentData?.reduce((acc: any, item: any) => {
     if (!acc[item.component]) acc[item.component] = {};
     acc[item.component][item.key] = item.value;
     return acc;

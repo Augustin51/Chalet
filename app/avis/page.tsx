@@ -12,7 +12,7 @@ export default async function AvisPage() {
   const testimonialData = await prisma.testimonial.findMany();
 
   // Transformation des données
-  const content = contentData?.reduce((acc: any, item) => {
+  const content = contentData?.reduce((acc: any, item: any) => {
     if (!acc[item.component]) acc[item.component] = {};
     acc[item.component][item.key] = item.value;
     return acc;

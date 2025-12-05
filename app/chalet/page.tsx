@@ -21,7 +21,7 @@ export default async function ChaletPage() {
   const galleryData = await prisma.galleryImage.findMany();
 
   // Transformation des données Chalet
-  const chaletContent = chaletContentData?.reduce((acc: any, item) => {
+  const chaletContent = chaletContentData?.reduce((acc: any, item: any) => {
     if (!acc[item.component]) acc[item.component] = {};
     acc[item.component][item.key] = item.value;
     return acc;
