@@ -12,15 +12,15 @@ export async function POST(request: Request) {
       );
     }
 
-    // Mise à jour de l'info de contact
-    const updated = await prisma.contactInfo.update({
+    // Mise à jour du champ de formulaire
+    const updated = await prisma.formField.update({
       where: { id: parseInt(id) },
       data: { [field]: value },
     });
 
     return NextResponse.json({ success: true, data: updated });
   } catch (error) {
-    console.error("Erreur lors de la mise à jour de l'info de contact:", error);
+    console.error("Erreur lors de la mise à jour du champ de formulaire:", error);
     return NextResponse.json(
       { success: false, error: "Erreur serveur" },
       { status: 500 }

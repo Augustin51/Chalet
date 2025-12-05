@@ -51,6 +51,13 @@ model Feature {
   iconName    String
 }
 
+model FormField {
+  id          Int    @id @default(autoincrement())
+  fieldName   String @unique
+  label       String
+  placeholder String
+}
+
 model GalleryImage {
   id  Int    @id @default(autoincrement())
   src String

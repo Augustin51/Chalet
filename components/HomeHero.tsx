@@ -58,9 +58,9 @@ export default function HomeHero({ dataContent }: { dataContent: HomeHeroData })
           <input
             type="text"
             defaultValue={dataContent.title}
-            onBlur={(e) => handleUpdate(e, "title")} // Sauvegarde quand on clique ailleurs
-            onKeyDown={(e) => handleUpdate(e, "title")} // Sauvegarde quand on fait Entrée
-            className="w-full text-center text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-6 bg-white/20 border border-white/30 text-white p-2 rounded focus:outline-none focus:bg-black/50 transition-colors placeholder-gray-300"
+            onBlur={(e) => handleUpdate(e, "title")}
+            onKeyDown={(e) => handleUpdate(e, "title")}
+            className="w-full text-center text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight leading-tight text-white drop-shadow-md bg-transparent border border-transparent px-2 py-1 mb-6 focus:outline-none focus:border-white/40 focus:bg-black/20 rounded transition-colors"
           />
         ) : (
           <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight mb-6 leading-tight drop-shadow-md">
@@ -70,12 +70,12 @@ export default function HomeHero({ dataContent }: { dataContent: HomeHeroData })
 
         {/* 2. SOUS-TITRE EDITABLE */}
         {isAdmin ? (
-          <textarea
+          <input
+            type="text"
             defaultValue={dataContent.subtitle}
             onBlur={(e) => handleUpdate(e, "subtitle")}
             onKeyDown={(e) => handleUpdate(e, "subtitle")}
-            rows={3}
-            className="w-full max-w-2xl text-center text-lg sm:text-xl md:text-2xl mb-8 bg-white/20 border border-white/30 text-white p-2 rounded focus:outline-none focus:bg-black/50 transition-colors"
+            className="w-full max-w-2xl text-center text-lg sm:text-xl md:text-2xl text-gray-200 leading-relaxed drop-shadow-sm bg-transparent border border-transparent px-2 py-1 mb-10 mx-auto focus:outline-none focus:border-white/40 focus:bg-black/20 rounded transition-colors"
           />
         ) : (
           <p className="text-lg sm:text-xl md:text-2xl text-gray-200 mb-10 max-w-2xl mx-auto leading-relaxed drop-shadow-sm">
@@ -88,22 +88,22 @@ export default function HomeHero({ dataContent }: { dataContent: HomeHeroData })
           
           {/* BOUTON PRIMAIRE */}
           {isAdmin ? (
-            <div className="flex flex-col gap-1">
-               {/* Input pour le texte du bouton */}
+            <div className="flex flex-col gap-1 w-full sm:w-auto">
               <input
                 type="text"
                 defaultValue={dataContent.cta_primary_text}
                 onBlur={(e) => handleUpdate(e, "cta_primary_text")}
-                className="bg-green-700 text-white  text-center font-semibold py-3 px-6 rounded-full border border-white/50 w-full"
+                onKeyDown={(e) => handleUpdate(e, "cta_primary_text")}
+                className="bg-green-700 text-white font-semibold py-3 px-8 rounded-full shadow-lg text-center border border-transparent focus:outline-none focus:border-white/40 transition-colors"
                 placeholder="Texte bouton 1"
               />
-              {/* Input pour le LIEN du bouton (affiché seulement en admin en petit) */}
               <input
-                 type="text"
-                 defaultValue={dataContent.cta_primary_link}
-                 onBlur={(e) => handleUpdate(e, "cta_primary_link")}
-                 className="text-xs text-black bg-white/80 p-1 rounded text-center"
-                 placeholder="Lien bouton 1 (/exemple)"
+                type="text"
+                defaultValue={dataContent.cta_primary_link}
+                onBlur={(e) => handleUpdate(e, "cta_primary_link")}
+                onKeyDown={(e) => handleUpdate(e, "cta_primary_link")}
+                className="text-xs text-gray-600 bg-white/90 px-2 py-1 rounded text-center border border-transparent focus:outline-none focus:border-green-700/30 transition-colors"
+                placeholder="Lien bouton 1 (/exemple)"
               />
             </div>
           ) : (
@@ -118,20 +118,22 @@ export default function HomeHero({ dataContent }: { dataContent: HomeHeroData })
 
           {/* BOUTON SECONDAIRE */}
           {isAdmin ? (
-             <div className="flex flex-col gap-1">
+            <div className="flex flex-col gap-1 w-full sm:w-auto">
               <input
                 type="text"
                 defaultValue={dataContent.cta_secondary_text}
                 onBlur={(e) => handleUpdate(e, "cta_secondary_text")}
-                className="bg-white/10 text-white text-center font-semibold py-3 px-6 rounded-full border border-white/50 w-full"
+                onKeyDown={(e) => handleUpdate(e, "cta_secondary_text")}
+                className="bg-white/10 backdrop-blur-sm border border-white/30 text-white font-semibold py-3 px-8 rounded-full text-center focus:outline-none focus:border-white/50 focus:bg-white/20 transition-colors"
                 placeholder="Texte bouton 2"
               />
-               <input
-                 type="text"
-                 defaultValue={dataContent.cta_secondary_link}
-                 onBlur={(e) => handleUpdate(e, "cta_secondary_link")}
-                 className="text-xs text-black bg-white/80 p-1 rounded text-center"
-                 placeholder="Lien bouton 2"
+              <input
+                type="text"
+                defaultValue={dataContent.cta_secondary_link}
+                onBlur={(e) => handleUpdate(e, "cta_secondary_link")}
+                onKeyDown={(e) => handleUpdate(e, "cta_secondary_link")}
+                className="text-xs text-gray-600 bg-white/90 px-2 py-1 rounded text-center border border-transparent focus:outline-none focus:border-white/40 transition-colors"
+                placeholder="Lien bouton 2"
               />
             </div>
           ) : (

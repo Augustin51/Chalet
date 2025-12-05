@@ -8,6 +8,7 @@ export default async function ContactPage() {
   });
 
   const infoData = await prisma.contactInfo.findMany();
+  const formFieldsData = await prisma.formField.findMany();
 
   // Transformation des données 
   const content = contentData?.reduce((acc, item) => {
@@ -17,6 +18,10 @@ export default async function ContactPage() {
   }, {} as any);
 
   const contactInfoItems = infoData || [];
+  const formFields = formFieldsData?.reduce((acc, field) => {
+    acc[field.fieldName] = { label: field.label, placeholder: field.placeholder, id: field.id };
+    return acc;
+  }, {} as any) || {};
 
   return (
     <>
@@ -27,6 +32,7 @@ export default async function ContactPage() {
       <ContactForm
         dataContent={content?.ContactForm}
         dataInfo={contactInfoItems}
+        formFields={formFields}
       />
     </>
   );

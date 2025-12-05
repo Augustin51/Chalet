@@ -40,7 +40,7 @@ export default function Stats({ dataStats }: StatsProps) {
                     defaultValue={stat.main}
                     onBlur={(e) => handleUpdate(e, `stat_${stat.id}_main`)}
                     onKeyDown={(e) => handleUpdate(e, `stat_${stat.id}_main`)}
-                    className="w-full text-center text-5xl sm:text-6xl font-bold bg-transparent border border-transparent p-2 focus:outline-none focus:border-gray-300 rounded"
+                    className="w-full text-center text-5xl sm:text-6xl font-bold text-[#467A5E] leading-none bg-transparent border border-transparent px-2 py-1 mb-2 focus:outline-none focus:border-[#467A5E]/30 focus:bg-white/5 rounded transition-colors"
                   />
                 ) : (
                   stat.main
@@ -61,12 +61,12 @@ export default function Stats({ dataStats }: StatsProps) {
               
               <p className="text-base text-gray-600 mt-2">
                 {isAdmin ? (
-                  <textarea
+                  <input
+                    type="text"
                     defaultValue={stat.sub}
                     onBlur={(e) => handleUpdate(e, `stat_${stat.id}_sub`)}
                     onKeyDown={(e) => handleUpdate(e, `stat_${stat.id}_sub`)}
-                    rows={2}
-                    className="w-full text-center bg-transparent border border-transparent p-2 focus:outline-none focus:border-gray-300 rounded"
+                    className="w-full text-center text-base text-gray-600 bg-transparent border border-transparent px-2 py-1 mt-2 focus:outline-none focus:border-gray-400/30 focus:bg-white/5 rounded transition-colors"
                   />
                 ) : (
                   stat.sub

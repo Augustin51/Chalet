@@ -41,7 +41,7 @@ export default function Features({ dataContent, dataFeature }: FeaturesProps) {
               defaultValue={dataContent.title}
               onBlur={(e) => handleUpdate(e, "title")}
               onKeyDown={(e) => handleUpdate(e, "title")}
-              className="w-full text-center text-4xl md:text-5xl font-extrabold mb-4 bg-white/20 border border-emerald-900/20 p-2 rounded"
+              className="w-full max-w-4xl mx-auto text-center text-4xl md:text-5xl font-extrabold text-emerald-900 bg-transparent border border-transparent px-2 py-1 mb-4 focus:outline-none focus:border-emerald-900/30 focus:bg-white/10 rounded transition-colors"
             />
           ) : (
             dataContent.title
@@ -49,12 +49,12 @@ export default function Features({ dataContent, dataFeature }: FeaturesProps) {
         </h2>
         <p className="text-emerald-700/80 mb-12 text-center max-w-3xl mx-auto">
           {isAdmin ? (
-            <textarea
+            <input
+              type="text"
               defaultValue={dataContent.subtitle}
               onBlur={(e) => handleUpdate(e, "subtitle")}
               onKeyDown={(e) => handleUpdate(e, "subtitle")}
-              rows={2}
-              className="w-full max-w-3xl mx-auto p-2 rounded bg-white/20"
+              className="w-full max-w-3xl mx-auto text-center text-emerald-700/80 bg-transparent border border-transparent px-2 py-1 mb-12 focus:outline-none focus:border-emerald-700/30 focus:bg-white/10 rounded transition-colors"
             />
           ) : (
             dataContent.subtitle
@@ -79,9 +79,10 @@ export default function Features({ dataContent, dataFeature }: FeaturesProps) {
                         onKeyDown={(e) =>
                           handleUpdate(e, `feature_${f.id}_title`)
                         }
-                        className="text-xl font-semibold text-emerald-900 mb-2 bg-white/20 p-1 rounded w-full text-center"
+                        className="w-full text-center text-xl font-semibold text-emerald-900 mb-2 bg-transparent border border-transparent px-2 py-1 focus:outline-none focus:border-emerald-900/30 focus:bg-white/10 rounded transition-colors"
                       />
-                      <textarea
+                      <input
+                        type="text"
                         defaultValue={f.description}
                         onBlur={(e) =>
                           handleUpdate(e, `feature_${f.id}_description`)
@@ -89,8 +90,7 @@ export default function Features({ dataContent, dataFeature }: FeaturesProps) {
                         onKeyDown={(e) =>
                           handleUpdate(e, `feature_${f.id}_description`)
                         }
-                        className="text-emerald-700/80 w-full p-1 rounded bg-white/20"
-                        rows={3}
+                        className="w-full text-center text-emerald-700/80 bg-transparent border border-transparent px-2 py-1 focus:outline-none focus:border-emerald-700/30 focus:bg-white/10 rounded transition-colors"
                       />
                     </>
                   ) : (

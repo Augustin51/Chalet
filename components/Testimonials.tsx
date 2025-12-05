@@ -74,7 +74,7 @@ export default function Testimonials({ dataContent, dataTestimonials, availableS
                 defaultValue={dataContent.title}
                 onBlur={(e) => handleUpdate(e, "title")}
                 onKeyDown={(e) => handleUpdate(e, "title")}
-                className="w-full text-center text-4xl sm:text-5xl font-serif font-bold bg-transparent border border-transparent p-2 focus:outline-none focus:border-gray-300 rounded"
+                className="w-full text-center text-4xl sm:text-5xl font-serif font-bold text-[#2c4b3a] bg-transparent border border-transparent px-2 py-1 mb-3 focus:outline-none focus:border-[#2c4b3a]/30 focus:bg-white/10 rounded transition-colors"
               />
             ) : (
               dataContent.title
@@ -82,12 +82,12 @@ export default function Testimonials({ dataContent, dataTestimonials, availableS
           </h2>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
             {isAdmin ? (
-              <textarea
+              <input
+                type="text"
                 defaultValue={dataContent.subtitle}
                 onBlur={(e) => handleUpdate(e, "subtitle")}
                 onKeyDown={(e) => handleUpdate(e, "subtitle")}
-                rows={2}
-                className="w-full max-w-2xl mx-auto p-2 rounded bg-transparent border border-transparent focus:outline-none focus:border-gray-300"
+                className="w-full max-w-2xl mx-auto text-center text-lg text-gray-600 bg-transparent border border-transparent px-2 py-1 focus:outline-none focus:border-gray-600/30 focus:bg-white/10 rounded transition-colors"
               />
             ) : (
               dataContent.subtitle
@@ -106,7 +106,7 @@ export default function Testimonials({ dataContent, dataTestimonials, availableS
                   <select
                     defaultValue={testimonial.source}
                     onChange={(e) => handleTestimonialUpdate(e, testimonial.id, "source")}
-                    className="bg-transparent border border-transparent px-2 py-1 rounded text-center min-w-[80px] focus:outline-none focus:border-gray-300 cursor-pointer"
+                    className="bg-transparent text-[#2c4b3a] text-sm font-semibold border border-transparent px-1 rounded text-center min-w-[80px] focus:outline-none focus:border-[#2c4b3a]/30 cursor-pointer transition-colors"
                   >
                     {availableSources.map((source) => (
                       <option key={source} value={source}>
@@ -133,7 +133,7 @@ export default function Testimonials({ dataContent, dataTestimonials, availableS
                         defaultValue={testimonial.name}
                         onBlur={(e) => handleTestimonialUpdate(e, testimonial.id, "name")}
                         onKeyDown={(e) => handleTestimonialUpdate(e, testimonial.id, "name")}
-                        className="w-full bg-transparent border border-transparent px-2 py-1 focus:outline-none focus:border-gray-300 rounded"
+                        className="w-full font-semibold text-[#2c4b3a] bg-transparent border border-transparent px-2 py-1 focus:outline-none focus:border-[#2c4b3a]/30 focus:bg-white/10 rounded transition-colors"
                       />
                     ) : (
                       testimonial.name
@@ -155,7 +155,7 @@ export default function Testimonials({ dataContent, dataTestimonials, availableS
                         defaultValue={testimonial.date}
                         onBlur={(e) => handleTestimonialUpdate(e, testimonial.id, "date")}
                         onKeyDown={(e) => handleTestimonialUpdate(e, testimonial.id, "date")}
-                        className="w-full bg-transparent border border-transparent px-2 py-0.5 text-sm focus:outline-none focus:border-gray-300 rounded"
+                        className="w-full text-sm text-gray-500 bg-transparent border border-transparent px-2 py-0.5 focus:outline-none focus:border-gray-500/30 focus:bg-white/10 rounded transition-colors"
                       />
                     ) : (
                       testimonial.date
@@ -170,12 +170,12 @@ export default function Testimonials({ dataContent, dataTestimonials, availableS
                 </div>
                 <p className="text-gray-700 leading-relaxed italic">
                   {isAdmin ? (
-                    <textarea
+                    <input
+                      type="text"
                       defaultValue={testimonial.review}
                       onBlur={(e) => handleTestimonialUpdate(e, testimonial.id, "review")}
                       onKeyDown={(e) => handleTestimonialUpdate(e, testimonial.id, "review")}
-                      rows={4}
-                      className="w-full bg-transparent border border-transparent p-2 focus:outline-none focus:border-gray-300 rounded"
+                      className="w-full text-gray-700 leading-relaxed italic bg-transparent border border-transparent px-2 py-1 focus:outline-none focus:border-gray-700/30 focus:bg-white/10 rounded transition-colors"
                     />
                   ) : (
                     testimonial.review
