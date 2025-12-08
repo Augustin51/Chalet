@@ -5,6 +5,7 @@ import { ArrowRight, ChevronDown } from "lucide-react";
 import Image from "next/image";
 import { useAdmin } from "@/components/AdminProvider";
 import { useContentEditor } from "@/utils/useContentEditor";
+import EditableLink from "@/components/admin/EditableLink";
 
 interface HomeHeroData {
   title: string;
@@ -97,14 +98,15 @@ export default function HomeHero({ dataContent }: { dataContent: HomeHeroData })
                 className="bg-green-700 text-white font-semibold py-3 px-8 rounded-full shadow-lg text-center border border-transparent focus:outline-none focus:border-white/40 transition-colors"
                 placeholder="Texte bouton 1"
               />
-              <input
-                type="text"
-                defaultValue={dataContent.cta_primary_link}
-                onBlur={(e) => handleUpdate(e, "cta_primary_link")}
-                onKeyDown={(e) => handleUpdate(e, "cta_primary_link")}
+              <EditableLink
+                href={dataContent.cta_primary_link}
                 className="text-xs text-gray-600 bg-white/90 px-2 py-1 rounded text-center border border-transparent focus:outline-none focus:border-green-700/30 transition-colors"
-                placeholder="Lien bouton 1 (/exemple)"
-              />
+                onUpdate={async (newHref) => {
+                  await handleUpdate({ target: { value: newHref } } as any, "cta_primary_link");
+                }}
+              >
+                {dataContent.cta_primary_link}
+              </EditableLink>
             </div>
           ) : (
             <Link
@@ -127,14 +129,15 @@ export default function HomeHero({ dataContent }: { dataContent: HomeHeroData })
                 className="bg-white/10 backdrop-blur-sm border border-white/30 text-white font-semibold py-3 px-8 rounded-full text-center focus:outline-none focus:border-white/50 focus:bg-white/20 transition-colors"
                 placeholder="Texte bouton 2"
               />
-              <input
-                type="text"
-                defaultValue={dataContent.cta_secondary_link}
-                onBlur={(e) => handleUpdate(e, "cta_secondary_link")}
-                onKeyDown={(e) => handleUpdate(e, "cta_secondary_link")}
+              <EditableLink
+                href={dataContent.cta_secondary_link}
                 className="text-xs text-gray-600 bg-white/90 px-2 py-1 rounded text-center border border-transparent focus:outline-none focus:border-white/40 transition-colors"
-                placeholder="Lien bouton 2"
-              />
+                onUpdate={async (newHref) => {
+                  await handleUpdate({ target: { value: newHref } } as any, "cta_secondary_link");
+                }}
+              >
+                {dataContent.cta_secondary_link}
+              </EditableLink>
             </div>
           ) : (
             <Link

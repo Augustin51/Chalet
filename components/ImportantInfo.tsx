@@ -4,6 +4,7 @@ import React from 'react';
 import Link from 'next/link';
 import { useAdmin } from '@/components/AdminProvider';
 import { useContentEditor } from '@/utils/useContentEditor';
+import EditableLink from '@/components/admin/EditableLink';
 
 interface InfoContent {
   title: string;
@@ -130,22 +131,24 @@ export default function ImportantInfo({ dataContent, dataInfoItems, page = 'cale
                 />
               </div>
               <div className="flex flex-col sm:flex-row gap-2">
-                <input
-                  type="text"
-                  defaultValue={dataContent.cta_contact_link}
-                  onBlur={(e) => handleUpdate(e, 'cta_contact_link')}
-                  onKeyDown={(e) => handleUpdate(e, 'cta_contact_link')}
+                <EditableLink
+                  href={dataContent.cta_contact_link}
                   className="text-xs text-gray-600 bg-transparent border-transparent focus:border-gray-600/30 focus:bg-white/5 p-1 rounded text-center flex-1 transition-colors"
-                  placeholder="Contact CTA text"
-                />
-                <input
-                  type="text"
-                  defaultValue={dataContent.cta_platform_link}
-                  onBlur={(e) => handleUpdate(e, 'cta_platform_link')}
-                  onKeyDown={(e) => handleUpdate(e, 'cta_platform_link')}
+                  onUpdate={async (newHref) => {
+                    await handleUpdate({ target: { value: newHref } } as any, 'cta_contact_link');
+                  }}
+                >
+                  {dataContent.cta_contact_link}
+                </EditableLink>
+                <EditableLink
+                  href={dataContent.cta_platform_link}
                   className="text-xs text-gray-600 bg-transparent border-transparent focus:border-gray-600/30 focus:bg-white/5 p-1 rounded text-center flex-1 transition-colors"
-                  placeholder="Platform CTA text"
-                />
+                  onUpdate={async (newHref) => {
+                    await handleUpdate({ target: { value: newHref } } as any, 'cta_platform_link');
+                  }}
+                >
+                  {dataContent.cta_platform_link}
+                </EditableLink>
               </div>              
             </div>
           ) : (
