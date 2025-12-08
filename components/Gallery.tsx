@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { useAdmin } from "@/components/AdminProvider";
 import { useContentEditor } from "@/utils/useContentEditor";
+import EditableLink from "@/components/admin/EditableLink";
 
 interface GalleryImage {
   id: number;
@@ -96,14 +97,15 @@ export default function Gallery({ dataContent, dataImage }: GalleryProps) {
                 className="bg-emerald-800 text-white text-center font-semibold py-3 px-6 rounded-full border border-white/50 w-full"
                 placeholder="Texte bouton"
               />
-              <input
-                type="text"
-                defaultValue={dataContent.cta_link}
-                onBlur={(e) => handleUpdate(e, "cta_link")}
-                onKeyDown={(e) => handleUpdate(e, "cta_link")}
+              <EditableLink
+                href={dataContent.cta_link}
                 className="text-xs text-black bg-white/80 p-1 rounded text-center"
-                placeholder="Lien (/exemple)"
-              />
+                onUpdate={async (newHref) => {
+                  await handleUpdate({ target: { value: newHref } } as any, "cta_link");
+                }}
+              >
+                {dataContent.cta_link}
+              </EditableLink>
             </div>
           ) : (
             <Link href={dataContent.cta_link || "/"}>
