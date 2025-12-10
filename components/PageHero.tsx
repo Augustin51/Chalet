@@ -4,6 +4,7 @@ import Image from "next/image";
 import React from "react";
 import { useAdmin } from "@/components/AdminProvider";
 import { useContentEditor } from "@/utils/useContentEditor";
+import EditableImage from "@/components/admin/EditableImage";
 
 interface PageHeroData {
   title: string;
@@ -26,17 +27,31 @@ export default function PageHero({ dataContent, page = "chalet" }: { dataContent
 
   return (
     <section className="relative h-[40vh] sm:h-[50vh] w-full flex items-center justify-center text-white overflow-hidden">
-      <Image
-        src={dataContent.image_src}
-        alt={dataContent.image_alt || `Arrière-plan pour ${dataContent.title}`}
-        layout="fill"
-        objectFit="cover"
-        quality={80}
-        priority
-        className="absolute z-0"
-      />
+      <div className="absolute inset-0 z-0 w-full h-full">
+        <EditableImage
+          src={dataContent.image_src}
+          alt={dataContent.image_alt || `Arrière-plan pour ${dataContent.title}`}
+          fill
+          quality={80}
+          priority
+          className="object-cover"
+          onUpdate={async (newImageName) => {
+            await fetch('/api/content/update', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                page: page,
+                component: 'PageHero',
+                key: 'image_src',
+                value: newImageName
+              })
+            });
+            window.location.reload();
+          }}
+        />
+      </div>
 
-      <div className="absolute inset-0 bg-black/60 z-10" />
+      <div className="absolute inset-0 bg-black/60 z-10 pointer-events-none" />
       
       <div className="relative z-20 text-center px-4 max-w-4xl">
         <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-serif font-bold tracking-tight mb-4 leading-snug">
