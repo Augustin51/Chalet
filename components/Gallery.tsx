@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { useAdmin } from "@/components/AdminProvider";
 import { useContentEditor } from "@/utils/useContentEditor";
 import EditableLink from "@/components/admin/EditableLink";
+import EditableImage from "@/components/admin/EditableImage";
 
 interface GalleryImage {
   id: number;
@@ -73,15 +74,25 @@ export default function Gallery({ dataContent, dataImage }: GalleryProps) {
           {dataImage.map((img) => (
             <div
               key={img.id}
-              className="relative w-full aspect-[4/3] overflow-hidden rounded-2xl shadow-sm hover:scale-[1.02] transition-transform"
+              className="relative w-full aspect-[4/3] overflow-hidden rounded-2xl shadow-sm"
             >
-              <Image
-                src={img.src}
-                alt={img.alt}
-                fill
-                className="object-cover"
-                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 33vw, 33vw"
-              />
+              <div className="hover:scale-[1.02] transition-transform w-full h-full">
+                <EditableImage
+                  src={img.src}
+                  alt={img.alt}
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 33vw, 33vw"
+                  onUpdate={async (newImageName) => {
+                    await fetch('/api/image/update', {
+                      method: 'POST',
+                      headers: { 'Content-Type': 'application/json' },
+                      body: JSON.stringify({ id: img.id, src: newImageName }),
+                    });
+                    window.location.reload();
+                  }}
+                />
+              </div>
             </div>
           ))}
         </div>

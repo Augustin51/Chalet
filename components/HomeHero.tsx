@@ -6,6 +6,7 @@ import Image from "next/image";
 import { useAdmin } from "@/components/AdminProvider";
 import { useContentEditor } from "@/utils/useContentEditor";
 import EditableLink from "@/components/admin/EditableLink";
+import EditableImage from "@/components/admin/EditableImage";
 
 interface HomeHeroData {
   title: string;
@@ -37,18 +38,30 @@ export default function HomeHero({ dataContent }: { dataContent: HomeHeroData })
     <section className="relative h-[85vh] sm:h-[90vh] w-full flex items-center justify-center text-white overflow-hidden font-serif">
       
       {/* --- IMAGE DE FOND --- */}
-      <div className="absolute inset-0 z-0">
-        <Image
+      <div className="absolute inset-0 z-0 w-full h-full">
+        <EditableImage
           src={dataContent.image_src}
           alt={dataContent.image_alt}
           fill
-          style={{ objectFit: "cover" }}
           quality={90}
           priority
-          className="pointer-events-none" // Empêche de glisser l'image par erreur
+          className="object-cover"
+          onUpdate={async (newImageName) => {
+            await fetch('/api/content/update', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                page: 'home',
+                component: 'HomeHero',
+                key: 'image_src',
+                value: newImageName
+              })
+            });
+            window.location.reload();
+          }}
         />
         {/* Filtre noir pour la lisibilité */}
-        <div className="absolute inset-0 bg-black/40" />
+        <div className="absolute inset-0 bg-black/40 pointer-events-none" />
       </div>
 
       {/* --- CONTENU --- */}

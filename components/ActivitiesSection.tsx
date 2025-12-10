@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import Image from "next/image";
 import { useAdmin } from "@/components/AdminProvider";
 import { useContentEditor } from "@/utils/useContentEditor";
+import EditableImage from "@/components/admin/EditableImage";
 
 interface Activity {
   id: number;
@@ -81,27 +82,25 @@ export default function ActivitiesSection({ imageSrc, imageAlt, activitiesList, 
     <section className="bg-[#fdfaf5] py-12 px-6 rounded-xl">
       <div className="max-w-6xl mx-auto">
         <div className="relative w-full h-72 md:h-96 mb-8 overflow-hidden rounded-2xl shadow-sm">
-          {isAdmin && (
-            <div className="mb-3 flex flex-col md:flex-row gap-2">
-              <input
-                type="text"
-                defaultValue={imageSrc}
-                onBlur={(e: any) => handleUpdate(e, `${season}_image_src`)}
-                onKeyDown={(e: any) => handleUpdate(e, `${season}_image_src`)}
-                className="w-full md:w-2/3 p-2 rounded bg-white/20"
-                placeholder="Image URL"
-              />
-              <input
-                type="text"
-                defaultValue={imageAlt}
-                onBlur={(e: any) => handleUpdate(e, `${season}_image_alt`)}
-                onKeyDown={(e: any) => handleUpdate(e, `${season}_image_alt`)}
-                className="w-full md:w-1/3 p-2 rounded bg-white/20"
-                placeholder="Alt text"
-              />
-            </div>
-          )}
-          <Image src={imageSrc} alt={imageAlt} fill className="object-cover" />
+          <EditableImage
+            src={imageSrc}
+            alt={imageAlt}
+            fill
+            className="object-cover"
+            onUpdate={async (newImageName) => {
+              await fetch('/api/content/update', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                  page: page,
+                  component: 'ActivitiesSection',
+                  key: `${season}_image_src`,
+                  value: newImageName
+                })
+              });
+              window.location.reload();
+            }}
+          />
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-12">

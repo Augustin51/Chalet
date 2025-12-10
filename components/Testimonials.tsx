@@ -5,6 +5,8 @@ import { useAdmin } from "@/components/AdminProvider";
 import { useContentEditor } from "@/utils/useContentEditor";
 import { Star } from "lucide-react";
 import React from "react";
+import Image from "next/image";
+import EditableImage from "@/components/admin/EditableImage";
 
 interface TestimonialContent {
   title: string;
@@ -131,11 +133,27 @@ export default function Testimonials({ dataContent, dataTestimonials, availableS
               </div>
               
               <div className="flex items-center gap-3 mb-4 mt-2">
-                <img 
-                  src={testimonial.avatarUrl} 
-                  alt={testimonial.name}
-                  className="w-12 h-12 rounded-full object-cover"
-                />
+                <div className="w-12 h-12 rounded-full overflow-hidden flex-shrink-0">
+                  <EditableImage 
+                    src={testimonial.avatarUrl}
+                    alt={testimonial.name}
+                    width={48}
+                    height={48}
+                    className="rounded-full object-cover"
+                    onUpdate={async (newImageName) => {
+                      await fetch('/api/testimonial/update', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                          id: testimonial.id,
+                          field: 'avatarUrl',
+                          value: newImageName
+                        })
+                      });
+                      window.location.reload();
+                    }}
+                  />
+                </div>
                 <div className="flex-1">
                   <p className="font-semibold text-[#2c4b3a]">
                     {isAdmin ? (
