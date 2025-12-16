@@ -9,14 +9,15 @@ export function useContentEditor(page: string, component: string) {
     e:
       | React.KeyboardEvent<HTMLInputElement | HTMLTextAreaElement>
       | React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>
-      | React.ChangeEvent<HTMLSelectElement>,
+      | React.ChangeEvent<HTMLSelectElement | HTMLInputElement>,
     key: string
   ) => {
-    // Si c'est un ChangeEvent (select), on sauvegarde immédiatement
+    // Si c'est un ChangeEvent (select ou input type color), on sauvegarde immédiatement
     const isSelect = (e.target as HTMLElement).tagName === "SELECT";
+    const isColorInput = (e.target as HTMLInputElement).type === "color";
     
-    if (isSelect) {
-      const newValue = (e.target as HTMLSelectElement).value;
+    if (isSelect || isColorInput) {
+      const newValue = (e.target as HTMLSelectElement | HTMLInputElement).value;
       await updateContent(page, component, key, newValue);
       return;
     }
