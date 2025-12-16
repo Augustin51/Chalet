@@ -12,10 +12,16 @@ export async function POST(request: Request) {
       );
     }
 
+    // Convertir la valeur selon le champ
+    let finalValue: any = value;
+    if (field === 'stars') {
+      finalValue = parseInt(value);
+    }
+
     // Mise à jour du témoignage
     const updated = await prisma.testimonial.update({
       where: { id: parseInt(id) },
-      data: { [field]: value },
+      data: { [field]: finalValue },
     });
 
     return NextResponse.json({ success: true, data: updated });

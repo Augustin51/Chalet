@@ -9,7 +9,9 @@ export default async function AvisPage() {
   });
 
   const statData = await prisma.stat.findMany();
-  const testimonialData = await prisma.testimonial.findMany();
+  const testimonialData = await prisma.testimonial.findMany({
+    orderBy: { id: 'desc' }
+  });
 
   // Transformation des données
   const content = contentData?.reduce((acc: any, item: any) => {
