@@ -32,6 +32,9 @@ interface ContactFormProps {
     name: FormFieldData;
     email: FormFieldData;
     phone: FormFieldData;
+    arrivalDate?: FormFieldData;
+    departureDate?: FormFieldData;
+    guests?: FormFieldData;
     message: FormFieldData;
   };
 }
@@ -39,14 +42,58 @@ interface ContactFormProps {
 export default function ContactForm({ dataContent, dataInfo, formFields }: ContactFormProps) {
   const isAdmin = useAdmin();
   const { handleUpdate } = useContentEditor("contact", "ContactForm");
+  const [isSubmitting, setIsSubmitting] = React.useState(false);
+  const [submitMessage, setSubmitMessage] = React.useState<{type: 'success' | 'error', text: string} | null>(null);
+  const [guestsPlaceholder, setGuestsPlaceholder] = React.useState(formFields.guests?.placeholder || 'Sélectionnez...');
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    setSubmitMessage(null);
+
+    const formData = new FormData(e.currentTarget);
+    const data = {
+      name: formData.get('name') as string,
+      email: formData.get('email') as string,
+      phone: formData.get('phone') as string,
+      arrivalDate: formData.get('arrivalDate') as string,
+      departureDate: formData.get('departureDate') as string,
+      guests: formData.get('guests') as string,
+      message: formData.get('message') as string,
+    };
+
+    try {
+      const response = await fetch('/api/contact/send', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      });
+
+      const result = await response.json();
+      
+      if (result.success) {
+        setSubmitMessage({ type: 'success', text: result.message });
+        (e.target as HTMLFormElement).reset();
+      } else {
+        setSubmitMessage({ type: 'error', text: result.error });
+      }
+    } catch (error) {
+      setSubmitMessage({ type: 'error', text: 'Une erreur est survenue lors de l\'envoi' });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   const handleFieldUpdate = async (
     e: React.FocusEvent<HTMLInputElement> | React.KeyboardEvent<HTMLInputElement>,
     fieldId: number,
     fieldType: "label" | "placeholder"
   ) => {
-    if (e.type === "keydown" && (e as React.KeyboardEvent).key !== "Enter") {
-      return;
+    if (e.type === "keydown") {
+      if ((e as React.KeyboardEvent).key !== "Enter") {
+        return;
+      }
+      e.preventDefault();
     }
 
     const target = e.target as HTMLInputElement;
@@ -73,8 +120,11 @@ export default function ContactForm({ dataContent, dataInfo, formFields }: Conta
     infoId: number,
     field: string
   ) => {
-    if (e.type === "keydown" && (e as React.KeyboardEvent).key !== "Enter") {
-      return;
+    if (e.type === "keydown") {
+      if ((e as React.KeyboardEvent).key !== "Enter") {
+        return;
+      }
+      e.preventDefault();
     }
 
     const target = e.target as HTMLInputElement | HTMLTextAreaElement;
@@ -186,7 +236,7 @@ export default function ContactForm({ dataContent, dataInfo, formFields }: Conta
           </div>
 
           <div className="bg-white p-6 sm:p-8 rounded-lg">
-            <form className="space-y-4">
+            <form className="space-y-4" onSubmit={handleSubmit}>
               <div>
                 <label htmlFor="name" className="text-sm font-medium text-gray-700 block mb-1">
                   {isAdmin ? (
@@ -274,6 +324,7 @@ export default function ContactForm({ dataContent, dataInfo, formFields }: Conta
                   id="phone" 
                   name="phone" 
                   placeholder={isAdmin ? undefined : formFields.phone.placeholder}
+                  required
                   className="w-full p-3 border border-gray-300 rounded-lg focus:ring-[#467A5E] focus:border-[#467A5E]" 
                 />
                 {isAdmin && (
@@ -282,6 +333,94 @@ export default function ContactForm({ dataContent, dataInfo, formFields }: Conta
                     defaultValue={formFields.phone.placeholder}
                     onBlur={(e) => handleFieldUpdate(e, formFields.phone.id, "placeholder")}
                     onKeyDown={(e) => handleFieldUpdate(e, formFields.phone.id, "placeholder")}
+                    placeholder="Placeholder"
+                    className="w-full mt-1 text-xs text-gray-500 bg-gray-50/50 border border-gray-200 px-2 py-1 focus:outline-none focus:border-[#467A5E]/30 rounded transition-colors"
+                  />
+                )}
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label htmlFor="arrivalDate" className="text-sm font-medium text-gray-700 block mb-1">
+                    {isAdmin && formFields.arrivalDate ? (
+                      <input
+                        type="text"
+                        defaultValue={formFields.arrivalDate.label}
+                        onBlur={(e) => formFields.arrivalDate && handleFieldUpdate(e, formFields.arrivalDate.id, "label")}
+                        onKeyDown={(e) => formFields.arrivalDate && handleFieldUpdate(e, formFields.arrivalDate.id, "label")}
+                        className="w-full text-sm font-medium text-gray-700 bg-transparent border border-transparent px-1 focus:outline-none focus:border-gray-700/30 focus:bg-gray-50 rounded transition-colors"
+                      />
+                    ) : (
+                      formFields.arrivalDate?.label || "Date d'arrivée *"
+                    )}
+                  </label>
+                  <input 
+                    type="date" 
+                    id="arrivalDate" 
+                    name="arrivalDate" 
+                    required
+                    className="w-full p-3 border border-gray-300 rounded-lg focus:ring-[#467A5E] focus:border-[#467A5E]" 
+                  />
+                </div>
+
+                <div>
+                  <label htmlFor="departureDate" className="text-sm font-medium text-gray-700 block mb-1">
+                    {isAdmin && formFields.departureDate ? (
+                      <input
+                        type="text"
+                        defaultValue={formFields.departureDate.label}
+                        onBlur={(e) => formFields.departureDate && handleFieldUpdate(e, formFields.departureDate.id, "label")}
+                        onKeyDown={(e) => formFields.departureDate && handleFieldUpdate(e, formFields.departureDate.id, "label")}
+                        className="w-full text-sm font-medium text-gray-700 bg-transparent border border-transparent px-1 focus:outline-none focus:border-gray-700/30 focus:bg-gray-50 rounded transition-colors"
+                      />
+                    ) : (
+                      formFields.departureDate?.label || "Date de départ *"
+                    )}
+                  </label>
+                  <input 
+                    type="date" 
+                    id="departureDate" 
+                    name="departureDate" 
+                    required
+                    className="w-full p-3 border border-gray-300 rounded-lg focus:ring-[#467A5E] focus:border-[#467A5E]" 
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label htmlFor="guests" className="text-sm font-medium text-gray-700 block mb-1">
+                  {isAdmin && formFields.guests ? (
+                    <input
+                      type="text"
+                      defaultValue={formFields.guests.label}
+                      onBlur={(e) => formFields.guests && handleFieldUpdate(e, formFields.guests.id, "label")}
+                      onKeyDown={(e) => formFields.guests && handleFieldUpdate(e, formFields.guests.id, "label")}
+                      className="w-full text-sm font-medium text-gray-700 bg-transparent border border-transparent px-1 focus:outline-none focus:border-gray-700/30 focus:bg-gray-50 rounded transition-colors"
+                    />
+                  ) : (
+                    formFields.guests?.label || "Nombre de personnes *"
+                  )}
+                </label>
+                <select 
+                  id="guests" 
+                  name="guests" 
+                  required
+                  className="w-full p-3 border border-gray-300 rounded-lg focus:ring-[#467A5E] focus:border-[#467A5E]"
+                >
+                  <option value="">{guestsPlaceholder}</option>
+                  {[1, 2, 3, 4, 5, 6, 7, 8].map((num) => (
+                    <option key={num} value={num}>
+                      {num} personne{num > 1 ? 's' : ''}
+                    </option>
+                  ))}
+                </select>
+                {isAdmin && formFields.guests && (
+                  <input
+                    type="text"
+                    value={guestsPlaceholder}
+                    onChange={(e) => setGuestsPlaceholder(e.target.value)}
+                    onBlur={(e) => formFields.guests && handleFieldUpdate(e, formFields.guests.id, "placeholder")}
+                    onKeyDown={(e) => formFields.guests && handleFieldUpdate(e, formFields.guests.id, "placeholder")}
                     placeholder="Placeholder"
                     className="w-full mt-1 text-xs text-gray-500 bg-gray-50/50 border border-gray-200 px-2 py-1 focus:outline-none focus:border-[#467A5E]/30 rounded transition-colors"
                   />
@@ -307,7 +446,6 @@ export default function ContactForm({ dataContent, dataInfo, formFields }: Conta
                   name="message" 
                   rows={5} 
                   placeholder={isAdmin ? undefined : formFields.message.placeholder}
-                  required
                   className="w-full p-3 border border-gray-300 rounded-lg focus:ring-[#467A5E] focus:border-[#467A5E] resize-none"
                 ></textarea>
                 {isAdmin && (
@@ -322,9 +460,16 @@ export default function ContactForm({ dataContent, dataInfo, formFields }: Conta
                 )}
               </div>
 
+              {submitMessage && (
+                <div className={`p-4 rounded-lg ${submitMessage.type === 'success' ? 'bg-green-50 text-green-800' : 'bg-red-50 text-red-800'}`}>
+                  {submitMessage.text}
+                </div>
+              )}
+
               <button 
                 type="submit" 
-                className="w-full px-6 py-3 bg-[#467A5E] text-white font-semibold rounded-lg hover:bg-[#346048] transition-colors"
+                disabled={isSubmitting}
+                className="w-full px-6 py-3 bg-[#467A5E] text-white font-semibold rounded-lg hover:bg-[#346048] transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
               >
                 {isAdmin ? (
                   <input
@@ -335,6 +480,8 @@ export default function ContactForm({ dataContent, dataInfo, formFields }: Conta
                     className="w-full text-center font-semibold text-white bg-transparent border border-transparent px-2 py-1 focus:outline-none focus:border-white/40 rounded transition-colors"
                     onClick={(e) => e.preventDefault()}
                   />
+                ) : isSubmitting ? (
+                  'Envoi en cours...'
                 ) : (
                   dataContent.button_text
                 )}
