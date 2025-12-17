@@ -346,8 +346,8 @@ export default function ContactForm({ dataContent, dataInfo, formFields }: Conta
                       <input
                         type="text"
                         defaultValue={formFields.arrivalDate.label}
-                        onBlur={(e) => handleFieldUpdate(e, formFields.arrivalDate.id, "label")}
-                        onKeyDown={(e) => handleFieldUpdate(e, formFields.arrivalDate.id, "label")}
+                        onBlur={(e) => formFields.arrivalDate && handleFieldUpdate(e, formFields.arrivalDate.id, "label")}
+                        onKeyDown={(e) => formFields.arrivalDate && handleFieldUpdate(e, formFields.arrivalDate.id, "label")}
                         className="w-full text-sm font-medium text-gray-700 bg-transparent border border-transparent px-1 focus:outline-none focus:border-gray-700/30 focus:bg-gray-50 rounded transition-colors"
                       />
                     ) : (
@@ -369,8 +369,8 @@ export default function ContactForm({ dataContent, dataInfo, formFields }: Conta
                       <input
                         type="text"
                         defaultValue={formFields.departureDate.label}
-                        onBlur={(e) => handleFieldUpdate(e, formFields.departureDate.id, "label")}
-                        onKeyDown={(e) => handleFieldUpdate(e, formFields.departureDate.id, "label")}
+                        onBlur={(e) => formFields.departureDate && handleFieldUpdate(e, formFields.departureDate.id, "label")}
+                        onKeyDown={(e) => formFields.departureDate && handleFieldUpdate(e, formFields.departureDate.id, "label")}
                         className="w-full text-sm font-medium text-gray-700 bg-transparent border border-transparent px-1 focus:outline-none focus:border-gray-700/30 focus:bg-gray-50 rounded transition-colors"
                       />
                     ) : (
@@ -393,8 +393,8 @@ export default function ContactForm({ dataContent, dataInfo, formFields }: Conta
                     <input
                       type="text"
                       defaultValue={formFields.guests.label}
-                      onBlur={(e) => handleFieldUpdate(e, formFields.guests.id, "label")}
-                      onKeyDown={(e) => handleFieldUpdate(e, formFields.guests.id, "label")}
+                      onBlur={(e) => formFields.guests && handleFieldUpdate(e, formFields.guests.id, "label")}
+                      onKeyDown={(e) => formFields.guests && handleFieldUpdate(e, formFields.guests.id, "label")}
                       className="w-full text-sm font-medium text-gray-700 bg-transparent border border-transparent px-1 focus:outline-none focus:border-gray-700/30 focus:bg-gray-50 rounded transition-colors"
                     />
                   ) : (
@@ -419,8 +419,8 @@ export default function ContactForm({ dataContent, dataInfo, formFields }: Conta
                     type="text"
                     value={guestsPlaceholder}
                     onChange={(e) => setGuestsPlaceholder(e.target.value)}
-                    onBlur={(e) => handleFieldUpdate(e, formFields.guests.id, "placeholder")}
-                    onKeyDown={(e) => handleFieldUpdate(e, formFields.guests.id, "placeholder")}
+                    onBlur={(e) => formFields.guests && handleFieldUpdate(e, formFields.guests.id, "placeholder")}
+                    onKeyDown={(e) => formFields.guests && handleFieldUpdate(e, formFields.guests.id, "placeholder")}
                     placeholder="Placeholder"
                     className="w-full mt-1 text-xs text-gray-500 bg-gray-50/50 border border-gray-200 px-2 py-1 focus:outline-none focus:border-[#467A5E]/30 rounded transition-colors"
                   />
