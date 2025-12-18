@@ -5,6 +5,7 @@ import { LucideIcon } from "lucide-react";
 import { iconMap, DefaultIcon } from "@/lib/iconMap";
 import { useAdmin } from "@/components/AdminProvider";
 import { useContentEditor } from "@/utils/useContentEditor";
+import Loading from "@/components/Loading";
 
 interface FavoritesContent {
   title: string;
@@ -25,7 +26,7 @@ interface LocalFavoritesProps {
 
 export default function LocalFavorites({ dataContent, dataFavorites, page = "autour" }: LocalFavoritesProps) {
   if (!dataContent || !dataFavorites) {
-    return <section className="bg-[#f5f3ef] py-16">Chargement...</section>;
+    return <section className="bg-[#f5f3ef] py-16"><Loading /></section>;
   }
 
   const isAdmin = useAdmin();

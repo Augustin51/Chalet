@@ -3,6 +3,7 @@
 import React from 'react';
 import { useAdmin } from "@/components/AdminProvider";
 import { useContentEditor } from "@/utils/useContentEditor";
+import Loading from "@/components/Loading";
 
 interface PracticalInfoData {
   main_title: string;
@@ -19,7 +20,7 @@ export default function PracticalInformation({ dataContent, page = "chalet" }: {
   const { handleUpdate } = useContentEditor(page, "PracticalInformation");
 
   if (!dataContent) {
-    return <section className="bg-white py-16">Chargement...</section>;
+    return <section className="bg-white py-16"><Loading /></section>;
   }
 
   // Certains contenus peuvent contenir la séquence littérale "\\n" (backslash + n)

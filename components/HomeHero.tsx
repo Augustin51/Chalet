@@ -7,6 +7,7 @@ import { useAdmin } from "@/components/AdminProvider";
 import { useContentEditor } from "@/utils/useContentEditor";
 import EditableLink from "@/components/admin/EditableLink";
 import EditableImage from "@/components/admin/EditableImage";
+import Loading from "@/components/Loading";
 
 interface HomeHeroData {
   title: string;
@@ -29,7 +30,7 @@ export default function HomeHero({ dataContent }: { dataContent: HomeHeroData })
   if (!dataContent) {
     return (
       <section className="relative h-[85vh] sm:h-[90vh] w-full flex items-center justify-center bg-gray-900">
-        <p className="font-serif text-white animate-pulse">Chargement du contenu...</p>
+        <Loading text="Chargement du contenu" size="lg" />
       </section>
     );
   }

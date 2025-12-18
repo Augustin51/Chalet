@@ -5,6 +5,7 @@ import React from "react";
 import { useAdmin } from "@/components/AdminProvider";
 import { useContentEditor } from "@/utils/useContentEditor";
 import EditableImage from "@/components/admin/EditableImage";
+import Loading from "@/components/Loading";
 
 interface PageHeroData {
   title: string;
@@ -20,7 +21,7 @@ export default function PageHero({ dataContent, page = "chalet" }: { dataContent
   if (!dataContent) {
     return (
       <section className="relative h-[40vh] sm:h-[50vh] w-full flex items-center justify-center">
-        <p>Chargement...</p>
+        <Loading size="lg" />
       </section>
     );
   }

@@ -7,6 +7,7 @@ import { useAdmin } from "@/components/AdminProvider";
 import { useContentEditor } from "@/utils/useContentEditor";
 import EditableLink from "@/components/admin/EditableLink";
 import EditableImage from "@/components/admin/EditableImage";
+import Loading from "@/components/Loading";
 
 interface GalleryImage {
   id: number;
@@ -34,7 +35,7 @@ export default function Gallery({ dataContent, dataImage }: GalleryProps) {
   if (!dataContent || !dataImage) {
     return (
       <section className="bg-white py-20 px-6 md:px-12">
-        <div className="max-w-6xl mx-auto text-center">Chargement...</div>
+        <Loading />
       </section>
     );
   }

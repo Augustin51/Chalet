@@ -5,6 +5,7 @@ import { Calendar, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useAdmin } from '@/components/AdminProvider';
 import { useContentEditor } from '@/utils/useContentEditor';
 import AdminCalendar from '@/components/admin/AdminCalendar';
+import Loading from '@/components/Loading';
 
 interface AvailabilityData {
   title: string;
@@ -171,7 +172,7 @@ export default function Availability({ dataContent, page = 'calendrier' }: { dat
   const dayNames = ['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam', 'Dim'];
 
   if (!dataContent) {
-    return <section className="bg-[#fcfaf7] py-16">Chargement...</section>;
+    return <section className="bg-[#fcfaf7] py-16"><Loading /></section>;
   }
   return (
     <section className="bg-[#fcfaf7] py-16 sm:py-20 md:py-24 px-4 sm:px-6 lg:px-8">
