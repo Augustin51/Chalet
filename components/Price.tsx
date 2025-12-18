@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import { Euro } from "lucide-react";
 import { useAdmin } from "@/components/AdminProvider";
 import { useContentEditor } from "@/utils/useContentEditor";
+import Loading from "@/components/Loading";
 
 interface PriceContent {
   title: string;
@@ -55,7 +56,7 @@ export default function Price({ dataContent, dataPriceTiers, page = 'calendrier'
   }
 
   if (!dataContent || !dataPriceTiers) {
-    return <section className="bg-[#f5f3ef] py-16">Chargement...</section>;
+    return <section className="bg-[#f5f3ef] py-16"><Loading /></section>;
   }
   return (
     <section className="bg-[#f5f3ef] py-16 sm:py-20 md:py-24 px-4 sm:px-6 lg:px-8">

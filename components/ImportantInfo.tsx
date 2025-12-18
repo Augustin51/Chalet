@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useAdmin } from '@/components/AdminProvider';
 import { useContentEditor } from '@/utils/useContentEditor';
 import EditableLink from '@/components/admin/EditableLink';
+import Loading from '@/components/Loading';
 
 interface InfoContent {
   title: string;
@@ -42,7 +43,7 @@ export default function ImportantInfo({ dataContent, dataInfoItems, page = 'cale
   }
 
   if (!dataContent || !dataInfoItems) {
-    return <div className="container mx-auto my-9">Chargement...</div>;
+    return <div className="container mx-auto my-9"><Loading /></div>;
   }
   return (
     <div className="container mx-auto my-9 max-w-4xl px-4 sm:px-6 lg:px-8">

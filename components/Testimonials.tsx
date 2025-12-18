@@ -8,6 +8,7 @@ import React from "react";
 import Image from "next/image";
 import EditableImage from "@/components/admin/EditableImage";
 import ConfirmModal from "@/components/admin/ConfirmModal";
+import Loading from "@/components/Loading";
 
 interface TestimonialContent {
   title: string;
@@ -188,7 +189,7 @@ export default function Testimonials({ dataContent, dataTestimonials, availableS
   };
 
   if (!dataContent || !dataTestimonials) {
-    return <section className="bg-[#fcfaf7] py-16">Chargement...</section>;
+    return <section className="bg-[#fcfaf7] py-16"><Loading /></section>;
   }
 
   return (

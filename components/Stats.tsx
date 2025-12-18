@@ -4,6 +4,7 @@ import React from 'react';
 import { Star } from 'lucide-react';
 import { useAdmin } from "@/components/AdminProvider";
 import { useContentEditor } from "@/utils/useContentEditor";
+import Loading from "@/components/Loading";
 
 interface StatItem {
   id: number;
@@ -21,7 +22,7 @@ export default function Stats({ dataStats }: StatsProps) {
   const { handleUpdate } = useContentEditor("avis", "Stats");
 
   if (!dataStats) {
-    return <section className="bg-[#f5f3ef] py-12">Chargement...</section>;
+    return <section className="bg-[#f5f3ef] py-12"><Loading /></section>;
   }
 
   return (
