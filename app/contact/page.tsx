@@ -1,5 +1,5 @@
-import ContactForm from "@/components/ContactForm";
-import PageHero from "@/components/PageHero";
+import ContactForm from "@/components/contact/ContactForm";
+import PageHero from "@/components/shared/PageHero";
 import { prisma } from "@/lib/prisma";
 
 export default async function ContactPage() {

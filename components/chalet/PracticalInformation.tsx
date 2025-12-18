@@ -1,9 +1,9 @@
 "use client";
 
 import React from 'react';
-import { useAdmin } from "@/components/AdminProvider";
+import { useAdmin } from "@/components/common/AdminProvider";
 import { useContentEditor } from "@/utils/useContentEditor";
-import Loading from "@/components/Loading";
+import Loading from "@/components/common/Loading";
 
 interface PracticalInfoData {
   main_title: string;
@@ -68,7 +68,7 @@ export default function PracticalInformation({ dataContent, page = "chalet" }: {
                   defaultValue={dataContent.card_access_content}
                   onBlur={(e) => handleUpdate(e, "card_access_content")}
                   onKeyDown={(e) => handleUpdate(e, "card_access_content")}
-                  className="w-full p-2 rounded bg-white/20"
+                  className="w-full p-2 rounded bg-white/20 resize-none"
                   rows={4}
                 />
               ) : (
@@ -97,7 +97,7 @@ export default function PracticalInformation({ dataContent, page = "chalet" }: {
                   defaultValue={dataContent.card_rules_content}
                   onBlur={(e) => handleUpdate(e, "card_rules_content")}
                   onKeyDown={(e) => handleUpdate(e, "card_rules_content")}
-                  className="w-full p-2 rounded bg-white/20"
+                  className="w-full p-2 rounded bg-white/20 resize-none"
                   rows={4}
                 />
               ) : (

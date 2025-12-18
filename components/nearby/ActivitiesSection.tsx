@@ -2,7 +2,7 @@
 
 import { useEffect } from "react";
 import Image from "next/image";
-import { useAdmin } from "@/components/AdminProvider";
+import { useAdmin } from "@/components/common/AdminProvider";
 import { useContentEditor } from "@/utils/useContentEditor";
 import EditableImage from "@/components/admin/EditableImage";
 

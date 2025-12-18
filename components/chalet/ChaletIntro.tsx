@@ -1,14 +1,12 @@
 "use client";
 
 import React from "react";
-import { useAdmin } from "@/components/AdminProvider";
+import { useAdmin } from "@/components/common/AdminProvider";
 import { useContentEditor } from "@/utils/useContentEditor";
 
 interface IntroData {
   title: string;
-  p1: string;
-  p2: string;
-  p3: string;
+  content: string;
 }
 
 export default function ChaletIntro({
@@ -43,34 +41,23 @@ export default function ChaletIntro({
 
         <div className="text-gray-700 space-y-6 text-base leading-relaxed">
           {isAdmin ? (
-            <>
-              <textarea
-                defaultValue={dataContent.p1}
-                onBlur={(e) => handleUpdate(e, "p1")}
-                onKeyDown={(e) => handleUpdate(e, "p1")}
-                className="w-full p-2 rounded bg-white/20"
-                rows={3}
-              />
-              <textarea
-                defaultValue={dataContent.p2}
-                onBlur={(e) => handleUpdate(e, "p2")}
-                onKeyDown={(e) => handleUpdate(e, "p2")}
-                className="w-full p-2 rounded bg-white/20"
-                rows={3}
-              />
-              <textarea
-                defaultValue={dataContent.p3}
-                onBlur={(e) => handleUpdate(e, "p3")}
-                onKeyDown={(e) => handleUpdate(e, "p3")}
-                className="w-full p-2 rounded bg-white/20"
-                rows={3}
-              />
-            </>
+            <textarea
+              defaultValue={dataContent.content}
+              onBlur={(e) => handleUpdate(e, "content")}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                  return; // Permettre Enter pour nouvelle ligne
+                }
+                handleUpdate(e, "content");
+              }}
+              className="w-full p-2 rounded bg-white/20 resize-none"
+              rows={10}
+            />
           ) : (
             <>
-              <p>{dataContent.p1}</p>
-              <p>{dataContent.p2}</p>
-              <p>{dataContent.p3}</p>
+              {dataContent.content.split('\n').map((paragraph, index) => (
+                paragraph.trim() && <p key={index}>{paragraph}</p>
+              ))}
             </>
           )}
         </div>

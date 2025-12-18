@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import Image from 'next/image';
-import { useAdmin } from '@/components/AdminProvider';
+import { useAdmin } from '@/components/common/AdminProvider';
 import { X, Upload, Trash2 } from 'lucide-react';
 import ConfirmModal from './ConfirmModal';
 import AlertModal from './AlertModal';

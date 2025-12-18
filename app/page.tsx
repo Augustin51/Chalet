@@ -1,6 +1,6 @@
-import Features from "@/components/Features";
-import Gallery from "@/components/Gallery";
-import HomeHero from "@/components/HomeHero";
+import Features from "@/components/chalet/Features";
+import Gallery from "@/components/home/Gallery";
+import HomeHero from "@/components/home/HomeHero";
 import { prisma } from "@/lib/prisma";
 
 export default async function Home() {

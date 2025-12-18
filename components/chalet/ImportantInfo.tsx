@@ -2,10 +2,10 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { useAdmin } from '@/components/AdminProvider';
+import { useAdmin } from '@/components/common/AdminProvider';
 import { useContentEditor } from '@/utils/useContentEditor';
-import EditableLink from '@/components/admin/EditableLink';
-import Loading from '@/components/Loading';
+import Loading from '@/components/common/Loading';
+import AdminLinkEditor from '@/components/admin/inputs/AdminLinkEditor';
 
 interface InfoContent {
   title: string;
@@ -113,43 +113,29 @@ export default function ImportantInfo({ dataContent, dataInfoItems, page = 'cale
           
           {isAdmin ? (
             <div className="flex flex-col gap-2 w-full max-w-md mx-auto">
-              <div className="flex flex-col sm:flex-row gap-2">
-                <input
-                  type="text"
-                  defaultValue={dataContent.cta_contact_text}
-                  onBlur={(e) => handleUpdate(e, 'cta_contact_text')}
-                  onKeyDown={(e) => handleUpdate(e, 'cta_contact_text')}
-                  className="px-6 py-2 border border-[#467A5E] bg-[#467A5E] text-white rounded-full text-sm font-medium text-center flex-1 focus:border-white/50 focus:bg-[#346048] transition-colors"
-                  placeholder="Contact link"
-                />
-                <input
-                  type="text"
-                  defaultValue={dataContent.cta_platform_text}
-                  onBlur={(e) => handleUpdate(e, 'cta_platform_text')}
-                  onKeyDown={(e) => handleUpdate(e, 'cta_platform_text')}
-                  className="px-6 py-2 border border-gray-300 text-gray-700 bg-white rounded-full text-sm font-medium text-center flex-1 focus:border-gray-500/50 focus:bg-gray-50 transition-colors"
-                  placeholder="Platform link"
-                />
-              </div>
-              <div className="flex flex-col sm:flex-row gap-2">
-                <EditableLink
-                  href={dataContent.cta_contact_link}
-                  className="text-xs text-gray-600 bg-transparent border-transparent focus:border-gray-600/30 focus:bg-white/5 p-1 rounded text-center flex-1 transition-colors"
-                  onUpdate={async (newHref) => {
-                    await handleUpdate({ target: { value: newHref } } as any, 'cta_contact_link');
-                  }}
-                >
-                  {dataContent.cta_contact_link}
-                </EditableLink>
-                <EditableLink
-                  href={dataContent.cta_platform_link}
-                  className="text-xs text-gray-600 bg-transparent border-transparent focus:border-gray-600/30 focus:bg-white/5 p-1 rounded text-center flex-1 transition-colors"
-                  onUpdate={async (newHref) => {
-                    await handleUpdate({ target: { value: newHref } } as any, 'cta_platform_link');
-                  }}
-                >
-                  {dataContent.cta_platform_link}
-                </EditableLink>
+              <div className="flex flex-col sm:flex-row gap-3">
+                <div className="flex-1">
+                  <AdminLinkEditor
+                    buttonText={dataContent.cta_contact_text}
+                    buttonLink={dataContent.cta_contact_link}
+                    onButtonTextUpdate={(e) => handleUpdate(e, 'cta_contact_text')}
+                    onButtonLinkUpdate={(e) => handleUpdate({ target: { value: e.target.value } } as any, 'cta_contact_link')}
+                    textLabel="Texte bouton contact"
+                    linkLabel="Lien bouton contact"
+                    buttonClassName="px-6 py-2 border border-[#467A5E] bg-[#467A5E] text-white rounded-full text-sm font-medium text-center focus:outline-none focus:ring-2 focus:ring-white/50 transition-all"
+                  />
+                </div>
+                <div className="flex-1">
+                  <AdminLinkEditor
+                    buttonText={dataContent.cta_platform_text}
+                    buttonLink={dataContent.cta_platform_link}
+                    onButtonTextUpdate={(e) => handleUpdate(e, 'cta_platform_text')}
+                    onButtonLinkUpdate={(e) => handleUpdate({ target: { value: e.target.value } } as any, 'cta_platform_link')}
+                    textLabel="Texte bouton plateforme"
+                    linkLabel="Lien bouton plateforme"
+                    buttonClassName="px-6 py-2 border border-gray-300 text-gray-700 bg-white rounded-full text-sm font-medium text-center focus:outline-none focus:ring-2 focus:ring-gray-300/50 transition-all"
+                  />
+                </div>
               </div>              
             </div>
           ) : (

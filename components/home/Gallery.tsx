@@ -3,11 +3,11 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { useAdmin } from "@/components/AdminProvider";
+import { useAdmin } from "@/components/common/AdminProvider";
 import { useContentEditor } from "@/utils/useContentEditor";
-import EditableLink from "@/components/admin/EditableLink";
 import EditableImage from "@/components/admin/EditableImage";
-import Loading from "@/components/Loading";
+import Loading from "@/components/common/Loading";
+import AdminLinkEditor from "@/components/admin/inputs/AdminLinkEditor";
 
 interface GalleryImage {
   id: number;
@@ -64,7 +64,7 @@ export default function Gallery({ dataContent, dataImage }: GalleryProps) {
               onBlur={(e) => handleUpdate(e, "description")}
               onKeyDown={(e) => handleUpdate(e, "description")}
               rows={2}
-              className="w-full max-w-3xl mx-auto p-2 rounded bg-white/20 text-center"
+              className="w-full max-w-3xl mx-auto p-2 rounded bg-white/20 text-center resize-none"
             />
           ) : (
             dataContent.description
@@ -100,24 +100,16 @@ export default function Gallery({ dataContent, dataImage }: GalleryProps) {
 
         <div className="flex flex-col items-center gap-3">
           {isAdmin ? (
-            <div className="flex flex-col gap-1">
-              <input
-                type="text"
-                defaultValue={dataContent.cta_text}
-                onBlur={(e) => handleUpdate(e, "cta_text")}
-                onKeyDown={(e) => handleUpdate(e, "cta_text")}
-                className="bg-emerald-800 text-white text-center font-semibold py-3 px-6 rounded-full border border-white/50 w-full"
-                placeholder="Texte bouton"
+            <div>
+              <AdminLinkEditor
+                buttonText={dataContent.cta_text}
+                buttonLink={dataContent.cta_link}
+                onButtonTextUpdate={(e) => handleUpdate(e, "cta_text")}
+                onButtonLinkUpdate={(e) => handleUpdate({ target: { value: e.target.value } } as any, "cta_link")}
+                textLabel="Texte du bouton"
+                linkLabel="Lien du bouton"
+                buttonClassName="bg-emerald-800 text-white px-8 py-3 text-base rounded-full shadow-md text-center font-medium focus:outline-none focus:ring-2 focus:ring-white/50 transition-all"
               />
-              <EditableLink
-                href={dataContent.cta_link}
-                className="text-xs text-black bg-white/80 p-1 rounded text-center"
-                onUpdate={async (newHref) => {
-                  await handleUpdate({ target: { value: newHref } } as any, "cta_link");
-                }}
-              >
-                {dataContent.cta_link}
-              </EditableLink>
             </div>
           ) : (
             <Link href={dataContent.cta_link || "/"}>

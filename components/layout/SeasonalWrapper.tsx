@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import SeasonToggle from "@/components/SeasonToggle";
-import ActivitiesSection from "@/components/ActivitiesSection";
+import SeasonToggle from "@/components/layout/SeasonToggle";
+import ActivitiesSection from "@/components/nearby/ActivitiesSection";
 
 interface Activity { id: number; title: string; description: string; season: string; }
 interface Nearby { id: number; time: string; label: string; color: string; season: string; }

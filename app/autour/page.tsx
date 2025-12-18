@@ -1,6 +1,6 @@
-import PageHero from "@/components/PageHero";
-import LocalFavorites from "@/components/LocalFavorites";
-import SeasonalWrapper from "@/components/SeasonalWrapper";
+import PageHero from "@/components/shared/PageHero";
+import LocalFavorites from "@/components/nearby/LocalFavorites";
+import SeasonalWrapper from "@/components/layout/SeasonalWrapper";
 import { prisma } from "@/lib/prisma";
 
 export default async function AutourPage() {

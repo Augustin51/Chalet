@@ -2,9 +2,9 @@
 
 import { useEffect } from "react";
 import { Euro } from "lucide-react";
-import { useAdmin } from "@/components/AdminProvider";
+import { useAdmin } from "@/components/common/AdminProvider";
 import { useContentEditor } from "@/utils/useContentEditor";
-import Loading from "@/components/Loading";
+import Loading from "@/components/common/Loading";
 
 interface PriceContent {
   title: string;
