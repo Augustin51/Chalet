@@ -1,5 +1,6 @@
 "use client";
 
+import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
@@ -8,6 +9,9 @@ import { useContentEditor } from "@/utils/useContentEditor";
 import EditableImage from "@/components/admin/EditableImage";
 import Loading from "@/components/common/Loading";
 import AdminLinkEditor from "@/components/admin/inputs/AdminLinkEditor";
+import { Trash2, Plus } from "lucide-react";
+import ConfirmModal from "@/components/admin/ConfirmModal";
+import ImageSelectorModal from "@/components/admin/ImageSelectorModal";
 
 interface GalleryImage {
   id: number;
@@ -31,6 +35,54 @@ export default function Gallery({ dataContent, dataImage }: GalleryProps) {
 
   const isAdmin = useAdmin();
   const { handleUpdate } = useContentEditor("home", "Gallery");
+  const [images, setImages] = React.useState<GalleryImage[]>(dataImage);
+  const [showAddImageModal, setShowAddImageModal] = React.useState(false);
+  const [confirmDelete, setConfirmDelete] = React.useState<{ isOpen: boolean; id: number | null }>({ isOpen: false, id: null });
+
+  React.useEffect(() => {
+    setImages(dataImage);
+  }, [dataImage]);
+
+  const handleDeleteImage = async (id: number) => {
+    try {
+      const response = await fetch('/api/image/gallery/delete', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id }),
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        setImages(images.filter((img) => img.id !== id));
+        setConfirmDelete({ isOpen: false, id: null });
+      }
+    } catch (error) {
+      console.error('Erreur lors de la suppression:', error);
+    }
+  };
+
+  const handleCreateImage = async (imageName: string) => {
+    try {
+      const createResponse = await fetch('/api/image/create', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          src: imageName,
+          alt: 'Image de la galerie',
+        }),
+      });
+
+      const createResult = await createResponse.json();
+
+      if (createResult.success) {
+        setShowAddImageModal(false);
+        window.location.reload();
+      }
+    } catch (error) {
+      console.error('Erreur lors de l\'ajout:', error);
+    }
+  };
 
   if (!dataContent || !dataImage) {
     return (
@@ -57,7 +109,7 @@ export default function Gallery({ dataContent, dataImage }: GalleryProps) {
             dataContent.title
           )}
         </h2>
-        <p className="text-emerald-700/80 mb-12 text-lg text-center">
+        <p className="text-emerald-700/80 mb-8 text-lg text-center">
           {isAdmin ? (
             <textarea
               defaultValue={dataContent.description}
@@ -71,12 +123,35 @@ export default function Gallery({ dataContent, dataImage }: GalleryProps) {
           )}
         </p>
 
+        {/* Bouton ajouter une image */}
+        {isAdmin && (
+          <div className="flex justify-end mb-6">
+            <button
+              onClick={() => setShowAddImageModal(true)}
+              className="flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-full shadow-lg transition-colors"
+            >
+              <Plus className="w-5 h-5" />
+              Ajouter une image
+            </button>
+          </div>
+        )}
+
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mb-12">
-          {dataImage.map((img) => (
+          {images.map((img) => (
             <div
               key={img.id}
-              className="relative w-full aspect-[4/3] overflow-hidden rounded-2xl shadow-sm"
+              className="relative w-full aspect-[4/3] overflow-hidden rounded-2xl shadow-sm group"
             >
+              {isAdmin && (
+                <button
+                  onClick={() => setConfirmDelete({ isOpen: true, id: img.id })}
+                  className="absolute top-2 right-2 z-30 bg-red-500 hover:bg-red-600 text-white p-2 rounded-full shadow-lg opacity-0 group-hover:opacity-100 transition-opacity"
+                  title="Supprimer l'image"
+                >
+                  <Trash2 className="w-4 h-4" />
+                </button>
+              )}
+              
               <div className="hover:scale-[1.02] transition-transform w-full h-full">
                 <EditableImage
                   src={img.src}
@@ -120,6 +195,25 @@ export default function Gallery({ dataContent, dataImage }: GalleryProps) {
           )}
         </div>
       </div>
+
+      {/* Modal de confirmation de suppression */}
+      {isAdmin && (
+        <ConfirmModal
+          isOpen={confirmDelete.isOpen}
+          onCancel={() => setConfirmDelete({ isOpen: false, id: null })}
+          onConfirm={() => confirmDelete.id !== null && handleDeleteImage(confirmDelete.id)}
+          title="Supprimer l'image"
+          message="Êtes-vous sûr de vouloir supprimer cette image de la galerie ?"
+        />
+      )}
+
+      {/* Modal d'ajout d'image */}
+      <ImageSelectorModal
+        isOpen={isAdmin && showAddImageModal}
+        onClose={() => setShowAddImageModal(false)}
+        onSelect={handleCreateImage}
+        title="Ajouter une image à la galerie"
+      />
     </section>
   );
 }
