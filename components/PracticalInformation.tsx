@@ -3,6 +3,7 @@
 import React from 'react';
 import { useAdmin } from "@/components/AdminProvider";
 import { useContentEditor } from "@/utils/useContentEditor";
+import Loading from "@/components/Loading";
 
 interface PracticalInfoData {
   main_title: string;
