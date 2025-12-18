@@ -1,8 +1,8 @@
-import ChaletIntro from "@/components/ChaletIntro";
-import Equipment from "@/components/Equipment";
-import Gallery from "@/components/Gallery";
-import PageHero from "@/components/PageHero";
-import PracticalInformation from "@/components/PracticalInformation";
+import ChaletIntro from "@/components/chalet/ChaletIntro";
+import Equipment from "@/components/chalet/Equipment";
+import Gallery from "@/components/home/Gallery";
+import PageHero from "@/components/shared/PageHero";
+import PracticalInformation from "@/components/chalet/PracticalInformation";
 import { prisma } from "@/lib/prisma";
 
 export default async function ChaletPage() {

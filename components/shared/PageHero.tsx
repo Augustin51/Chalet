@@ -2,10 +2,11 @@
 
 import Image from "next/image";
 import React from "react";
-import { useAdmin } from "@/components/AdminProvider";
+import { useAdmin } from "@/components/common/AdminProvider";
 import { useContentEditor } from "@/utils/useContentEditor";
 import EditableImage from "@/components/admin/EditableImage";
-import Loading from "@/components/Loading";
+import Loading from "@/components/common/Loading";
+import AdminInput from "@/components/admin/inputs/AdminInput";
 
 interface PageHeroData {
   title: string;
@@ -57,11 +58,9 @@ export default function PageHero({ dataContent, page = "chalet" }: { dataContent
       <div className="relative z-20 text-center px-4 max-w-4xl">
         <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-serif font-bold tracking-tight mb-4 leading-snug">
           {isAdmin ? (
-            <input
-              type="text"
-              defaultValue={dataContent.title}
-              onBlur={(e) => handleUpdate(e, "title")}
-              onKeyDown={(e) => handleUpdate(e, "title")}
+            <AdminInput
+              value={dataContent.title}
+              onUpdate={(e) => handleUpdate(e, "title")}
               className="w-full text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-serif font-bold text-white bg-transparent border-transparent focus:border-white/30 focus:bg-white/5 p-2 rounded text-center transition-colors"
             />
           ) : (
@@ -71,11 +70,9 @@ export default function PageHero({ dataContent, page = "chalet" }: { dataContent
 
         <p className="text-base sm:text-lg md:text-xl font-light mx-auto max-w-xl">
           {isAdmin ? (
-            <input
-              type="text"
-              defaultValue={dataContent.description}
-              onBlur={(e) => handleUpdate(e, "description")}
-              onKeyDown={(e) => handleUpdate(e, "description")}
+            <AdminInput
+              value={dataContent.description}
+              onUpdate={(e) => handleUpdate(e, "description")}
               className="w-full max-w-xl mx-auto text-base sm:text-lg md:text-xl font-light text-white bg-transparent border-transparent focus:border-white/30 focus:bg-white/5 p-2 rounded text-center transition-colors"
             />
           ) : (

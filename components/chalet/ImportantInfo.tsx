@@ -2,10 +2,10 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { useAdmin } from '@/components/AdminProvider';
+import { useAdmin } from '@/components/common/AdminProvider';
 import { useContentEditor } from '@/utils/useContentEditor';
 import EditableLink from '@/components/admin/EditableLink';
-import Loading from '@/components/Loading';
+import Loading from '@/components/common/Loading';
 
 interface InfoContent {
   title: string;

@@ -1,14 +1,14 @@
 "use client";
 
 import { useEffect } from "react";
-import { useAdmin } from "@/components/AdminProvider";
+import { useAdmin } from "@/components/common/AdminProvider";
 import { useContentEditor } from "@/utils/useContentEditor";
 import { Star, Trash2 } from "lucide-react";
 import React from "react";
 import Image from "next/image";
 import EditableImage from "@/components/admin/EditableImage";
 import ConfirmModal from "@/components/admin/ConfirmModal";
-import Loading from "@/components/Loading";
+import Loading from "@/components/common/Loading";
 
 interface TestimonialContent {
   title: string;

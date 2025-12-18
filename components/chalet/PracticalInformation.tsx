@@ -1,9 +1,9 @@
 "use client";
 
 import React from 'react';
-import { useAdmin } from "@/components/AdminProvider";
+import { useAdmin } from "@/components/common/AdminProvider";
 import { useContentEditor } from "@/utils/useContentEditor";
-import Loading from "@/components/Loading";
+import Loading from "@/components/common/Loading";
 
 interface PracticalInfoData {
   main_title: string;

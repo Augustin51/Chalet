@@ -1,6 +1,6 @@
-import PageHero from "@/components/PageHero";
-import Stats from "@/components/Stats";
-import Testimonials from "@/components/Testimonials";
+import PageHero from "@/components/shared/PageHero";
+import Stats from "@/components/testimonials/Stats";
+import Testimonials from "@/components/testimonials/Testimonials";
 import { prisma } from "@/lib/prisma";
 
 export default async function AvisPage() {

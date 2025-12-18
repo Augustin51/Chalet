@@ -3,11 +3,11 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { useAdmin } from "@/components/AdminProvider";
+import { useAdmin } from "@/components/common/AdminProvider";
 import { useContentEditor } from "@/utils/useContentEditor";
 import EditableLink from "@/components/admin/EditableLink";
 import EditableImage from "@/components/admin/EditableImage";
-import Loading from "@/components/Loading";
+import Loading from "@/components/common/Loading";
 
 interface GalleryImage {
   id: number;

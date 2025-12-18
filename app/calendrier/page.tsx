@@ -1,7 +1,7 @@
-import PageHero from "@/components/PageHero";
-import Availability from "@/components/Availability";
-import ImportantInfo from "@/components/ImportantInfo";
-import Price from "@/components/Price";
+import PageHero from "@/components/shared/PageHero";
+import Availability from "@/components/calendar/Availability";
+import ImportantInfo from "@/components/chalet/ImportantInfo";
+import Price from "@/components/pricing/Price";
 import { prisma } from "@/lib/prisma";
 
 export default async function CalendrierPage() {
