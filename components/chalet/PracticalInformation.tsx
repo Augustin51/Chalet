@@ -68,7 +68,7 @@ export default function PracticalInformation({ dataContent, page = "chalet" }: {
                   defaultValue={dataContent.card_access_content}
                   onBlur={(e) => handleUpdate(e, "card_access_content")}
                   onKeyDown={(e) => handleUpdate(e, "card_access_content")}
-                  className="w-full p-2 rounded bg-white/20"
+                  className="w-full p-2 rounded bg-white/20 resize-none"
                   rows={4}
                 />
               ) : (
@@ -97,7 +97,7 @@ export default function PracticalInformation({ dataContent, page = "chalet" }: {
                   defaultValue={dataContent.card_rules_content}
                   onBlur={(e) => handleUpdate(e, "card_rules_content")}
                   onKeyDown={(e) => handleUpdate(e, "card_rules_content")}
-                  className="w-full p-2 rounded bg-white/20"
+                  className="w-full p-2 rounded bg-white/20 resize-none"
                   rows={4}
                 />
               ) : (

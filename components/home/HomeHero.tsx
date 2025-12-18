@@ -5,9 +5,9 @@ import { ArrowRight, ChevronDown } from "lucide-react";
 import Image from "next/image";
 import { useAdmin } from "@/components/common/AdminProvider";
 import { useContentEditor } from "@/utils/useContentEditor";
-import EditableLink from "@/components/admin/EditableLink";
 import EditableImage from "@/components/admin/EditableImage";
 import Loading from "@/components/common/Loading";
+import AdminLinkEditor from "@/components/admin/inputs/AdminLinkEditor";
 
 interface HomeHeroData {
   title: string;
@@ -70,12 +70,17 @@ export default function HomeHero({ dataContent }: { dataContent: HomeHeroData })
         
         {/* 1. TITRE EDITABLE */}
         {isAdmin ? (
-          <input
-            type="text"
+          <textarea
             defaultValue={dataContent.title}
             onBlur={(e) => handleUpdate(e, "title")}
-            onKeyDown={(e) => handleUpdate(e, "title")}
-            className="w-full text-center text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight leading-tight text-white drop-shadow-md bg-transparent border border-transparent px-2 py-1 mb-6 focus:outline-none focus:border-white/40 focus:bg-black/20 rounded transition-colors"
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                handleUpdate(e, "title");
+              }
+            }}
+            rows={2}
+            className="w-full text-center text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight leading-tight text-white drop-shadow-md bg-transparent border border-transparent px-2 py-1 mb-6 focus:outline-none focus:border-white/40 focus:bg-black/20 rounded transition-colors resize-none"
           />
         ) : (
           <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight mb-6 leading-tight drop-shadow-md">
@@ -103,24 +108,16 @@ export default function HomeHero({ dataContent }: { dataContent: HomeHeroData })
           
           {/* BOUTON PRIMAIRE */}
           {isAdmin ? (
-            <div className="flex flex-col gap-1 w-full sm:w-auto">
-              <input
-                type="text"
-                defaultValue={dataContent.cta_primary_text}
-                onBlur={(e) => handleUpdate(e, "cta_primary_text")}
-                onKeyDown={(e) => handleUpdate(e, "cta_primary_text")}
-                className="bg-green-700 text-white font-semibold py-3 px-8 rounded-full shadow-lg text-center border border-transparent focus:outline-none focus:border-white/40 transition-colors"
-                placeholder="Texte bouton 1"
+            <div className="w-full sm:w-auto">
+              <AdminLinkEditor
+                buttonText={dataContent.cta_primary_text}
+                buttonLink={dataContent.cta_primary_link}
+                onButtonTextUpdate={(e) => handleUpdate(e, "cta_primary_text")}
+                onButtonLinkUpdate={(e) => handleUpdate({ target: { value: e.target.value } } as any, "cta_primary_link")}
+                textLabel="Texte bouton principal"
+                linkLabel="Lien bouton principal"
+                buttonClassName="bg-green-700 text-white font-semibold py-3 px-8 rounded-full shadow-lg text-center border border-transparent focus:outline-none focus:ring-2 focus:ring-white/50 transition-all"
               />
-              <EditableLink
-                href={dataContent.cta_primary_link}
-                className="text-xs text-gray-600 bg-white/90 px-2 py-1 rounded text-center border border-transparent focus:outline-none focus:border-green-700/30 transition-colors"
-                onUpdate={async (newHref) => {
-                  await handleUpdate({ target: { value: newHref } } as any, "cta_primary_link");
-                }}
-              >
-                {dataContent.cta_primary_link}
-              </EditableLink>
             </div>
           ) : (
             <Link
@@ -134,24 +131,16 @@ export default function HomeHero({ dataContent }: { dataContent: HomeHeroData })
 
           {/* BOUTON SECONDAIRE */}
           {isAdmin ? (
-            <div className="flex flex-col gap-1 w-full sm:w-auto">
-              <input
-                type="text"
-                defaultValue={dataContent.cta_secondary_text}
-                onBlur={(e) => handleUpdate(e, "cta_secondary_text")}
-                onKeyDown={(e) => handleUpdate(e, "cta_secondary_text")}
-                className="bg-white/10 backdrop-blur-sm border border-white/30 text-white font-semibold py-3 px-8 rounded-full text-center focus:outline-none focus:border-white/50 focus:bg-white/20 transition-colors"
-                placeholder="Texte bouton 2"
+            <div className="w-full sm:w-auto">
+              <AdminLinkEditor
+                buttonText={dataContent.cta_secondary_text}
+                buttonLink={dataContent.cta_secondary_link}
+                onButtonTextUpdate={(e) => handleUpdate(e, "cta_secondary_text")}
+                onButtonLinkUpdate={(e) => handleUpdate({ target: { value: e.target.value } } as any, "cta_secondary_link")}
+                textLabel="Texte bouton secondaire"
+                linkLabel="Lien bouton secondaire"
+                buttonClassName="bg-white/10 backdrop-blur-sm border border-white/30 text-white font-semibold py-3 px-8 rounded-full text-center focus:outline-none focus:ring-2 focus:ring-white/50 focus:bg-white/20 transition-all"
               />
-              <EditableLink
-                href={dataContent.cta_secondary_link}
-                className="text-xs text-gray-600 bg-white/90 px-2 py-1 rounded text-center border border-transparent focus:outline-none focus:border-white/40 transition-colors"
-                onUpdate={async (newHref) => {
-                  await handleUpdate({ target: { value: newHref } } as any, "cta_secondary_link");
-                }}
-              >
-                {dataContent.cta_secondary_link}
-              </EditableLink>
             </div>
           ) : (
             <Link
