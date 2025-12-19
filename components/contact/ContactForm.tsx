@@ -1,7 +1,7 @@
 "use client";
 
 import React from 'react';
-import { iconMap, DefaultIcon } from "@/lib/iconMap";
+import { iconMap } from "@/lib/iconMap";
 import { useAdmin } from "@/components/common/AdminProvider";
 import { useContentEditor } from "@/utils/useContentEditor";
 
@@ -189,7 +189,7 @@ export default function ContactForm({ dataContent, dataInfo, formFields }: Conta
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16">
           <div className="space-y-4">
               {dataInfo.map((item) => {
-                const Icon = iconMap[item.iconName] || DefaultIcon;
+                const Icon = iconMap[item.iconName];
                 return (
                   <div key={item.id} className="bg-white p-4 sm:p-5 rounded-lg shadow-sm border border-gray-100 flex items-start">
                     <Icon className="h-6 w-6 text-[#467A5E] mr-4 flex-shrink-0 mt-0.5" />

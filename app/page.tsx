@@ -8,7 +8,9 @@ export default async function Home() {
     where: { page: "home" }
   });
 
-  const featuresData = await prisma.feature.findMany();
+  const featuresData = await prisma.feature.findMany({
+    orderBy: { id: 'asc' }
+  });
   const galleryData = await prisma.galleryImage.findMany({ take: 6 });
 
   const content = contentData?.reduce((acc: any, item: any) => {

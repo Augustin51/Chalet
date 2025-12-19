@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import { LucideIcon } from "lucide-react";
-import { iconMap, DefaultIcon } from "@/lib/iconMap";
+import { iconMap } from "@/lib/iconMap";
 import { useAdmin } from "@/components/common/AdminProvider";
 import { useContentEditor } from "@/utils/useContentEditor";
 import Loading from "@/components/common/Loading";
@@ -84,7 +84,7 @@ export default function LocalFavorites({ dataContent, dataFavorites, page = "aut
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 sm:gap-10">
           {dataFavorites.map((favorite) => {
-            const Icon = iconMap[favorite.iconName] || DefaultIcon;
+            const Icon = iconMap[favorite.iconName];
             return (
               <div
                 key={favorite.id}

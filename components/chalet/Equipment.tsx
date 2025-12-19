@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { iconMap, DefaultIcon } from "@/lib/iconMap";
+import { iconMap } from "@/lib/iconMap";
 import { useAdmin } from "@/components/common/AdminProvider";
 import { useContentEditor } from "@/utils/useContentEditor";
 
@@ -48,7 +48,7 @@ export default function Equipment({ dataContent, dataEquipment, page = "chalet" 
         
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
           {dataEquipment.map((equipment) => {
-            const Icon = iconMap[equipment.iconName] || DefaultIcon;
+            const Icon = iconMap[equipment.iconName];
             return (
               <div
                 key={equipment.id}
