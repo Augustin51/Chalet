@@ -2,10 +2,11 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { useAdmin } from '@/components/common/AdminProvider';
+import { useAdmin } from '@/components/admin/AdminProvider';
 import { useContentEditor } from '@/utils/useContentEditor';
 import Loading from '@/components/common/Loading';
 import AdminLinkEditor from '@/components/admin/inputs/AdminLinkEditor';
+import AnimationWrapper from '@/components/common/AnimationWrapper';
 
 interface InfoContent {
   title: string;
@@ -48,7 +49,8 @@ export default function ImportantInfo({ dataContent, dataInfoItems, page = 'cale
   return (
     <div className="container mx-auto my-9 max-w-4xl px-4 sm:px-6 lg:px-8">
       <div className="bg-white p-6 sm:p-10 rounded-2xl shadow-xl border border-gray-100">
-        <div className="flex items-start mb-6">
+        <AnimationWrapper variant="pop" delay={0} className="w-full">
+          <div className="flex items-start mb-6">
           <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 mr-3 mt-1 text-[#467A5E] flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
           </svg>
@@ -65,35 +67,39 @@ export default function ImportantInfo({ dataContent, dataInfoItems, page = 'cale
           ) : (
             <h3 className="text-2xl font-semibold text-[#2c4b3a]">{dataContent.title}</h3>
           )}
-        </div>
+          </div>
+        </AnimationWrapper>
 
-        <ul className="list-disc ml-6 space-y-2 text-gray-700 text-base mb-8">
-          {dataInfoItems.map((item) => (
-            <li key={item.id} className="marker:text-[#467A5E]">
-              {isAdmin ? (
-                <input
-                  type="text"
-                  defaultValue={item.text}
-                  onBlur={(e) => updateInfoItem(item.id, e.target.value)}
-                  onKeyDown={(e) => {
-                    if (e.key === 'Enter' && !e.shiftKey) {
-                      e.preventDefault();
-                      updateInfoItem(item.id, (e.target as HTMLInputElement).value);
-                      (e.target as HTMLInputElement).blur();
-                    }
-                  }}
-                  onInput={(e: any) => e.target.size = e.target.value.length + 1}
-                  className="text-gray-700 text-base bg-transparent border-transparent focus:border-[#467A5E]/30 focus:bg-white/5 p-1 rounded transition-colors"
-                  size={item.text.length + 1}
-                />
-              ) : (
-                item.text
-              )}
-            </li>
-          ))}
-        </ul>
+        <AnimationWrapper variant="fade-up" delay={0.06} className="w-full">
+          <ul className="list-disc ml-6 space-y-2 text-gray-700 text-base mb-8">
+            {dataInfoItems.map((item) => (
+              <li key={item.id} className="marker:text-[#467A5E]">
+                {isAdmin ? (
+                  <input
+                    type="text"
+                    defaultValue={item.text}
+                    onBlur={(e) => updateInfoItem(item.id, e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' && !e.shiftKey) {
+                        e.preventDefault();
+                        updateInfoItem(item.id, (e.target as HTMLInputElement).value);
+                        (e.target as HTMLInputElement).blur();
+                      }
+                    }}
+                    onInput={(e: any) => e.target.size = e.target.value.length + 1}
+                    className="text-gray-700 text-base bg-transparent border-transparent focus:border-[#467A5E]/30 focus:bg-white/5 p-1 rounded transition-colors"
+                    size={item.text.length + 1}
+                  />
+                ) : (
+                  item.text
+                )}
+              </li>
+            ))}
+          </ul>
+        </AnimationWrapper>
         
-        <div className="border-t border-gray-200 pt-6 flex flex-col items-center">
+        <AnimationWrapper variant="fade-up" delay={0.12} className="w-full">
+          <div className="border-t border-gray-200 pt-6 flex flex-col items-center">
           
           <p className="text-sm text-gray-500 mb-4 text-center">
             {isAdmin ? (
@@ -155,7 +161,8 @@ export default function ImportantInfo({ dataContent, dataInfoItems, page = 'cale
               </Link>
             </div>
           )}
-        </div>
+          </div>
+        </AnimationWrapper>
 
       </div>
     </div>

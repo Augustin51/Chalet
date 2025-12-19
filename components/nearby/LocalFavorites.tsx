@@ -4,9 +4,10 @@ import React, { useEffect, useRef, useState } from "react";
 import { LucideIcon } from "lucide-react";
 import { iconMap } from "@/lib/iconMap";
 import IconSelectorModal from "@/components/admin/IconSelectorModal";
-import { useAdmin } from "@/components/common/AdminProvider";
+import { useAdmin } from "@/components/admin/AdminProvider";
 import { useContentEditor } from "@/utils/useContentEditor";
 import Loading from "@/components/common/Loading";
+import AnimationWrapper from "@/components/common/AnimationWrapper";
 
 interface FavoritesContent {
   title: string;
@@ -78,8 +79,9 @@ export default function LocalFavorites({ dataContent, dataFavorites, page = "aut
         </div>
       )}
       <div className="max-w-6xl mx-auto">
-        <div className="text-center mb-12 sm:mb-16">
-          <h2 className="text-4xl sm:text-5xl font-serif font-bold text-[#2c4b3a] mb-3">
+        <AnimationWrapper variant="fade-up" delay={0} className="w-full">
+          <div className="text-center mb-12 sm:mb-16">
+            <h2 className="text-4xl sm:text-5xl font-serif font-bold text-[#2c4b3a] mb-3">
             {isAdmin ? (
               <input
                 type="text"
@@ -91,8 +93,8 @@ export default function LocalFavorites({ dataContent, dataFavorites, page = "aut
             ) : (
               dataContent.title
             )}
-          </h2>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+            </h2>
+            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
             {isAdmin ? (
               <textarea
                 defaultValue={dataContent.subtitle}
@@ -104,16 +106,18 @@ export default function LocalFavorites({ dataContent, dataFavorites, page = "aut
             ) : (
               dataContent.subtitle
             )}
-          </p>
-        </div>
+            </p>
+          </div>
+        </AnimationWrapper>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 sm:gap-10">
-          {favorites.map((favorite) => {
+          {favorites.map((favorite, i) => {
             const Icon = iconMap[favorite.iconName];
             return (
-              <div
-                key={favorite.id}
-                className="bg-white p-6 sm:p-8 rounded-2xl shadow-md transition-shadow duration-300 hover:shadow-lg border border-gray-100 h-full"
-              >
+              <AnimationWrapper key={favorite.id} variant="fade-up" delay={0.04 + i * 0.02} className="w-full">
+                <div
+                  key={favorite.id}
+                  className="bg-white p-6 sm:p-8 rounded-2xl shadow-md transition-shadow duration-300 hover:shadow-lg border border-gray-100 h-full animation-card"
+                >
                 <div
                   className={isAdmin ? `mb-4 w-10 h-10 flex items-center justify-center rounded-full border-2 ${iconModalOpen.favoriteId === favorite.id ? 'border-emerald-600 bg-emerald-50' : 'border-[#467A5E]/40'} cursor-pointer hover:bg-emerald-50 transition-colors` : 'mb-4 w-10 h-10 flex items-center justify-center rounded-full border-2 border-[#467A5E]/40'}
                   onClick={() => {
@@ -153,6 +157,7 @@ export default function LocalFavorites({ dataContent, dataFavorites, page = "aut
                   </>
                 )}
               </div>
+              </AnimationWrapper>
             );
           })}
         </div>

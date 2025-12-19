@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { Star } from 'lucide-react';
-import { useAdmin } from "@/components/common/AdminProvider";
+import { useAdmin } from "@/components/admin/AdminProvider";
 import { useContentEditor } from "@/utils/useContentEditor";
 import Loading from "@/components/common/Loading";
 

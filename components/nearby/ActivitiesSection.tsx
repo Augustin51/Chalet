@@ -2,9 +2,10 @@
 
 import { useEffect } from "react";
 import Image from "next/image";
-import { useAdmin } from "@/components/common/AdminProvider";
+import { useAdmin } from "@/components/admin/AdminProvider";
 import { useContentEditor } from "@/utils/useContentEditor";
 import EditableImage from "@/components/admin/EditableImage";
+import AnimationWrapper from '@/components/common/AnimationWrapper';
 
 interface Activity {
   id: number;
@@ -79,10 +80,11 @@ export default function ActivitiesSection({ imageSrc, imageAlt, activitiesList, 
   }
 
   return (
-    <section className="bg-[#fdfaf5] py-12 px-6 rounded-xl">
+    <section className="bg-[#fdfaf5] py-12 px-6 rounded-xl activities-section">
       <div className="max-w-6xl mx-auto">
-        <div className="relative w-full h-72 md:h-96 mb-8 overflow-hidden rounded-2xl shadow-sm">
-          <EditableImage
+        <AnimationWrapper variant="float" delay={0} className="w-full">
+          <div className="relative w-full h-72 md:h-96 mb-8 overflow-hidden rounded-2xl shadow-sm">
+            <EditableImage
             src={imageSrc}
             alt={imageAlt}
             fill
@@ -100,73 +102,71 @@ export default function ActivitiesSection({ imageSrc, imageAlt, activitiesList, 
               });
               window.location.reload();
             }}
-          />
-        </div>
+            />
+          </div>
+        </AnimationWrapper>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-12">
-          {activitiesList.map((activity) => (
-            <div
-              key={activity.id}
-              className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm text-left"
-            >
-              {isAdmin ? (
-                <>
-                  <input
-                    type="text"
-                    defaultValue={activity.title}
-                    onBlur={(e: React.FocusEvent<HTMLInputElement>) => updateActivity(activity.id, 'title', e.target.value)}
-                    onKeyDown={(e) => handleInlineKey(e, () => updateActivity(activity.id, 'title', (e.target as HTMLInputElement).value))}
-                    className="text-xl font-semibold text-emerald-900 mb-2 w-full p-1 rounded bg-white/20"
-                  />
-                  <textarea
-                    defaultValue={activity.description}
-                    onBlur={(e: React.FocusEvent<HTMLTextAreaElement>) => updateActivity(activity.id, 'description', e.target.value)}
-                    onKeyDown={(e) => handleInlineKey(e, () => updateActivity(activity.id, 'description', (e.target as HTMLTextAreaElement).value))}
-                    onInput={autoResize}
-                    className="text-emerald-700/80 text-sm w-full p-1 rounded bg-transparent border-transparent focus:border-emerald-700/30 focus:bg-white/5 transition-colors resize-none overflow-hidden min-h-[3rem]"
-                  />
-                </>
-              ) : (
-                <>
-                  <h3 className="text-xl font-semibold text-emerald-900 mb-2">
-                    {activity.title}
-                  </h3>
-                  <p className="text-emerald-700/80 text-sm">
-                    {activity.description}
-                  </p>
-                </>
-              )}
-            </div>
+          {activitiesList.map((activity, idx) => (
+            <AnimationWrapper key={activity.id} variant="pop" delay={idx * 0.06} className="w-full">
+              <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm text-left">
+                {isAdmin ? (
+                  <>
+                    <input
+                      type="text"
+                      defaultValue={activity.title}
+                      onBlur={(e: React.FocusEvent<HTMLInputElement>) => updateActivity(activity.id, 'title', e.target.value)}
+                      onKeyDown={(e) => handleInlineKey(e, () => updateActivity(activity.id, 'title', (e.target as HTMLInputElement).value))}
+                      className="text-xl font-semibold text-emerald-900 mb-2 w-full p-1 rounded bg-white/20"
+                    />
+                    <textarea
+                      defaultValue={activity.description}
+                      onBlur={(e: React.FocusEvent<HTMLTextAreaElement>) => updateActivity(activity.id, 'description', e.target.value)}
+                      onKeyDown={(e) => handleInlineKey(e, () => updateActivity(activity.id, 'description', (e.target as HTMLTextAreaElement).value))}
+                      onInput={autoResize}
+                      className="text-emerald-700/80 text-sm w-full p-1 rounded bg-transparent border-transparent focus:border-emerald-700/30 focus:bg-white/5 transition-colors resize-none overflow-hidden min-h-[3rem]"
+                    />
+                  </>
+                ) : (
+                  <>
+                    <h3 className="text-xl font-semibold text-emerald-900 mb-2">{activity.title}</h3>
+                    <p className="text-emerald-700/80 text-sm">{activity.description}</p>
+                  </>
+                )}
+              </div>
+            </AnimationWrapper>
           ))}
         </div>
 
         <div className="bg-white border border-gray-200 rounded-xl p-6 flex justify-around text-center shadow-sm">
-          {nearbyList.map((item) => (
-            <div key={item.id}>
-              {isAdmin ? (
-                <>
-                  <input
-                    type="text"
-                    defaultValue={item.time}
-                    onBlur={(e: React.FocusEvent<HTMLInputElement>) => updateNearby(item.id, 'time', e.target.value)}
-                    onKeyDown={(e) => handleInlineKey(e, () => updateNearby(item.id, 'time', (e.target as HTMLInputElement).value))}
-                    className={`text-2xl font-bold ${item.color} mb-1 w-full p-1 rounded bg-white/20 text-center`}
-                  />
-                  <input
-                    type="text"
-                    defaultValue={item.label}
-                    onBlur={(e: React.FocusEvent<HTMLInputElement>) => updateNearby(item.id, 'label', e.target.value)}
-                    onKeyDown={(e) => handleInlineKey(e, () => updateNearby(item.id, 'label', (e.target as HTMLInputElement).value))}
-                    className="text-sm text-gray-600 w-full p-1 rounded bg-white/20 text-center"
-                  />
-                </>
-              ) : (
-                <>
-                  <p className={`text-2xl font-bold ${item.color} mb-1`}>{item.time}</p>
-                  <p className="text-sm text-gray-600">{item.label}</p>
-                </>
-              )}
-            </div>
+          {nearbyList.map((item, idx) => (
+            <AnimationWrapper key={item.id} variant="fade-up" delay={0.06 + idx * 0.04} className="w-1/5">
+              <div>
+                {isAdmin ? (
+                  <>
+                    <input
+                      type="text"
+                      defaultValue={item.time}
+                      onBlur={(e: React.FocusEvent<HTMLInputElement>) => updateNearby(item.id, 'time', e.target.value)}
+                      onKeyDown={(e) => handleInlineKey(e, () => updateNearby(item.id, 'time', (e.target as HTMLInputElement).value))}
+                      className={`text-2xl font-bold ${item.color} mb-1 w-full p-1 rounded bg-white/20 text-center animation-pop animation-hover-raise`}
+                    />
+                    <input
+                      type="text"
+                      defaultValue={item.label}
+                      onBlur={(e: React.FocusEvent<HTMLInputElement>) => updateNearby(item.id, 'label', e.target.value)}
+                      onKeyDown={(e) => handleInlineKey(e, () => updateNearby(item.id, 'label', (e.target as HTMLInputElement).value))}
+                      className="text-sm text-gray-600 w-full p-1 rounded bg-white/20 text-center animation-pop animation-wavy"
+                    />
+                  </>
+                ) : (
+                  <>
+                    <p className={`text-2xl font-bold ${item.color} mb-1 animation-pop animation-hover-raise`}>{item.time}</p>
+                    <p className="text-sm text-gray-600 animation-pop animation-wavy">{item.label}</p>
+                  </>
+                )}
+              </div>
+            </AnimationWrapper>
           ))}
         </div>
       </div>

@@ -4,7 +4,7 @@ import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { useAdmin } from "@/components/common/AdminProvider";
+import { useAdmin } from "@/components/admin/AdminProvider";
 import { useContentEditor } from "@/utils/useContentEditor";
 import EditableImage from "@/components/admin/EditableImage";
 import Loading from "@/components/common/Loading";
@@ -12,6 +12,7 @@ import AdminLinkEditor from "@/components/admin/inputs/AdminLinkEditor";
 import { Trash2, Plus } from "lucide-react";
 import ConfirmModal from "@/components/admin/ConfirmModal";
 import ImageSelectorModal from "@/components/admin/ImageSelectorModal";
+import AnimationWrapper from "@/components/common/AnimationWrapper";
 
 interface GalleryImage {
   id: number;
@@ -96,52 +97,57 @@ export default function Gallery({ dataContent, dataImage }: GalleryProps) {
     <section className="bg-white py-20 px-6 md:px-12">
       <div className="max-w-6xl mx-auto text-center">
         
-        <h2 className="text-4xl md:text-5xl font-extrabold text-emerald-900 mb-3 text-center">
-          {isAdmin ? (
-            <input
-              type="text"
-              defaultValue={dataContent.title}
-              onBlur={(e) => handleUpdate(e, "title")}
-              onKeyDown={(e) => handleUpdate(e, "title")}
-              className="w-full text-4xl md:text-5xl font-extrabold bg-white/20 p-2 rounded text-center"
-            />
-          ) : (
-            dataContent.title
-          )}
-        </h2>
-        <p className="text-emerald-700/80 mb-8 text-lg text-center">
-          {isAdmin ? (
-            <textarea
-              defaultValue={dataContent.description}
-              onBlur={(e) => handleUpdate(e, "description")}
-              onKeyDown={(e) => handleUpdate(e, "description")}
-              rows={2}
-              className="w-full max-w-3xl mx-auto p-2 rounded bg-white/20 text-center resize-none"
-            />
-          ) : (
-            dataContent.description
-          )}
-        </p>
+        <AnimationWrapper variant="fade-up" delay={0} className="w-full">
+          <h2 className="text-4xl md:text-5xl font-extrabold text-emerald-900 mb-3 text-center">
+            {isAdmin ? (
+              <input
+                type="text"
+                defaultValue={dataContent.title}
+                onBlur={(e) => handleUpdate(e, "title")}
+                onKeyDown={(e) => handleUpdate(e, "title")}
+                className="w-full text-4xl md:text-5xl font-extrabold bg-white/20 p-2 rounded text-center"
+              />
+            ) : (
+              dataContent.title
+            )}
+          </h2>
+          <p className="text-emerald-700/80 mb-8 text-lg text-center">
+            {isAdmin ? (
+              <textarea
+                defaultValue={dataContent.description}
+                onBlur={(e) => handleUpdate(e, "description")}
+                onKeyDown={(e) => handleUpdate(e, "description")}
+                rows={2}
+                className="w-full max-w-3xl mx-auto p-2 rounded bg-white/20 text-center resize-none"
+              />
+            ) : (
+              dataContent.description
+            )}
+          </p>
+        </AnimationWrapper>
 
         {/* Bouton ajouter une image */}
         {isAdmin && (
           <div className="flex justify-end mb-6">
-            <button
-              onClick={() => setShowAddImageModal(true)}
-              className="flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-full shadow-lg transition-colors"
-            >
-              <Plus className="w-5 h-5" />
-              Ajouter une image
-            </button>
+            <AnimationWrapper variant="pop" delay={0.02} className="inline-block">
+              <button
+                onClick={() => setShowAddImageModal(true)}
+                className="flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-full shadow-lg transition-colors animation-pop animation-hover-raise"
+              >
+                <Plus className="w-5 h-5" />
+                Ajouter une image
+              </button>
+            </AnimationWrapper>
           </div>
         )}
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mb-12">
-          {images.map((img) => (
-            <div
-              key={img.id}
-              className="relative w-full aspect-[4/3] overflow-hidden rounded-2xl shadow-sm group"
-            >
+          {images.map((img, i) => (
+            <AnimationWrapper key={img.id} variant="fade-up" delay={0.04 + i * 0.03} className="w-full">
+              <div
+                key={img.id}
+                className="relative w-full aspect-[4/3] overflow-hidden rounded-2xl shadow-sm group animation-card"
+              >
               {isAdmin && (
                 <button
                   onClick={() => setConfirmDelete({ isOpen: true, id: img.id })}
@@ -169,7 +175,8 @@ export default function Gallery({ dataContent, dataImage }: GalleryProps) {
                   }}
                 />
               </div>
-            </div>
+              </div>
+            </AnimationWrapper>
           ))}
         </div>
 

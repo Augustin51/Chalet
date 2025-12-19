@@ -1,7 +1,8 @@
 "use client";
 
 import React from "react";
-import { useAdmin } from "@/components/common/AdminProvider";
+import { useAdmin } from "@/components/admin/AdminProvider";
+import AnimationWrapper from "@/components/common/AnimationWrapper";
 import { useContentEditor } from "@/utils/useContentEditor";
 
 interface IntroData {
@@ -25,7 +26,8 @@ export default function ChaletIntro({
   return (
     <section className="py-16 px-4 sm:px-6 lg:px-8 bg-white">
       <div className="container mx-auto max-w-4xl">
-        <h2 className="text-4xl sm:text-5xl font-serif font-bold text-[#2c4b3a] mb-8">
+        <AnimationWrapper variant="wavy" delay={0} className="w-full">
+          <h2 className="text-4xl sm:text-5xl font-serif font-bold text-[#2c4b3a] mb-8">
           {isAdmin ? (
             <input
               type="text"
@@ -37,9 +39,11 @@ export default function ChaletIntro({
           ) : (
             dataContent.title
           )}
-        </h2>
+          </h2>
+        </AnimationWrapper>
 
-        <div className="text-gray-700 space-y-6 text-base leading-relaxed">
+        <AnimationWrapper variant="fade-up" delay={0.06} className="w-full">
+          <div className="text-gray-700 space-y-6 text-base leading-relaxed">
           {isAdmin ? (
             <textarea
               defaultValue={dataContent.content}
@@ -60,7 +64,8 @@ export default function ChaletIntro({
               ))}
             </>
           )}
-        </div>
+          </div>
+        </AnimationWrapper>
       </div>
     </section>
   );

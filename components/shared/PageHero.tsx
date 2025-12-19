@@ -2,8 +2,9 @@
 
 import Image from "next/image";
 import React from "react";
-import { useAdmin } from "@/components/common/AdminProvider";
+import { useAdmin } from "@/components/admin/AdminProvider";
 import { useContentEditor } from "@/utils/useContentEditor";
+import AnimationWrapper from "@/components/common/AnimationWrapper";
 import EditableImage from "@/components/admin/EditableImage";
 import Loading from "@/components/common/Loading";
 import AdminInput from "@/components/admin/inputs/AdminInput";
@@ -56,7 +57,8 @@ export default function PageHero({ dataContent, page = "chalet" }: { dataContent
       <div className="absolute inset-0 bg-black/60 z-10 pointer-events-none" />
       
       <div className="relative z-20 text-center px-4 max-w-4xl">
-        <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-serif font-bold tracking-tight mb-4 leading-snug">
+        <AnimationWrapper variant="wavy" delay={0} className="w-full">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-serif font-bold tracking-tight mb-4 leading-snug">
           {isAdmin ? (
             <AdminInput
               value={dataContent.title}
@@ -66,9 +68,11 @@ export default function PageHero({ dataContent, page = "chalet" }: { dataContent
           ) : (
             dataContent.title
           )}
-        </h2>
+          </h2>
+        </AnimationWrapper>
 
-        <p className="text-base sm:text-lg md:text-xl font-light mx-auto max-w-xl">
+        <AnimationWrapper variant="fade-up" delay={0.06} className="w-full">
+          <p className="text-base sm:text-lg md:text-xl font-light mx-auto max-w-xl">
           {isAdmin ? (
             <AdminInput
               value={dataContent.description}
@@ -78,7 +82,8 @@ export default function PageHero({ dataContent, page = "chalet" }: { dataContent
           ) : (
             dataContent.description
           )}
-        </p>
+          </p>
+        </AnimationWrapper>
       </div>
     </section>
   );

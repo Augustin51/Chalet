@@ -2,10 +2,11 @@
 
 import React, { useState, useEffect } from 'react';
 import { Calendar, ChevronLeft, ChevronRight } from 'lucide-react';
-import { useAdmin } from '@/components/common/AdminProvider';
+import { useAdmin } from '@/components/admin/AdminProvider';
 import { useContentEditor } from '@/utils/useContentEditor';
 import AdminCalendar from '@/components/admin/AdminCalendar';
 import Loading from '@/components/common/Loading';
+import AnimationWrapper from '@/components/common/AnimationWrapper';
 
 interface AvailabilityData {
   title: string;
@@ -177,9 +178,9 @@ export default function Availability({ dataContent, page = 'calendrier' }: { dat
   return (
     <section className="bg-[#fcfaf7] py-16 sm:py-20 md:py-24 px-4 sm:px-6 lg:px-8">
       <div className="container mx-auto max-w-6xl">
-        
-        <div className="text-center mb-12 sm:mb-16">
-          <h2 className="text-4xl sm:text-5xl font-serif font-bold text-[#2c4b3a] mb-2">
+        <AnimationWrapper variant="pop" delay={0} className="w-full">
+          <div className="text-center mb-12 sm:mb-16">
+            <h2 className="text-4xl sm:text-5xl font-serif font-bold text-[#2c4b3a] mb-2">
             {isAdmin ? (
               <input
                 type="text"
@@ -191,8 +192,8 @@ export default function Availability({ dataContent, page = 'calendrier' }: { dat
             ) : (
               dataContent.title
             )}
-          </h2>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+            </h2>
+            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
             {isAdmin ? (
               <input
                 type="text"
@@ -204,8 +205,9 @@ export default function Availability({ dataContent, page = 'calendrier' }: { dat
             ) : (
               dataContent.subtitle
             )}
-          </p>
-        </div>
+            </p>
+          </div>
+        </AnimationWrapper>
 
         {/* Interface admin de gestion (conditionnelle) en overlay */}
         {isAdmin && showAdminPanel && (
@@ -232,7 +234,8 @@ export default function Availability({ dataContent, page = 'calendrier' }: { dat
         )}
 
         {/* Bouton admin et légende */}
-        <div className="flex flex-col items-center gap-4 mb-4 sm:mb-6">
+        <div className="w-full">
+          <div className="flex flex-col items-center gap-4 mb-4 sm:mb-6">
           {isAdmin && (
             <button
               onClick={() => setShowAdminPanel(!showAdminPanel)}
@@ -428,7 +431,7 @@ export default function Availability({ dataContent, page = 'calendrier' }: { dat
             </div>
           )}
         </div>
-        
+      </div>
       </div>
     </section>
   );

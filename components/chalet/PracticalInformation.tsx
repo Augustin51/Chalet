@@ -1,9 +1,10 @@
 "use client";
 
 import React from 'react';
-import { useAdmin } from "@/components/common/AdminProvider";
+import { useAdmin } from "@/components/admin/AdminProvider";
 import { useContentEditor } from "@/utils/useContentEditor";
 import Loading from "@/components/common/Loading";
+import AnimationWrapper from '@/components/common/AnimationWrapper';
 
 interface PracticalInfoData {
   main_title: string;
@@ -32,23 +33,25 @@ export default function PracticalInformation({ dataContent, page = "chalet" }: {
     <section className="bg-white py-16 px-4 sm:px-6 lg:px-8">
       <div className="container mx-auto max-w-6xl">
         
-        <h2 className="text-4xl sm:text-5xl font-serif font-bold text-[#2c4b3a] mb-12">
-          {isAdmin ? (
-            <input
-              type="text"
-              defaultValue={dataContent.main_title}
-              onBlur={(e) => handleUpdate(e, "main_title")}
-              onKeyDown={(e) => handleUpdate(e, "main_title")}
-              className="w-full text-4xl sm:text-5xl font-serif font-bold bg-white/20 p-2 rounded"
-            />
-          ) : (
-            dataContent.main_title
-          )}
-        </h2>
+        <AnimationWrapper variant="pop" delay={0} className="w-full">
+          <h2 className="text-4xl sm:text-5xl font-serif font-bold text-[#2c4b3a] mb-12">
+            {isAdmin ? (
+              <input
+                type="text"
+                defaultValue={dataContent.main_title}
+                onBlur={(e) => handleUpdate(e, "main_title")}
+                onKeyDown={(e) => handleUpdate(e, "main_title")}
+                className="w-full text-4xl sm:text-5xl font-serif font-bold bg-white/20 p-2 rounded"
+              />
+            ) : (
+              dataContent.main_title
+            )}
+          </h2>
+        </AnimationWrapper>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
-          
-          <div className="bg-white p-6 sm:p-8 rounded-xl shadow-sm border border-gray-100 h-full">
+          <AnimationWrapper variant="fade-up" delay={0.06} className="w-full">
+            <div className="bg-white p-6 sm:p-8 rounded-xl shadow-sm border border-gray-100 h-full">
             <h3 className="text-xl sm:text-2xl font-semibold text-[#2c4b3a] mb-4">
               {isAdmin ? (
                 <input
@@ -75,9 +78,11 @@ export default function PracticalInformation({ dataContent, page = "chalet" }: {
                 <p>{normalizeNewlines(dataContent.card_access_content)}</p>
               )}
             </div>
-          </div>
+            </div>
+          </AnimationWrapper>
 
-          <div className="bg-white p-6 sm:p-8 rounded-xl shadow-sm border border-gray-100 h-full">
+          <AnimationWrapper variant="fade-up" delay={0.12} className="w-full">
+            <div className="bg-white p-6 sm:p-8 rounded-xl shadow-sm border border-gray-100 h-full">
             <h3 className="text-xl sm:text-2xl font-semibold text-[#2c4b3a] mb-4">
               {isAdmin ? (
                 <input
@@ -110,37 +115,40 @@ export default function PracticalInformation({ dataContent, page = "chalet" }: {
                 </ul>
               )}
             </div>
-          </div>
-          
+            </div>
+          </AnimationWrapper>
+
         </div>
 
-        <div className="mb-8">
-          <h3 className="text-3xl sm:text-4xl font-serif font-bold text-[#2c4b3a] mb-8">
-            {isAdmin ? (
-              <input
-                type="text"
-                defaultValue={dataContent.location_title}
-                onBlur={(e) => handleUpdate(e, "location_title")}
-                onKeyDown={(e) => handleUpdate(e, "location_title")}
-                className="w-full text-3xl sm:text-4xl font-serif font-bold bg-white/20 p-2 rounded"
-              />
-            ) : (
-              dataContent.location_title
-            )}
-          </h3>
+        <AnimationWrapper variant="fade-up" delay={0.18} className="w-full">
+          <div className="mb-8">
+            <h3 className="text-3xl sm:text-4xl font-serif font-bold text-[#2c4b3a] mb-8">
+              {isAdmin ? (
+                <input
+                  type="text"
+                  defaultValue={dataContent.location_title}
+                  onBlur={(e) => handleUpdate(e, "location_title")}
+                  onKeyDown={(e) => handleUpdate(e, "location_title")}
+                  className="w-full text-3xl sm:text-4xl font-serif font-bold bg-white/20 p-2 rounded"
+                />
+              ) : (
+                dataContent.location_title
+              )}
+            </h3>
 
-          <div className="rounded-xl overflow-hidden shadow-inner border border-gray-200 h-150">
-            <iframe
-              src={dataContent.location_map_src}
-              width="100%"
-              height="100%"
-              style={{ border: 0 }}
-              loading="lazy"
-              allowFullScreen
-              referrerPolicy="no-referrer-when-downgrade"
-            ></iframe>
+            <div className="rounded-xl overflow-hidden shadow-inner border border-gray-200 h-150">
+              <iframe
+                src={dataContent.location_map_src}
+                width="100%"
+                height="100%"
+                style={{ border: 0 }}
+                loading="lazy"
+                allowFullScreen
+                referrerPolicy="no-referrer-when-downgrade"
+              ></iframe>
+            </div>
           </div>
-        </div>
+        </AnimationWrapper>
         
       </div>
     </section>

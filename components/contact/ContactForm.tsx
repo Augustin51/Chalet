@@ -3,8 +3,9 @@
 import React from 'react';
 import IconSelectorModal from "@/components/admin/IconSelectorModal";
 import { iconMap } from "@/lib/iconMap";
-import { useAdmin } from "@/components/common/AdminProvider";
+import { useAdmin } from "@/components/admin/AdminProvider";
 import { useContentEditor } from "@/utils/useContentEditor";
+import AnimationWrapper from "@/components/common/AnimationWrapper";
 
 interface ContactFormContent {
   title_left: string;
@@ -182,8 +183,9 @@ export default function ContactForm({ dataContent, dataInfo, formFields }: Conta
     <section className="bg-white py-16 sm:py-20 md:py-24 px-4 sm:px-6 lg:px-8">
       <div className="container mx-auto max-w-6xl">
         
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 mb-8 lg:mb-12">
-          <h2 className="text-4xl sm:text-5xl font-serif font-bold text-[#2c4b3a]">
+        <AnimationWrapper variant="fade-up" delay={0} className="w-full">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 mb-8 lg:mb-12">
+            <h2 className="text-4xl sm:text-5xl font-serif font-bold text-[#2c4b3a]">
             {isAdmin ? (
               <input
                 type="text"
@@ -195,9 +197,9 @@ export default function ContactForm({ dataContent, dataInfo, formFields }: Conta
             ) : (
               dataContent.title_left
             )}
-          </h2>
-          
-          <h2 className="text-4xl sm:text-5xl font-serif font-bold text-[#2c4b3a] lg:pl-10">
+            </h2>
+
+            <h2 className="text-4xl sm:text-5xl font-serif font-bold text-[#2c4b3a] lg:pl-10">
             {isAdmin ? (
               <textarea
                 defaultValue={dataContent.title_right}
@@ -212,68 +214,71 @@ export default function ContactForm({ dataContent, dataInfo, formFields }: Conta
             ) : (
               dataContent.title_right
             )}
-          </h2>
-        </div>
+            </h2>
+          </div>
+        </AnimationWrapper>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16">
           <div className="space-y-4">
-              {[...infoList].sort((a, b) => a.id - b.id).map((item) => {
+              {[...infoList].sort((a, b) => a.id - b.id).map((item, i) => {
                 const Icon = iconMap[item.iconName];
                 return (
-                  <div key={item.id} className="bg-white p-4 sm:p-5 rounded-lg shadow-sm border border-gray-100 flex items-start">
-                    <div
-                      className={isAdmin ? `h-8 w-8 flex items-center justify-center rounded-full border-2 ${iconModalOpen.infoId === item.id ? 'border-emerald-600 bg-emerald-50' : 'border-[#467A5E]/40'} cursor-pointer hover:bg-emerald-50 transition-colors mr-4 flex-shrink-0 mt-0.5` : 'h-8 w-8 flex items-center justify-center rounded-full border-2 border-[#467A5E]/40 mr-4 flex-shrink-0 mt-0.5'}
-                      onClick={() => {
-                        if (isAdmin) {
-                          setIconModalOpen({
-                            isOpen: true,
-                            infoId: item.id,
-                            currentIcon: item.iconName,
-                          });
-                        }
-                      }}
-                      title={isAdmin ? 'Cliquer pour changer l\'icône' : ''}
-                    >
-                      <Icon className="h-6 w-6 text-[#467A5E]" />
-                    </div>
-                    <div className="flex-1">
-                      <h3 className="text-lg font-semibold text-[#2c4b3a] mb-0.5">
-                        {isAdmin ? (
-                          <input
-                            type="text"
-                            defaultValue={item.title}
-                            onBlur={(e) => handleInfoUpdate(e, item.id, "title")}
-                            onKeyDown={(e) => handleInfoUpdate(e, item.id, "title")}
-                            className="w-full text-lg font-semibold text-[#2c4b3a] bg-transparent border border-transparent px-2 py-1 focus:outline-none focus:border-[#2c4b3a]/30 focus:bg-white/50 rounded transition-colors"
-                          />
-                        ) : (
-                          item.title
-                        )}
-                      </h3>
-                      <div className="text-gray-700 text-base">
-                        {isAdmin ? (
-                          <input
-                            type="text"
-                            defaultValue={item.content}
-                            onBlur={(e) => handleInfoUpdate(e, item.id, "content")}
-                            onKeyDown={(e) => handleInfoUpdate(e, item.id, "content")}
-                            className="w-full text-base text-gray-700 bg-transparent border border-transparent px-2 py-1 focus:outline-none focus:border-gray-700/30 focus:bg-white/50 rounded transition-colors"
-                          />
-                        ) : item.title === 'Adresse' ? (
-                          <address className="not-italic">
-                            {item.content.split('\n').map((line, index) => (
-                              <React.Fragment key={index}>
-                                {line}
-                                <br />
-                              </React.Fragment>
-                            ))}
-                          </address>
-                        ) : (
-                          <p>{item.content}</p>
-                        )}
+                  <AnimationWrapper key={item.id} variant="fade-up" delay={0.03 + i * 0.02} className="w-full">
+                    <div key={item.id} className="bg-white p-4 sm:p-5 rounded-lg shadow-sm border border-gray-100 flex items-start animation-card">
+                      <div
+                        className={isAdmin ? `h-8 w-8 flex items-center justify-center rounded-full border-2 ${iconModalOpen.infoId === item.id ? 'border-emerald-600 bg-emerald-50' : 'border-[#467A5E]/40'} cursor-pointer hover:bg-emerald-50 transition-colors mr-4 flex-shrink-0 mt-0.5` : 'h-8 w-8 flex items-center justify-center rounded-full border-2 border-[#467A5E]/40 mr-4 flex-shrink-0 mt-0.5'}
+                        onClick={() => {
+                          if (isAdmin) {
+                            setIconModalOpen({
+                              isOpen: true,
+                              infoId: item.id,
+                              currentIcon: item.iconName,
+                            });
+                          }
+                        }}
+                        title={isAdmin ? 'Cliquer pour changer l\'icône' : ''}
+                      >
+                        <Icon className="h-6 w-6 text-[#467A5E]" />
+                      </div>
+                      <div className="flex-1">
+                        <h3 className="text-lg font-semibold text-[#2c4b3a] mb-0.5">
+                          {isAdmin ? (
+                            <input
+                              type="text"
+                              defaultValue={item.title}
+                              onBlur={(e) => handleInfoUpdate(e, item.id, "title")}
+                              onKeyDown={(e) => handleInfoUpdate(e, item.id, "title")}
+                              className="w-full text-lg font-semibold text-[#2c4b3a] bg-transparent border border-transparent px-2 py-1 focus:outline-none focus:border-[#2c4b3a]/30 focus:bg-white/50 rounded transition-colors"
+                            />
+                          ) : (
+                            item.title
+                          )}
+                        </h3>
+                        <div className="text-gray-700 text-base">
+                          {isAdmin ? (
+                            <input
+                              type="text"
+                              defaultValue={item.content}
+                              onBlur={(e) => handleInfoUpdate(e, item.id, "content")}
+                              onKeyDown={(e) => handleInfoUpdate(e, item.id, "content")}
+                              className="w-full text-base text-gray-700 bg-transparent border border-transparent px-2 py-1 focus:outline-none focus:border-gray-700/30 focus:bg-white/50 rounded transition-colors"
+                            />
+                          ) : item.title === 'Adresse' ? (
+                            <address className="not-italic">
+                              {item.content.split('\n').map((line, index) => (
+                                <React.Fragment key={index}>
+                                  {line}
+                                  <br />
+                                </React.Fragment>
+                              ))}
+                            </address>
+                          ) : (
+                            <p>{item.content}</p>
+                          )}
+                        </div>
                       </div>
                     </div>
-                  </div>
+                  </AnimationWrapper>
                 );
               })}
           </div>
