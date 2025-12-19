@@ -2,9 +2,10 @@
 
 import React, { useState } from "react";
 import { iconMap } from "@/lib/iconMap";
+import AnimationWrapper from "@/components/common/AnimationWrapper";
 import IconSelectorModal from "@/components/admin/IconSelectorModal";
 import ConfirmModal from "@/components/admin/ConfirmModal";
-import { useAdmin } from "@/components/common/AdminProvider";
+import { useAdmin } from "@/components/admin/AdminProvider";
 import { useContentEditor } from "@/utils/useContentEditor";
 
 /* -------------------------------------------------------------------------- */
@@ -142,7 +143,7 @@ export default function Equipment({
 
   /* ------------------------------ Render --------------------------------- */
   return (
-    <section className="bg-white py-16 px-4 sm:px-6 lg:px-8">
+    <section className="bg-white py-16 px-4 sm:px-6 lg:px-8 equipment-section">
       {/* Reload bar */}
       {showReloadBar && (
         <div
@@ -158,12 +159,14 @@ export default function Equipment({
         {/* Admin add button */}
         {isAdmin && (
           <div className="mb-6 flex justify-end">
-            <button
-              className="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-2 px-4 rounded shadow"
-              onClick={() => setAddModalOpen(true)}
-            >
-              Ajouter un équipement
-            </button>
+            <AnimationWrapper variant="pop" delay={0.02} className="inline-block">
+              <button
+                className="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-2 px-4 rounded shadow animation-pop animation-hover-raise"
+                onClick={() => setAddModalOpen(true)}
+              >
+                Ajouter un équipement
+              </button>
+            </AnimationWrapper>
           </div>
         )}
 
@@ -246,13 +249,13 @@ export default function Equipment({
 
         {/* Equipment grid */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
-          {equipmentList.map(equipment => {
+          {equipmentList.map((equipment, i) => {
             const Icon = iconMap[equipment.iconName];
             return (
-              <div
-                key={equipment.id}
-                className="group relative flex flex-col items-center p-4 border rounded-xl hover:shadow-sm transition"
-              >
+              <AnimationWrapper key={equipment.id} variant="fade-up" delay={0.03 + i * 0.02} className="w-full">
+                <div
+                  className="group relative flex flex-col items-center p-4 border rounded-xl hover:shadow-sm transition animation-card animation-hover-raise"
+                >
                 {isAdmin && (
                   <button
                     onClick={() => setConfirmDelete({ isOpen: true, id: equipment.id, label: equipment.label })}
@@ -348,7 +351,8 @@ export default function Equipment({
                     {equipment.label}
                   </span>
                 )}
-              </div>
+                </div>
+              </AnimationWrapper>
             );
           })}
         </div>

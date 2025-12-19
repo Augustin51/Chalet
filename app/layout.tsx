@@ -3,9 +3,10 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
+import AnimationWrapper from "@/components/common/AnimationWrapper";
 import { createServerClient } from '@supabase/ssr';
 import { cookies } from 'next/headers';
-import AdminProvider from '@/components/common/AdminProvider';
+import AdminProvider from '@/components/admin/AdminProvider';
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -46,10 +47,14 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <Header />
         <main>
           <AdminProvider isAdmin={isConnected}>
-            {children}
+            <AnimationWrapper variant="fade-up" delay={0} className="min-h-[60vh]">
+              {children}
+            </AnimationWrapper>
           </AdminProvider>
         </main>
-        <Footer />
+        <AnimationWrapper variant="float" delay={0.04} className="w-full">
+          <Footer />
+        </AnimationWrapper>
       </body>
     </html>
   );

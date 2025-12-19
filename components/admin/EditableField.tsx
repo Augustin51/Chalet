@@ -1,5 +1,5 @@
 "use client";
-import { useAdmin } from "@/components/common/AdminProvider";
+import { useAdmin } from "@/components/admin/AdminProvider";
 import { useState, useEffect } from "react";
 import { Loader2, Check } from "lucide-react"; // Assure-toi d'avoir lucide-react ou utilise des emojis
 

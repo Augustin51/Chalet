@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-import { useAdmin } from "@/components/common/AdminProvider";
+import { useAdmin } from "@/components/admin/AdminProvider";
 import { useContentEditor } from "@/utils/useContentEditor";
 import { Star, Trash2 } from "lucide-react";
 import React from "react";
@@ -9,6 +9,7 @@ import Image from "next/image";
 import EditableImage from "@/components/admin/EditableImage";
 import ConfirmModal from "@/components/admin/ConfirmModal";
 import Loading from "@/components/common/Loading";
+import AnimationWrapper from "@/components/common/AnimationWrapper";
 
 interface TestimonialContent {
   title: string;
@@ -196,7 +197,8 @@ export default function Testimonials({ dataContent, dataTestimonials, availableS
     <section className="bg-[#fcfaf7] py-16 sm:py-20 md:py-24 px-4 sm:px-6 lg:px-8">
       <div className="container mx-auto max-w-6xl">
         
-        <div className="text-center mb-12 sm:mb-16">
+        <AnimationWrapper variant="fade-up" delay={0} className="w-full">
+          <div className="text-center mb-12 sm:mb-16">
           <h2 className="text-4xl sm:text-5xl font-serif font-bold text-[#2c4b3a] mb-3">
             {isAdmin ? (
               <input
@@ -224,6 +226,7 @@ export default function Testimonials({ dataContent, dataTestimonials, availableS
             )}
           </p>
         </div>
+        </AnimationWrapper>
 
         <div className="flex justify-end mb-4">
           {isAdmin && (
@@ -237,11 +240,12 @@ export default function Testimonials({ dataContent, dataTestimonials, availableS
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-10">
-          {testimonials.slice(0, visibleCount).map((testimonial) => (
-            <div 
-              key={testimonial.id}
-              className="bg-white p-6 sm:p-8 rounded-2xl shadow-md border border-gray-100 h-full relative"
-            >
+          {testimonials.slice(0, visibleCount).map((testimonial, i) => (
+            <AnimationWrapper key={testimonial.id} variant="fade-up" delay={0.04 + i * 0.03} className="w-full">
+              <div 
+                key={testimonial.id}
+                className="bg-white p-6 sm:p-8 rounded-2xl shadow-md border border-gray-100 h-full relative animation-card"
+              >
               {isAdmin && (
                 <button
                   onClick={() => setConfirmDelete({ isOpen: true, id: testimonial.id })}
@@ -376,6 +380,7 @@ export default function Testimonials({ dataContent, dataTestimonials, availableS
                 </p>
               </div>
             </div>
+            </AnimationWrapper>
           ))}
         </div>
 

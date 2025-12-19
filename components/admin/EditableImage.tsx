@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import Image from 'next/image';
-import { useAdmin } from '@/components/common/AdminProvider';
+import { useAdmin } from '@/components/admin/AdminProvider';
 import ImageSelectorModal from './ImageSelectorModal';
 
 interface EditableImageProps {

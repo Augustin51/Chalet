@@ -1,6 +1,6 @@
 import ChaletIntro from "@/components/chalet/ChaletIntro";
 import Equipment from "@/components/chalet/Equipment";
-import Gallery from "@/components/home/Gallery";
+import Gallery from "@/components/common/Gallery";
 import PageHero from "@/components/shared/PageHero";
 import PracticalInformation from "@/components/chalet/PracticalInformation";
 import { prisma } from "@/lib/prisma";

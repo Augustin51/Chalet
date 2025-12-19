@@ -1,5 +1,5 @@
-import Features from "@/components/chalet/Features";
-import Gallery from "@/components/home/Gallery";
+import Features from "@/components/home/Features";
+import Gallery from "@/components/common/Gallery";
 import HomeHero from "@/components/home/HomeHero";
 import { prisma } from "@/lib/prisma";
 
