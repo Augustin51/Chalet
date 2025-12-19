@@ -1,8 +1,9 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { LucideIcon } from "lucide-react";
-import { iconMap, DefaultIcon } from "@/lib/iconMap";
+import { iconMap } from "@/lib/iconMap";
+import IconSelectorModal from "@/components/admin/IconSelectorModal";
 import { useAdmin } from "@/components/common/AdminProvider";
 import { useContentEditor } from "@/utils/useContentEditor";
 import Loading from "@/components/common/Loading";
@@ -49,10 +50,34 @@ export default function LocalFavorites({ dataContent, dataFavorites, page = "aut
     }
   }, [isAdmin, dataContent, dataFavorites]);
 
+  const [favorites, setFavorites] = useState<FavoriteItem[]>(dataFavorites);
+  const [iconModalOpen, setIconModalOpen] = useState<{ isOpen: boolean; favoriteId: number | null; currentIcon: string }>({
+    isOpen: false,
+    favoriteId: null,
+    currentIcon: '',
+  });
+  const [showReloadBar, setShowReloadBar] = useState(false);
+
+  const handleIconSelect = async (iconName: string) => {
+    if (!iconModalOpen.favoriteId) return;
+    setFavorites(prev => prev.map(fav => fav.id === iconModalOpen.favoriteId ? { ...fav, iconName } : fav));
+    setShowReloadBar(true);
+    // Optionally, update server here if needed
+  };
+
   return (
     <section className="bg-[#f5f3ef] py-16 sm:py-20 md:py-24 px-4 sm:px-6 lg:px-8">
+      {showReloadBar && (
+        <div
+          className="fixed top-0 left-0 w-full bg-yellow-400 text-yellow-900 font-semibold text-center py-0.5 z-[10000] shadow-md cursor-pointer hover:bg-yellow-300 transition-colors text-sm"
+          onClick={() => window.location.reload()}
+          title="Cliquer pour recharger la page"
+        >
+          Des modifications sur les icônes nécessitent de <span className="underline">recharger la page</span> pour être totalement prises en compte.<br/>
+          <span className="text-xs font-normal">Cliquez ici pour recharger</span>
+        </div>
+      )}
       <div className="max-w-6xl mx-auto">
-        
         <div className="text-center mb-12 sm:mb-16">
           <h2 className="text-4xl sm:text-5xl font-serif font-bold text-[#2c4b3a] mb-3">
             {isAdmin ? (
@@ -81,16 +106,27 @@ export default function LocalFavorites({ dataContent, dataFavorites, page = "aut
             )}
           </p>
         </div>
-
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 sm:gap-10">
-          {dataFavorites.map((favorite) => {
-            const Icon = iconMap[favorite.iconName] || DefaultIcon;
+          {favorites.map((favorite) => {
+            const Icon = iconMap[favorite.iconName];
             return (
               <div
                 key={favorite.id}
                 className="bg-white p-6 sm:p-8 rounded-2xl shadow-md transition-shadow duration-300 hover:shadow-lg border border-gray-100 h-full"
               >
-                <div className="mb-4">
+                <div
+                  className={isAdmin ? `mb-4 w-10 h-10 flex items-center justify-center rounded-full border-2 ${iconModalOpen.favoriteId === favorite.id ? 'border-emerald-600 bg-emerald-50' : 'border-[#467A5E]/40'} cursor-pointer hover:bg-emerald-50 transition-colors` : 'mb-4 w-10 h-10 flex items-center justify-center rounded-full border-2 border-[#467A5E]/40'}
+                  onClick={() => {
+                    if (isAdmin) {
+                      setIconModalOpen({
+                        isOpen: true,
+                        favoriteId: favorite.id,
+                        currentIcon: favorite.iconName,
+                      });
+                    }
+                  }}
+                  title={isAdmin ? 'Cliquer pour changer l\'icône' : ''}
+                >
                   <Icon className="h-7 w-7 sm:h-8 sm:w-8 text-[#467A5E]" strokeWidth={2} />
                 </div>
                 {isAdmin ? (
@@ -120,6 +156,17 @@ export default function LocalFavorites({ dataContent, dataFavorites, page = "aut
             );
           })}
         </div>
+        <IconSelectorModal
+          isOpen={iconModalOpen.isOpen}
+          onClose={() => setIconModalOpen({ isOpen: false, favoriteId: null, currentIcon: '' })}
+          onSelect={handleIconSelect}
+          currentIcon={
+            iconModalOpen.favoriteId
+              ? favorites.find(fav => fav.id === iconModalOpen.favoriteId)?.iconName || iconModalOpen.currentIcon
+              : iconModalOpen.currentIcon
+          }
+          title="Choisir une icône"
+        />
       </div>
     </section>
   );

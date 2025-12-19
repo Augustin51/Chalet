@@ -1,7 +1,8 @@
 "use client";
 
 import React from 'react';
-import { iconMap, DefaultIcon } from "@/lib/iconMap";
+import IconSelectorModal from "@/components/admin/IconSelectorModal";
+import { iconMap } from "@/lib/iconMap";
 import { useAdmin } from "@/components/common/AdminProvider";
 import { useContentEditor } from "@/utils/useContentEditor";
 
@@ -146,6 +147,34 @@ export default function ContactForm({ dataContent, dataInfo, formFields }: Conta
     }
   };
 
+  const [infoList, setInfoList] = React.useState<ContactInfoItem[]>([...dataInfo].sort((a, b) => a.id - b.id));
+  const [iconModalOpen, setIconModalOpen] = React.useState<{ isOpen: boolean; infoId: number | null; currentIcon: string }>({
+    isOpen: false,
+    infoId: null,
+    currentIcon: '',
+  });
+  const [showReloadBar, setShowReloadBar] = React.useState(false);
+
+  const handleIconSelect = async (iconName: string) => {
+    if (!iconModalOpen.infoId) return;
+    setInfoList(prev => prev.map(item => item.id === iconModalOpen.infoId ? { ...item, iconName } : item));
+    setShowReloadBar(true);
+    // Mise à jour côté serveur
+    try {
+      await fetch('/api/infoitem/update', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          id: iconModalOpen.infoId,
+          field: 'iconName',
+          value: iconName,
+        }),
+      });
+    } catch (error) {
+      console.error('Erreur lors de la mise à jour de l\'icône contact info:', error);
+    }
+  };
+
   if (!dataContent || !dataInfo) {
     return <section className="bg-white py-16">Chargement...</section>;
   }
@@ -188,11 +217,25 @@ export default function ContactForm({ dataContent, dataInfo, formFields }: Conta
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16">
           <div className="space-y-4">
-              {dataInfo.map((item) => {
-                const Icon = iconMap[item.iconName] || DefaultIcon;
+              {[...infoList].sort((a, b) => a.id - b.id).map((item) => {
+                const Icon = iconMap[item.iconName];
                 return (
                   <div key={item.id} className="bg-white p-4 sm:p-5 rounded-lg shadow-sm border border-gray-100 flex items-start">
-                    <Icon className="h-6 w-6 text-[#467A5E] mr-4 flex-shrink-0 mt-0.5" />
+                    <div
+                      className={isAdmin ? `h-8 w-8 flex items-center justify-center rounded-full border-2 ${iconModalOpen.infoId === item.id ? 'border-emerald-600 bg-emerald-50' : 'border-[#467A5E]/40'} cursor-pointer hover:bg-emerald-50 transition-colors mr-4 flex-shrink-0 mt-0.5` : 'h-8 w-8 flex items-center justify-center rounded-full border-2 border-[#467A5E]/40 mr-4 flex-shrink-0 mt-0.5'}
+                      onClick={() => {
+                        if (isAdmin) {
+                          setIconModalOpen({
+                            isOpen: true,
+                            infoId: item.id,
+                            currentIcon: item.iconName,
+                          });
+                        }
+                      }}
+                      title={isAdmin ? 'Cliquer pour changer l\'icône' : ''}
+                    >
+                      <Icon className="h-6 w-6 text-[#467A5E]" />
+                    </div>
                     <div className="flex-1">
                       <h3 className="text-lg font-semibold text-[#2c4b3a] mb-0.5">
                         {isAdmin ? (
@@ -234,6 +277,27 @@ export default function ContactForm({ dataContent, dataInfo, formFields }: Conta
                 );
               })}
           </div>
+      {showReloadBar && (
+        <div
+          className="fixed top-0 left-0 w-full bg-yellow-400 text-yellow-900 font-semibold text-center py-0.5 z-[10000] shadow-md cursor-pointer hover:bg-yellow-300 transition-colors text-sm"
+          onClick={() => window.location.reload()}
+          title="Cliquer pour recharger la page"
+        >
+          Des modifications sur les icônes nécessitent de <span className="underline">recharger la page</span> pour être totalement prises en compte.<br/>
+          <span className="text-xs font-normal">Cliquez ici pour recharger</span>
+        </div>
+      )}
+          <IconSelectorModal
+            isOpen={iconModalOpen.isOpen}
+            onClose={() => setIconModalOpen({ isOpen: false, infoId: null, currentIcon: '' })}
+            onSelect={handleIconSelect}
+            currentIcon={
+              iconModalOpen.infoId
+                ? infoList.find(i => i.id === iconModalOpen.infoId)?.iconName || iconModalOpen.currentIcon
+                : iconModalOpen.currentIcon
+            }
+            title="Choisir une icône"
+          />
 
           <div className="bg-white p-6 sm:p-8 rounded-lg">
             <form className="space-y-4" onSubmit={handleSubmit}>
