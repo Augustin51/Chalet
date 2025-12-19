@@ -1,0 +1,112 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Activity {
+  id          Int     @id @default(autoincrement())
+  title       String
+  description String
+  season      String
+}
+
+model ContactInfo {
+  id       Int    @id @default(autoincrement())
+  title    String
+  content  String
+  iconName String
+}
+
+model Content {
+  id        Int    @id @default(autoincrement())
+  page      String
+  component String
+  key       String
+  value     String
+
+  @@unique([page, component, key])
+  @@map("Content")
+}
+
+model Equipment {
+  id       Int    @id @default(autoincrement())
+  label    String
+  iconName String
+}
+
+model Favorite {
+  id       Int    @id @default(autoincrement())
+  title    String
+  details  String
+  iconName String
+}
+
+model Feature {
+  id          Int    @id @default(autoincrement())
+  title       String
+  description String
+  iconName    String
+}
+
+model FormField {
+  id          Int    @id @default(autoincrement())
+  fieldName   String @unique
+  label       String
+  placeholder String
+}
+
+model GalleryImage {
+  id  Int    @id @default(autoincrement())
+  src String
+  alt String
+}
+
+model InfoItem {
+  id   Int    @id @default(autoincrement())
+  text String
+}
+
+model Nearby {
+  id    Int    @id @default(autoincrement())
+  time  String
+  label String
+  color String
+  season String
+}
+
+model PriceTier {
+  id          Int    @id @default(autoincrement())
+  title       String
+  period      String
+  price       String
+  description String
+}
+
+model Stat {
+  id        Int    @id @default(autoincrement())
+  main      String
+  sub       String
+  showStars Boolean
+}
+
+model Testimonial {
+  id        Int    @id @default(autoincrement())
+  name      String
+  avatarUrl String
+  date      String
+  stars     Int
+  source    String
+  review    String
+}
+
+model Reservation {
+  id         Int      @id @default(autoincrement())
+  startDate  DateTime
+  endDate    DateTime
+  chaletLeft Boolean  @default(false)
+  chaletRight Boolean @default(false)
+}

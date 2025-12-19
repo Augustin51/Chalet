@@ -1,6 +1,12 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import Header from "@/components/layout/Header";
+import Footer from "@/components/layout/Footer";
+import AnimationWrapper from "@/components/common/AnimationWrapper";
+import { createServerClient } from '@supabase/ssr';
+import { cookies } from 'next/headers';
+import AdminProvider from '@/components/admin/AdminProvider';
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -14,20 +20,41 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Chalet",
-  description: "Bienvenu dans ce magnifique chalet dans le Jura",
+  description: "Bienvenue dans ce magnifique chalet dans le Jura",
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
+  const cookieStore = await cookies();
+  
+  const supabase = createServerClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    {
+      cookies: {
+        get(name: string) {
+          return cookieStore.get(name)?.value
+        },
+      },
+    }
+  );
+
+  const { data: { session } } = await supabase.auth.getSession();
+  const isConnected = Boolean(session?.user);
+
   return (
     <html lang="fr">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+        <Header />
         <main>
-          {children}
+          <AdminProvider isAdmin={isConnected}>
+            <AnimationWrapper variant="fade-up" delay={0} className="min-h-[60vh]">
+              {children}
+            </AnimationWrapper>
+          </AdminProvider>
         </main>
+        <AnimationWrapper variant="float" delay={0.04} className="w-full">
+          <Footer />
+        </AnimationWrapper>
       </body>
     </html>
   );

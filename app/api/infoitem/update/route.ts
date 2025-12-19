@@ -1,0 +1,29 @@
+import { NextResponse } from "next/server";
+import { prisma } from "@/lib/prisma";
+
+export async function POST(request: Request) {
+  try {
+    const { id, field, value } = await request.json();
+
+    if (!id || !field || value === undefined) {
+      return NextResponse.json(
+        { success: false, error: "Paramètres manquants" },
+        { status: 400 }
+      );
+    }
+
+    // Mise à jour de l'info de contact
+    const updated = await prisma.contactInfo.update({
+      where: { id: parseInt(id) },
+      data: { [field]: value },
+    });
+
+    return NextResponse.json({ success: true, data: updated });
+  } catch (error) {
+    console.error("Erreur lors de la mise à jour de l'info de contact:", error);
+    return NextResponse.json(
+      { success: false, error: "Erreur serveur" },
+      { status: 500 }
+    );
+  }
+}
