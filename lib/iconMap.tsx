@@ -1,4 +1,5 @@
-import { Heart, Compass, Calendar, LucideIcon, UtensilsCrossed, Snowflake, ParkingCircle, Baby, MapPin, Mail, Wifi, Tv, Phone, Clock } from "lucide-react";
+import { Heart, Compass, Calendar, UtensilsCrossed, Snowflake, ParkingCircle, Baby, MapPin, Mail, Wifi, Tv, Phone, Clock, Annoyed } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
 
 export const iconMap: { [key: string]: LucideIcon } = {
   Heart: Heart,
@@ -13,4 +14,5 @@ export const iconMap: { [key: string]: LucideIcon } = {
   Wifi: Wifi,
   Tv: Tv,
   Phone: Phone,
-  Clock: Clock,};
+  Clock: Clock,Annoyed: Annoyed,
+};

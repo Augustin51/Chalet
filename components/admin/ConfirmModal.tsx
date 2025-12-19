@@ -74,7 +74,7 @@ export default function ConfirmModal({
 
   return createPortal(
     <div 
-      className="fixed inset-0 bg-black/70 z-[10000] flex items-center justify-center p-4"
+      className="fixed inset-0 bg-black/70 z-[10006] flex items-center justify-center p-4"
       onClick={onCancel}
     >
       <div 

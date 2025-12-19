@@ -13,6 +13,8 @@ interface IconSelectorModalProps {
   onSelect: (iconName: string) => void;
   currentIcon?: string;
   title?: string;
+  overlayClassName?: string;
+  onRequireReload?: () => void;
 }
 
 export default function IconSelectorModal({
@@ -21,6 +23,8 @@ export default function IconSelectorModal({
   onSelect,
   currentIcon,
   title = "Choisir une icône",
+  overlayClassName,
+  onRequireReload,
 }: IconSelectorModalProps) {
   const [showReloadBar, setShowReloadBar] = useState(false);
   // DEBUG: log props pour comprendre le bug d'ouverture
@@ -70,10 +74,13 @@ export default function IconSelectorModal({
       const result = await response.json();
 
       if (result.success) {
-        // Recharger la page pour synchroniser le client et le serveur
+        // Ajouter l'icône à la liste locale et notifier le parent
+        setAvailableIcons(prev => [...prev, iconNameToAdd]);
         onSelect(iconNameToAdd);
+        // Ne pas recharger automatiquement — notifier le parent pour afficher la barre globale
+        if (typeof onRequireReload === 'function') onRequireReload();
+        setShowReloadBar(true);
         onClose();
-        setTimeout(() => window.location.reload(), 100);
       } else {
         setErrorMessage(result.error || 'Erreur lors de l\'ajout');
       }
@@ -104,6 +111,8 @@ export default function IconSelectorModal({
       if (result.success) {
         // Suppression immédiate côté client
         setAvailableIcons(prev => prev.filter(name => name !== iconName));
+        // notifier le parent pour afficher la barre globale
+        if (typeof onRequireReload === 'function') onRequireReload();
         setShowReloadBar(true);
       } else {
         setAlertModal({
@@ -132,9 +141,9 @@ export default function IconSelectorModal({
         </div>
       )}
       <div 
-        className="fixed inset-0 bg-black/50 flex items-center justify-center z-[9999] p-4"
-        onClick={onClose}
-      >
+            className={overlayClassName ?? "fixed inset-0 bg-black/50 flex items-center justify-center z-[9999] p-4"}
+            onClick={onClose}
+          >
         <div 
           className="bg-white rounded-lg p-6 max-w-2xl w-full max-h-[90vh] overflow-y-auto"
           onClick={(e) => e.stopPropagation()}
@@ -222,12 +231,14 @@ export default function IconSelectorModal({
                     </button>
                   {iconName !== 'Default' && (
                     <button
-                      onClick={(e) => handleDeleteClick(iconName, e)}
-                      className="absolute top-1 right-1 bg-red-500 hover:bg-red-600 text-white p-1.5 rounded-full opacity-0 group-hover:opacity-100 transition-opacity z-10"
-                      title="Supprimer"
-                    >
-                      <Trash2 className="w-3 h-3" />
-                    </button>
+                        type="button"
+                        onClick={(e) => { e.stopPropagation(); handleDeleteClick(iconName, e); }}
+                        className="absolute top-1 right-1 bg-red-500 hover:bg-red-600 text-white p-1.5 rounded-full opacity-0 group-hover:opacity-100 transition-opacity z-[10005] pointer-events-auto"
+                        title="Supprimer"
+                        aria-label={`Supprimer l'icône ${iconName}`}
+                      >
+                        <Trash2 className="w-3 h-3" />
+                      </button>
                   )}
                 </div>
               );
